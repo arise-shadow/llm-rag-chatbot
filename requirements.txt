@@ -4,10 +4,8 @@ isort
 loguru
 mkdocs
 pip
-python-dotenv
 tqdm
 typer
--e .
 python-dotenv
 
 # APP
@@ -21,3 +19,16 @@ llama-index-llms-ollama
 PyStemmer
 
 beautifulsoup4
+
+# langchain
+langchain
+langchain_openai
+langchain_huggingface
+langchain-ollama
+langchain-chroma>=0.1.2
+rank_bm25
+markdownify
+
+# llama index
+llama-index-retrievers-bm25
+llama-index-vector-stores-chroma
