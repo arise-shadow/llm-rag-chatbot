@@ -8,3 +8,16 @@ python-dotenv
 tqdm
 typer
 -e .
+python-dotenv
+
+# APP
+streamlit
+
+# LLM
+chroma
+llama-index
+llama-index-embeddings-huggingface
+llama-index-llms-ollama
+PyStemmer
+
+beautifulsoup4
