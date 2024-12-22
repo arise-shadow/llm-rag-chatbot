@@ -1,0 +1,19 @@
+# APP
+streamlit
+
+# LLM
+chromadb
+llama-index
+llama-index-embeddings-huggingface
+llama-index-llms-ollama
+llama-index-vector-stores-chroma
+llama-index-retrievers-bm25
+llama-index-core
+llama-index-utils-workflow
+llama-index-llms-openai
+llama-index-embeddings-openai
+
+PyStemmer
+
+numpy
+pandas

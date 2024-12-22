@@ -1,0 +1,25 @@
+apiVersion: networking.istio.io/v1
+kind: Gateway
+metadata:
+  annotations:
+  name: shinhan-gateway
+  namespace: shinhan
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - hosts:
+    - '*.shinhan.dudaji.com'
+    port:
+      name: http
+      number: 80
+      protocol: HTTP
+  - hosts:
+    - '*.shinhan.dudaji.com'
+    port:
+      name: https
+      number: 443
+      protocol: HTTPS
+    tls:
+      credentialName: shinhan-tls
+      mode: SIMPLE

@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: shinhan-tls-v2
+  namespace: istio-system
+spec:
+  dnsNames:
+  - v2.shinhan.dudaji.com
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-issuer
+  renewBefore: 360h0m0s
+  secretName: shinhan-v2-tls
