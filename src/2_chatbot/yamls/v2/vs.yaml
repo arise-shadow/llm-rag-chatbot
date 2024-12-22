@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: shinhan-v2
+  namespace: shinhan
+spec:
+  gateways:
+  - shinhan-gateway-v2
+  hosts:
+  - v2.shinhan.dudaji.com
+  http:
+  - route:
+    - destination:
+        host: app-v2.shinhan.svc.cluster.local
+        port:
+          number: 8501
