@@ -1,0 +1,60 @@
+,page_id,link,question,answer
+0,,https://furiosa-ai.discourse.group/t/furiosaai-faq/18/3,How can I convert an ONNX file to an ENF file after quantization to later use it by simply opening a session?,You can use the following command: furiosa compile foo.onnx -o foo.enf
+1,,https://furiosa-ai.discourse.group/t/furiosaai-faq/18/4,Can I specify NPU 0 and NPU 1 separately when more than two NPUs are installed?,"Yes, you can execute tasks by specifying different NPUs as shown below:
+sess = session.create('model.enf', device=""npu0pe0-1"")
+sess = session.create('model.enf', device=""npu1pe0-1"")"
+2,,https://furiosa-ai.discourse.group/t/furiosaai-faq/18/5,Please provide a precise explanation of the target models supported by Warboy.,"Warboy only supports inference and does not support training.
+Since it only supports INT8 operations, model quantization is mandatory.
+Although it varies by model, Warboy is most efficient with input sizes ranging from 512x512 to 768x768. For larger input sizes, it is recommended to utilize tiling (a method where larger inputs are split into smaller sizes for inference, and the results are combined)."
+3,,https://furiosa-ai.discourse.group/t/furiosaai-faq/18/6,"What operators are supported by Warboy, and what are their features?","It is specialized in accelerating CNN-based models, and you can view the list of accelerated operators.
+Transformer operations are not supported.
+Resize operations are not accelerated.
+Softmax should be removed or handled in post-processing for optimal performance.
+Concat operations along the channel axis may affect accuracy.
+For unsupported operations at the beginning or end of the model, it is effective to move them to pre/post-processing."
+4,,https://furiosa-ai.discourse.group/t/furiosaai-faq/18/7,Can accuracy drop after quantization? Are there good algorithms for this?,"Accuracy may drop when quantizing an FP32 model to run on Warboy, depending on the model.
+You can try various calibration methods described in the documentation to find the one that achieves the highest accuracy."
+5,,https://furiosa-ai.discourse.group/t/furiosaai-faq/18/8,Why does the “Insufficient Instruction Memory” error occur?,"Cause: This error occurs when the number of operators in the model exceeds the instruction memory size, making the binary size larger than the available instruction memory size.
+Instruction memory size: 256KB
+Solution:
+Add the use_program_loading option to the compiler configuration to enable dynamic loading of instructions during the compilation process:
+compiler_config = {
+    ""use_program_loading"": True
+}
+sess = session.create(
+    str(quantized_model_path),
+    compiler_config=compiler_config,
+)
+Note: Using this method may increase inference time."
+6,,https://furiosa-ai.discourse.group/t/furiosaai-faq/18/9,Why does the “Incompatible configuration” runtime error occur? Error message: furiosa.runtime.errors.InternalError: unknown (native error code: 15),"Cause: This error occurs when the SDK version used to create the binary differs from the version used during runtime.
+Solution: Update the SDK to the latest version and recreate the binary before running it."
+7,,https://furiosa-ai.discourse.group/t/furiosaai-faq/18/10,Why does the model inference time take longer than expected?,"Cause: This occurs when the model uses operators that cannot be executed on the NPU and are instead handled by the CPU.
+Solution: If the operators that cannot be executed on the NPU are located at the beginning or end of the model, remove those parts from the model and handle them separately in your code."
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
