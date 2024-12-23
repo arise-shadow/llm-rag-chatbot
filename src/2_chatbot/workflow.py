@@ -1,3 +1,6 @@
+import sys
+sys.path.append('/Users/jwlee-pro/anaconda3/envs/llm-quantize/lib/python3.11/site-packages')
+
 from typing import List
 
 from llama_index.core.schema import NodeWithScore, QueryBundle
