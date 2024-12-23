@@ -1,62 +1,67 @@
-# Test Performance of RNGD with various LLM tasks
+# Test Performance of RNGD with Various LLM Tasks
 
-This repository contains a chatbot implementation that combines Large Language Models (LLMs) with Retrieval-Augmented Generation (RAG) techniques to provide accurate and contextually relevant responses. On the other hand, we also support translation between English and Korean based on LLM translator. 
+This repository contains a chatbot implementation that combines Large Language Models (LLMs) with Retrieval-Augmented Generation (RAG) techniques to provide accurate and contextually relevant responses. Additionally, it supports translation between English and Korean based on an LLM-based translator.
 
 ## Project Structure
 
-├── LICENSE             # Open-source license information  
-├── README.md           # Project overview and instructions  
-├── data/  
-│   ├── db/             # Database made for warboy and rngd sdk   
-│   ├── translate/      # Database made for translation (Kor <-> Eng)  
-│   ├── chatbot/        # QA dataset for warboy and rngd sdk  
-│   └── handmade-faq/   # QA obtained from furiosa customer portal  
-├── docs/               # Documentation for the project  
-├── notebooks/          # Jupyter notebooks for exploration and analysis  
-├── references/         # Data dictionaries, manuals, and other reference materials  
-├── requirements.txt    # List of required Python packages  
-└── src/                # Source code for the chatbot  
+The project is organized as follows:
 
+```
+├── LICENSE              # Open-source license information
+├── README.md            # Project overview and instructions
+├── data/
+│   ├── db/              # Database for Warboy and RNGD SDK
+│   ├── translate/       # Translation database (Kor ↔ Eng)
+│   ├── chatbot/         # QA dataset for Warboy and RNGD SDK
+│   └── handmade-faq/    # QA data from Furiosa customer portal
+├── docs/                # Documentation for the project
+├── notebooks/           # Jupyter notebooks for exploration and analysis
+├── references/          # Data dictionaries, manuals, and other reference materials
+├── requirements.txt     # List of required Python packages
+└── src/                 # Source code for the chatbot
+```
 
 ## Getting Started
 
-To set up the project locally, follow these steps:
+Follow these steps to set up the project locally:
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/arise-shadow/llm-rag-chatbot.git
-    ```
+### 1. Clone the repository
 
-2.	**Navigate to the project directory:**
+```bash
+git clone https://github.com/arise-shadow/llm-rag-chatbot.git
+```
 
-   ```bash
-   cd llm-rag-chatbot
-    ```
+### 2. Navigate to the project directory
 
-3.	Create and activate a virtual environment (optional but recommended):
+```bash
+cd llm-rag-chatbot
+```
 
-   ```bash
-   python -m venv env
-   source env/bin/activate  # On Windows: env\Scripts\activate
-    ```
+### 3. Create and activate a virtual environment (optional but recommended)
 
-4.	Install the required packages:
+```bash
+python -m venv env
+source env/bin/activate  # On Windows: env\Scripts\activate
+```
 
-   ```bash
-   pip install -r requirements.txt
-    ```
+### 4. Install the required packages
 
+```bash
+pip install -r requirements.txt
+```
 
-Usage
+## Usage
 
-Detailed instructions on how to use the chatbot, including data preparation, model training, and running the application, can be found in the docs directory.
+Detailed instructions on how to use the chatbot, including data preparation, model training, and running the application, can be found in the `docs` directory.
 
-Contributing
+## Contributing
 
-Contributions are welcome! Please refer to the CONTRIBUTING.md file for guidelines on how to contribute to this project.
+Contributions are welcome! Please refer to the `CONTRIBUTING.md` file for guidelines on how to contribute to this project.
 
-License
+## License
 
 This project is licensed under the terms of the MIT License.
 
-This `README.md` provides a comprehensive overview of your project, including its structure, setup instructions, usage guidelines, and acknowledgements. Feel free to modify any sections to better fit your project's specifics. 
+---
+
+This `README.md` provides a comprehensive overview of the project, including its structure, setup instructions, usage guidelines, and acknowledgements. Feel free to modify any sections to better fit your project's specifics.
