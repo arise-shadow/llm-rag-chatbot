@@ -4,18 +4,18 @@ This repository contains a chatbot implementation that combines Large Language M
 
 ## Project Structure
 
-├── LICENSE             # Open-source license information
-├── README.md           # Project overview and instructions
-├── data/
-│   ├── db/             # Database made for warboy and rngd sdk 
-│   ├── translate/      # Database made for translation (Kor <-> Eng)
-│   ├── chatbot/        # QA dataset for warboy and rngd sdk
-│   └── handmade-faq/   # QA obtained from furiosa customer portal
-├── docs/               # Documentation for the project
-├── notebooks/          # Jupyter notebooks for exploration and analysis
-├── references/         # Data dictionaries, manuals, and other reference materials
-├── requirements.txt    # List of required Python packages
-└── src/                # Source code for the chatbot
+├── LICENSE             # Open-source license information  
+├── README.md           # Project overview and instructions  
+├── data/  
+│   ├── db/             # Database made for warboy and rngd sdk   
+│   ├── translate/      # Database made for translation (Kor <-> Eng)  
+│   ├── chatbot/        # QA dataset for warboy and rngd sdk  
+│   └── handmade-faq/   # QA obtained from furiosa customer portal  
+├── docs/               # Documentation for the project  
+├── notebooks/          # Jupyter notebooks for exploration and analysis  
+├── references/         # Data dictionaries, manuals, and other reference materials  
+├── requirements.txt    # List of required Python packages  
+└── src/                # Source code for the chatbot  
 
 
 ## Getting Started
@@ -25,22 +25,26 @@ To set up the project locally, follow these steps:
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/arise-shadow/llm-rag-chatbot.git
+    ```
 
-	2.	Navigate to the project directory:
+2.	**Navigate to the project directory:**
 
-cd llm-rag-chatbot
+   ```bash
+   cd llm-rag-chatbot
+    ```
 
+3.	Create and activate a virtual environment (optional but recommended):
 
-	3.	Create and activate a virtual environment (optional but recommended):
+   ```bash
+   python -m venv env
+   source env/bin/activate  # On Windows: env\Scripts\activate
+    ```
 
-python -m venv env
-source env/bin/activate  # On Windows: env\Scripts\activate
+4.	Install the required packages:
 
-
-	4.	Install the required packages:
-
-pip install -r requirements.txt
-
+   ```bash
+   pip install -r requirements.txt
+    ```
 
 
 Usage
