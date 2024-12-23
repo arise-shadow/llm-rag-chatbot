@@ -1,21 +1,22 @@
 import streamlit as st
+from llama_index.core.chat_engine.types import StreamingAgentChatResponse
 
-from chat import get_chat_engine
-from utils import convert_to_chat_message
+from chat import get_agent
+from utils import MockStreamingAgentChatResponse, convert_to_chat_message
 
 # App title
-st.set_page_config(page_title="💬 Shinhan Chatbot")
+st.set_page_config(page_title="💬 FuriosaAI Chatbot")
 
 with st.sidebar:
-    st.title("💬 Shinhan Chatbot")
-    st.write("This QA chatbot for Shinhan Card Product.")
+    st.title("💬 FuriosaAI Chatbot")
+    st.write("This QA chatbot for FuriosaAI Product.")
 
     st.subheader("Question Examples")
     questions = [
-        "Show me the consumer credit cards, How many credit cards do you have?",
-        "What are differences between Korcham and Kocham debit card?",
-        "List the credit cards for corporate?",
-        "What is the best card for salary man who traveling very often?",
+        "What are the specific example models available on HuggingFace Hub for the 'LlamaForCausalLM' architecture supported by Furiosa SDK?",
+        "How does the 'furiosa-smi status' subcommand help in monitoring the utilization of NPU cores, and what specific details does it provide?",
+        "What are the quantization methods supported by the Furiosa Quantizer?",
+        "What are the minimum system requirements and initial setup steps needed to install Furiosa LLM?",
     ]
     for question in questions:
         st.code(question, language=None)
@@ -41,16 +42,21 @@ def clear_chat_history():
 st.sidebar.button("Clear Chat History", on_click=clear_chat_history)
 
 
-def generate_response(query):
-    chat_engine = get_chat_engine()
-    chat_history = [
-        convert_to_chat_message(message) for message in st.session_state.messages
-    ]
-    return chat_engine.stream_chat(query, chat_history)
+def generate_response(query) -> StreamingAgentChatResponse:
+    agent = get_agent()
+    try:
+        chat_history = [
+            convert_to_chat_message(message) for message in st.session_state.messages
+        ]
+        return agent.stream_chat(query, chat_history)
+    except ValueError:
+        error_log = """I'm sorry, I did my best, but cannot find proper information for your question.
+The more specific questions you ask, the more likely you are to get accurate answers."""
+        return MockStreamingAgentChatResponse(error_log)
 
 
 # User-provided prompt
-if prompt := st.chat_input("Ask question anything about Shinhan"):
+if prompt := st.chat_input("Ask question anything about FuriosaAI"):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.write(prompt)
