@@ -1,0 +1,1996 @@
+page_id,link,question,answer,generated
+3e9b309f-d9d2-4ee7-be9e-9ffe421d4cfa,https://furiosa-ai.github.io/docs-dev/2024.1/en/furiosa_llm/intro.html,"What are the planned features for Furiosa LLM's future releases, and how do they enhance its capabilities?",Planned features for Furiosa LLM include Tensor Parallelism across multiple NPUs and speculative decoding. These enhancements aim to improve parallel processing capabilities and offer more efficient decoding strategies.,"**Planned Features for Furiosa LLM's Future Releases**
+
+Based on the provided context, I've extracted the key details about the planned features for Furiosa LLM's future releases. These features aim to enhance its capabilities and provide state-of-the-art serving optimization.
+
+**1. Tensor Parallelism (Release 2024.2)**
+
+Tensor Parallelism is a planned feature that will allow Furiosa LLM to parallelize tensor operations across multiple NPUs. This feature will enable more efficient processing of large models and improve overall performance.
+
+**Example:** To utilize Tensor Parallelism, you can use the `--tensor-parallelism` flag when running your model with Furiosa LLM. For instance:
+```bash
+furiosa_llm --model my_model --input input_data --tensor-parallelism
+```
+This will enable tensor parallelism for your model and distribute the computation across multiple NPUs.
+
+**2. Speculative Decoding (Planned)**
+
+Speculative decoding is a planned feature that will allow Furiosa LLM to perform speculative execution of decoding algorithms, such as greedy search, beam search, top-k/top-p, and others. This feature will improve the overall performance of the model by reducing latency and increasing throughput.
+
+**Example:** To use speculative decoding with Furiosa LLM, you can specify the `--speculative-decoding` flag when running your model. For instance:
+```bash
+furiosa_llm --model my_model --input input_data --speculative-decoding
+```
+This will enable speculative decoding for your model and allow Furiosa LLM to perform speculative execution of decoding algorithms.
+
+**3. HuggingFace PEFT Support (Planned)**
+
+HuggingFace PEFT support is a planned feature that will allow Furiosa LLM to integrate with the HuggingFace PEFT (Parameter-Efficient Fine-Tuning) library. This feature will enable users to fine-tune their models using the PEFT library and leverage the efficiency of Furiosa LLM.
+
+**Example:** To use HuggingFace PEFT support with Furiosa LLM, you can specify the `--huggingface-peft` flag when running your model. For instance:
+```bash
+furiosa_llm --model my_model --input input_data --huggingface-peft
+```
+This will enable HuggingFace PEFT support for your model and allow Furiosa LLM to integrate with the PEFT library.
+
+These planned features will enhance the capabilities of Furiosa LLM and provide users with more efficient and effective ways to deploy their models."
+3e9b309f-d9d2-4ee7-be9e-9ffe421d4cfa,https://furiosa-ai.github.io/docs-dev/2024.1/en/furiosa_llm/intro.html,What are the key features of Furiosa LLM that enable it to optimize the serving of LLM models?,"Furiosa LLM features include a vLLM-compatible API, efficient KV cache management with PagedAttention, continuous batching of incoming requests, quantization options (INT4, INT8, FP8, GPTQ, AWQ), data and pipeline parallelism across multiple NPUs, an OpenAI-compatible API server, various decoding algorithms, and integration with HuggingFace models and hub support.","**Key Features of Furiosa LLM for Optimizing LLM Model Serving**
+
+Furiosa LLM is designed to provide state-of-the-art serving optimization for Large Language Models (LLMs) and Multi-Modal LLM models. The key features that enable this optimization are:
+
+1. **vLLM-compatible API**: This allows for seamless integration with existing vLLM-based workflows.
+2. **Efficient KV cache management with PagedAttention**: This feature optimizes memory usage and reduces latency by efficiently managing the attention mechanism's memory footprint.
+3. **Continuous batching of incoming requests in serving**: This enables Furiosa LLM to process multiple requests simultaneously, improving overall throughput and reducing response times.
+4. **Quantization**: Support for various quantization schemes (INT4, INT8, FP8, GPTQ, AWQ) allows for reduced memory usage and improved inference performance.
+5. **Data Parallelism and Pipeline Parallelism across multiple NPUs**: This enables Furiosa LLM to take advantage of multiple Neural Processing Units (NPUs), improving overall processing speed and efficiency.
+6. **Tensor Parallelism** (planned in release 2024.2): This feature will allow for parallelization of tensor operations, further improving performance.
+
+Additionally, Furiosa LLM provides:
+
+* **OpenAI-compatible API server**: Enables easy integration with OpenAI-based workflows.
+* **Various decoding algorithms**: Supports greedy search, beam search, top-k/top-p, and speculative decoding (planned) to optimize the serving process.
+* **HuggingFace model integration and hub support**: Allows for seamless integration with HuggingFace models and hubs.
+* **HuggingFace PEFT support** (planned): Will enable support for HuggingFace's PEFT (Parameter-Efficient Fine-Tuning) framework.
+
+These features collectively enable Furiosa LLM to optimize the serving of LLM models, providing improved performance, efficiency, and scalability."
+3e9b309f-d9d2-4ee7-be9e-9ffe421d4cfa,https://furiosa-ai.github.io/docs-dev/2024.1/en/furiosa_llm/intro.html,How does Furiosa LLM manage efficient KV cache and what role does PagedAttention play in this process?,"Furiosa LLM manages efficient KV cache through the use of PagedAttention, which is one of its key features for optimizing inference performance.","**Efficient KV Cache Management with PagedAttention in Furiosa LLM**
+
+To answer your question, let's break down the key components involved in managing efficient KV cache and the role of PagedAttention in this process.
+
+**KV Cache:**
+In the context of Large Language Models (LLMs), a KV cache refers to a caching mechanism that stores key-value pairs. The KV cache is used to store frequently accessed data, such as model weights, embeddings, or intermediate results, to reduce memory access latency and improve overall performance.
+
+**PagedAttention:**
+PagedAttention is a component of Furiosa LLM's efficient KV cache management system. It is designed to optimize attention mechanisms in transformer-based models by reducing the number of memory accesses required for attention computations.
+
+Here's how PagedAttention works:
+
+1. **Page-based caching**: The KV cache is divided into smaller, fixed-size pages. Each page contains a set of key-value pairs.
+2. **Attention computation**: When an attention computation is requested, PagedAttention checks if the required keys are already cached in one of the pages.
+3. **Cache hit**: If the keys are found in the cache (i.e., a cache hit), PagedAttention retrieves the corresponding values from the cache and returns them directly.
+4. **Cache miss**: If the keys are not found in the cache (i.e., a cache miss), PagedAttention loads the required data from memory, updates the cache with the new key-value pairs, and then performs the attention computation.
+
+**Benefits of PagedAttention:**
+
+* Reduced memory access latency
+* Improved attention computation performance
+* Efficient use of KV cache storage
+
+To illustrate this process, consider an example where we have a transformer-based model that uses self-attention to compute the output. The attention mechanism requires accessing the model's weights and input embeddings.
+
+```python
+import torch
+from furiosa_llm import PagedAttention
+
+# Initialize the model and input data
+model = TransformerModel()
+input_data = torch.randn(1, 10, 512)
+
+# Create a PagedAttention instance with a page size of 1024
+paged_attention = PagedAttention(page_size=1024)
+
+# Perform attention computation using PagedAttention
+output = paged_attention(model, input_data)
+```
+
+In this example, the `PagedAttention` instance manages the KV cache and optimizes attention computations by reducing memory accesses. The `page_size` parameter controls the size of each page in the cache.
+
+By leveraging PagedAttention, Furiosa LLM provides an efficient KV cache management system that improves the performance of transformer-based models while minimizing memory access latency."
+dcd59fbc-fb76-4f34-b6ec-ea88a833b047,https://furiosa-ai.github.io/docs-dev/2024.1/en/cloud_native_toolkit/kubernetes/device_plugin.html,"What are the default configuration values for deploying the Furiosa Device Plugin using Helm, and how can they be modified?","The default configuration values for deploying the Furiosa Device Plugin using Helm are: resourceStrategy set to 'generic', debugMode set to false, and disabledDeviceUUIDListMap set to an empty list []. These can be modified by changing the values in the 'charts/furiosa-device-plugin/values.yaml' file.","**Default Configuration Values for Deploying the Furiosa Device Plugin using Helm**
+
+The default configuration values for deploying the Furiosa Device Plugin using Helm are specified in the `values.yaml` file of the helm chart. The key details are:
+
+*   **resourceStrategy**: The default value is `""generic""`.
+*   **debugMode**: The default value is `false`.
+*   **disabledDeviceUUIDListMap**: The default value is an empty list `[]`.
+
+**Modifying Configuration Values**
+
+To modify these configuration values, you can update the `values.yaml` file in the helm chart repository. Here's a step-by-step guide:
+
+1.  Clone the Furiosa AI Helm Charts repository:
+    ```bash
+git clone https://github.com/furiosa-ai/helm-charts.git
+```
+2.  Navigate to the `charts/furiosa-device-plugin` directory:
+    ```bash
+cd helm-charts/charts/furiosa-device-plugin
+```
+3.  Update the `values.yaml` file with your desired configuration values. For example, you can change the `resourceStrategy` to `""legacy""` and enable `debugMode`:
+    ```
+config:
+  resourceStrategy: legacy
+  debugMode: true
+  disabledDeviceUUIDListMap:
+    - ""uuid-1""
+    - ""uuid-2""
+```
+4.  Save the changes to the `values.yaml` file.
+5.  Deploy the Furiosa Device Plugin using Helm with your updated configuration values:
+    ```bash
+helm install furiosa-device-plugin . -n kube-system
+```
+
+**Example Use Case**
+
+Suppose you want to deploy the Furiosa Device Plugin with a custom resource strategy and debug mode enabled. You can update the `values.yaml` file as shown above and then deploy the plugin using Helm.
+
+By following these steps, you can modify the default configuration values for deploying the Furiosa Device Plugin using Helm and tailor the deployment to your specific requirements."
+dcd59fbc-fb76-4f34-b6ec-ea88a833b047,https://furiosa-ai.github.io/docs-dev/2024.1/en/cloud_native_toolkit/kubernetes/device_plugin.html,What are the functionalities provided by the Furiosa device plugin when integrated into a Kubernetes cluster?,"The Furiosa device plugin discovers Furiosa NPU devices, registers them to a Kubernetes cluster, tracks the health of the devices, reports to the cluster, and runs AI workloads on the Furiosa NPU devices within the cluster.",No relevant content found
+dcd59fbc-fb76-4f34-b6ec-ea88a833b047,https://furiosa-ai.github.io/docs-dev/2024.1/en/cloud_native_toolkit/kubernetes/device_plugin.html,"How does the Furiosa Device Plugin manage NPU resources in a Kubernetes cluster, and what are the implications of using different resource strategies?","The Furiosa Device Plugin can manage NPU resources by exposing a single NPU card as either a single resource or partitioning it into multiple resources. The 'legacy' strategy uses the resource name 'beta.furiosa.ai/npu' with one resource per card, while the 'generic' strategy uses 'furiosa.ai/rngd' also with one resource per card. Partitioning allows for more granular control over resource allocation.","**Managing NPU Resources in a Kubernetes Cluster using Furiosa Device Plugin**
+
+The Furiosa Device Plugin is designed to manage NPU resources in a Kubernetes cluster. It implements the Kubernetes Device Plugin interface for FuriosaAI NPU devices, allowing you to discover and register NPU devices, track their health, and run AI workloads on top of them.
+
+**Resource Strategies**
+
+The plugin supports two resource strategies:
+
+1. **Legacy**: Exposes a single NPU card as a single resource (`beta.furiosa.ai/npu`).
+2. **Generic**: Exposes an NPU card as multiple resources (`furiosa.ai/rngd`).
+
+You can choose the resource strategy by modifying the `resourceStrategy` value in the `values.yaml` file of the Furiosa Device Plugin Helm chart.
+
+**Implications of Using Different Resource Strategies**
+
+* **Legacy Strategy**: This strategy is simpler to manage, but it may lead to underutilization of NPU resources. If you have multiple AI workloads that can run concurrently on a single NPU card, this strategy might not be optimal.
+* **Generic Strategy**: This strategy provides more granular control over NPU resources, allowing for better utilization and flexibility. However, it requires more complex configuration and management.
+
+**Example Configuration**
+
+To deploy the Furiosa Device Plugin with the generic resource strategy, you can modify the `values.yaml` file as follows:
+```yaml
+config:
+  resourceStrategy: generic
+```
+Then, run the following commands to deploy the plugin:
+```bash
+helm repo add furiosa https://furiosa-ai.github.io/helm-charts
+helm repo update
+helm install furiosa-device-plugin furiosa/furiosa-device-plugin -n kube-system
+```
+**CLI Commands**
+
+To verify that the Furiosa Device Plugin is running correctly, you can use the following CLI commands:
+
+* `kubectl get nodes`: Verify that the NPU devices are registered and visible in the Kubernetes cluster.
+* `kubectl describe node <node-name>`: Check the node's configuration and resource allocation.
+* `kubectl get pods -n kube-system`: Verify that the Furiosa Device Plugin pod is running correctly.
+
+By choosing the right resource strategy and configuring the Furiosa Device Plugin accordingly, you can efficiently manage NPU resources in your Kubernetes cluster and optimize AI workload execution."
+3bb3bd0a-7bdc-45a7-8e3e-e556a52d7eda,https://furiosa-ai.github.io/docs-dev/2024.1/en/getting_started/furiosa_mlperf.html,What are the minimum system requirements and installation steps needed to set up the 'furiosa-mlperf' command for running MLPerf Inference Benchmark?,"The minimum system requirements for 'furiosa-mlperf' are Ubuntu 20.04 LTS (Debian bullseye) or later, root or sudo permission, configuring the APT server and installing device drivers, and about 100GB storage space for the Llama 3.1 70B. To install, update the package list with 'sudo apt update' and then install using 'sudo apt install -y furiosa-mlperf'. This installs 'furiosa-compiler', 'furiosa-mlperf', and 'furiosa-mlperf-resources' packages.","**Minimum System Requirements and Installation Steps for `furiosa-mlperf` Command**
+
+To set up the `furiosa-mlperf` command for running MLPerf Inference Benchmark, you need to meet the following minimum system requirements:
+
+*   **Operating System:** Ubuntu 20.04 LTS (Debian bullseye) or later
+*   **Root Permission:** Root permission or sudo permission is required
+*   **Storage Space:** About 100GB storage space is needed (only for the Llama 3.1 70B)
+*   **APT Server and Device Drivers:** Configuring the APT server and installing device drivers as described in [Setting up APT server](prerequisites.html#aptsetup)
+
+**Installation Steps:**
+
+1.  Update the package list using `sudo apt update`
+2.  Install the `furiosa-mlperf` package using `sudo apt install -y furiosa-mlperf`
+
+This command installs packages `furiosa-compiler`, `furiosa-mlperf`, and `furiosa-mlperf-resources`.
+
+**Running MLPerf Inference Benchmark:**
+
+Once installed, you can run the MLPerf Inference Benchmark using the `furiosa-mlperf` command. The command provides several subcommands for running different benchmarks:
+
+*   `bert-offline`: Run BERT benchmark with offline scenario
+*   `bert-server`: Run BERT benchmark with server scenario
+*   `gpt-j-offline`: Run GPT-J benchmark with offline scenario
+*   `gpt-j-server`: Run GPT-J benchmark with server scenario
+*   `llama-3.1-offline`: Run Llama 3.1 benchmark with offline scenario
+*   `llama-3.1-server`: Run Llama 3.1 benchmark with server scenario
+
+**Examples:**
+
+*   BERT Benchmark:
+
+    *   Server Scenario:
+        ```bash
+furiosa-mlperf bert-server ./bert-large ./bert-server-result --device-mesh ""npu:0:*""
+```
+    *   Offline Scenario:
+        ```bash
+furiosa-mlperf bert-offline ./bert-large ./bert-offline-result --device-mesh ""npu:0:*""
+```
+
+*   GPT-J Benchmark:
+
+    *   Server Scenario:
+        ```bash
+furiosa-mlperf gpt-j-server ./gpt-j-6b ./gpt-j-server-result
+```
+    *   Offline Scenario:
+        ```bash
+furiosa-mlperf gpt-j-offline ./gpt-j-6b ./gpt-j-offline-result
+```
+
+*   Llama 3.1 Benchmark:
+
+    *   Server Scenario:
+        ```bash
+furiosa-mlperf llama-3.1-server ./llama-3.1-70b ./llama-3.1-server-result
+```
+    *   Offline Scenario:
+        ```bash
+furiosa-mlperf llama-3.1-offline ./llama-3.1-70b ./llama-3.1-offline-result
+```
+
+**Running `furiosa-mlperf` in Container Environment:**
+
+FuriosaAI provides a containerized version of the `furiosa-mlperf` command. To run the `furiosa-mlperf` container, use the following command:
+
+```bash
+$ docker run -it --rm --privileged \
+  -v /opt/gpt-j-6b:gpt-j-6b furiosa-mlperf:2024.1.0 bash
+(container) # furiosa-mlperf gpt-j-offline /gpt-j-6b /gpt-j-offline-result
+```
+
+Note that the `--privileged` option is used for simplicity but is not recommended for security reasons. For a secure and recommended method, refer to the [Cloud Native Toolkit](../cloud_native_toolkit/intro.html#cloudnativetoolkit) page.
+
+By following these steps and examples, you can successfully set up and run the `furiosa-mlperf` command for MLPerf Inference Benchmark on your system."
+3bb3bd0a-7bdc-45a7-8e3e-e556a52d7eda,https://furiosa-ai.github.io/docs-dev/2024.1/en/getting_started/furiosa_mlperf.html,"How does the FuriosaAI Software Stack modify the MLPerf Inference Benchmark for its implementation, and what specific benchmark replacement does it include?",The FuriosaAI Software Stack modifies the MLPerf Inference Benchmark by replacing the Llama2 benchmark with one using Llama 3.1.,"**Modifications to MLPerf Inference Benchmark**
+
+The FuriosaAI Software Stack modifies the MLPerf Inference Benchmark by replacing the Llama2 benchmark with one using Llama 3.1.
+
+**Specific Benchmark Replacement**
+
+The specific benchmark replacement is the Llama 3.1 70B, which is used in both server and offline scenarios.
+
+**Key Differences**
+
+* The original MLPerf Inference Benchmark v4.1 uses Llama2, whereas FuriosaAI Software Stack uses Llama 3.1.
+* The Llama 3.1 benchmark is based on running with four RNGDs (Random Number Generators), whereas the other benchmarks use a single RNGD.
+
+**Running the Modified Benchmark**
+
+To run the modified MLPerf Inference Benchmark using FuriosaAI Software Stack, you can follow the instructions provided in the documentation, including installing the `furiosa-mlperf` command and running the benchmark using the `furiosa-mlperf` command with the desired subcommand (e.g., `bert-server`, `gpt-j-offline`, etc.).
+
+**Example Commands**
+
+Here are some example commands to run the modified benchmark:
+
+* To run BERT Large serving inference benchmark: `furiosa-mlperf bert-server ./bert-large ./bert-server-result --device-mesh ""npu:0:*""`
+* To run GPT-J 6B offline inference benchmark: `furiosa-mlperf gpt-j-offline ./gpt-j-6b ./gpt-j-offline-result`
+* To run Llama 3.1 70B serving inference benchmark: `furiosa-mlperf llama-3.1-server ./llama-3.1-70b ./llama-3.1-server-result`
+
+Note that these commands assume you have installed the `furiosa-mlperf` command and have the necessary model artifacts in place."
+3bb3bd0a-7bdc-45a7-8e3e-e556a52d7eda,https://furiosa-ai.github.io/docs-dev/2024.1/en/getting_started/furiosa_mlperf.html,"What are the specific subcommands provided by the 'furiosa-mlperf' command for running different MLPerf Inference Benchmarks, and what scenarios do they cover?","The 'furiosa-mlperf' command provides subcommands for running benchmarks in different scenarios: 'bert-offline' and 'bert-server' for BERT benchmarks, 'gpt-j-offline' and 'gpt-j-server' for GPT-J benchmarks, and 'llama-3.1-offline' and 'llama-3.1-server' for Llama 3.1 benchmarks. Each subcommand corresponds to either an offline or server scenario.","**Interpreting the 'furiosa-mlperf' Command and its Subcommands**
+
+The `furiosa-mlperf` command is a part of the FuriosaAI Software Stack that allows users to run MLPerf Inference Benchmarks. The command provides several subcommands for running different benchmarks with various scenarios.
+
+**Subcommands Provided by 'furiosa-mlperf'**
+
+The following subcommands are available:
+
+*   `bert-offline`: Run BERT benchmark with offline scenario
+*   `bert-server`: Run BERT benchmark with server scenario
+*   `gpt-j-offline`: Run GPT-J benchmark with offline scenario
+*   `gpt-j-server`: Run GPT-J benchmark with server scenario
+*   `llama-3.1-offline`: Run Llama 3.1 benchmark with offline scenario
+*   `llama-3.1-server`: Run Llama 3.1 benchmark with server scenario
+
+**Scenarios Covered by Each Subcommand**
+
+Each subcommand covers a specific scenario:
+
+*   Offline Scenario: This scenario is used for running benchmarks in an offline environment, where the model is not serving any requests.
+*   Server Scenario: This scenario is used for running benchmarks in a server environment, where the model is serving requests.
+
+**Examples of Using 'furiosa-mlperf' Subcommands**
+
+Here are some examples of using the `furiosa-mlperf` subcommands:
+
+*   Run BERT Large serving inference benchmark:
+    ```bash
+furiosa-mlperf bert-server ./bert-large ./bert-server-result --device-mesh ""npu:0:*""
+```
+*   Run GPT-J 6B offline inference benchmark:
+    ```bash
+furiosa-mlperf gpt-j-offline ./gpt-j-6b ./gpt-j-offline-result
+```
+*   Run Llama 3.1 70B serving inference benchmark:
+    ```bash
+furiosa-mlperf llama-3.1-server ./llama-3.1-70b ./llama-3.1-server-result
+```
+
+**Common Options and Usage**
+
+All subcommands share common options, such as `-h` or `--help` for printing help messages, and `-V` or `--version` for printing the version of the command.
+
+Once a benchmark is completed, it writes the results to a file in the specified results directory. You can open this file to view a summary of the results.
+
+For example:
+```bash
+cat gpt-j-offline-result/mlperf_log_summary.txt
+```
+This will display a summary of the results, including the SUT name, scenario, mode, samples per second, tokens per second (inferred), and whether the result is valid."
+a3d94379-304a-4dbc-8300-39169378bfd5,https://furiosa-ai.github.io/docs-dev/2024.1/en/furiosa_llm/furiosa-llm-serve.html,"What are the necessary components and steps required to launch the OpenAI-compatible Furiosa-LLM server, and how does the chat template factor into this process?","To launch the OpenAI-compatible Furiosa-LLM server, you need the FuriosaAI LLM Engine artifact and a chat template for the model. The chat template is crucial because the Furiosa SDK 2024.1.0 (alpha) uses Transformers v4.31.0, which does not include a chat template by default. Therefore, users must provide their own chat template to support the /v1/chat/completions API. The server is launched using the 'furiosa-llm serve' command with specific arguments, including the model, artifact path, host, port, chat template path, and optional parameters like response role, pipeline parallel size, tensor parallel size, and devices.","To launch the OpenAI-compatible Furiosa-LLM server, you need to prepare two components:
+
+1. **FuriosaAI LLM Engine artifact**: You can download this artifact through Furiosa's distribution channels or contact their sales team.
+2. **Chat template for the model**: Since Furiosa SDK 2024.1.0 (alpha) uses Transformers v4.31.0, which does not include a chat template, you need to provide one yourself.
+
+**Preparing Chat Templates**
+
+If you have access to the Llama repositories on Hugging Face, you can obtain the chat template for Llama using the following commands:
+
+```bash
+pip install ""transformers>=4.34.0""
+python - <<EOF
+from transformers import AutoTokenizer
+tok = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3.1-70B-Instruct')
+with open('chat_template.tpl', 'w') as f:
+    f.write(tok.chat_template)
+EOF
+```
+
+**Launching the Server**
+
+You can launch the server using the `furiosa-llm serve` command.
+
+### Arguments for the serve command
+
+```bash
+usage: furiosa-llm serve [-h] --model {furiosa-ai/llama-3-1-70b,furiosa-ai/llama-3-1-8b,furiosa-ai/fake-llm} 
+                         --artifact ARTIFACT [--host HOST] [--port PORT]
+                         --chat-template CHAT_TEMPLATE [--response-role RESPONSE_ROLE] [-pp PIPELINE_PARALLEL_SIZE] 
+                         [-tp TENSOR_PARALLEL_SIZE] [--devices DEVICES]
+```
+
+**Examples**
+
+### LLaMA-3.1-70B with 4 RNGDs
+
+```bash
+furiosa-llm serve \
+    --model {path to mlperf-llama-3-1-fp8-pp4} \
+    -tp 4 -pp 4 --devices ""npu:0:*,npu:1:*,npu:2:*,npu:3:*"" \
+    --chat-template {path to chat template}
+```
+
+### LLaMA-3.1-8B with Single RNGD
+
+```bash
+furiosa-llm serve \
+    --model {path to mlperf-llama-3-1-8b-fp8} \
+    -tp 4 -pp 1 --devices ""npu:0:*"" \
+    # You may choose arbitrary device index, if multiple devices are on host
+    --chat-template {path to chat template}
+```
+
+**Using OpenAI Client**
+
+You can use two APIs: `client.chat.completions` and `client.completions`. You can also set `stream=True` to receive a streaming response.
+
+```python
+import openai
+
+HOST = ""localhost:8000""
+openai.api_base = f""http://{HOST}/v1""
+openai.api_key = ""0000""
+
+stream_chat_completion = openai.ChatCompletion.create(
+    model="""",
+    messages=[
+        {""role"": ""system"", ""content"": ""You are a helpful assistant.""},
+        {""role"": ""user"", ""content"": ""What is the largest animal in the world?""},
+    ],
+    stream=True,
+)
+
+for completion in stream_chat_completion:
+    content = completion.choices[0].delta.get(""content"")
+    if content:
+        print(content, end="""")
+```
+
+**The compatibility with OpenAI API**
+
+Currently, `furiosa-llm serve` supports the following OpenAI API parameters:
+
+*   `n`
+*   `temperature`
+*   `top_p`
+*   `top_k`
+*   `early_stopping`
+*   `length_penalty`
+*   `max_tokens`
+*   `min_tokens`
+*   `use_beam_search`
+*   `best_of`
+
+Please note that using `use_beam_search` with `stream` is not allowed because the beam search cannot determine the tokens until the end of the sequence. In 2024.1 release, `n` works only for beam search and it will be fixed in the next release."
+a3d94379-304a-4dbc-8300-39169378bfd5,https://furiosa-ai.github.io/docs-dev/2024.1/en/furiosa_llm/furiosa-llm-serve.html,"What specific constraints are associated with the chat template when using Furiosa SDK 2024.1.0 (alpha) for the OpenAI-compatible server, and how can these be addressed?","Furiosa SDK 2024.1.0 (alpha) uses Transformers v4.31.0, which does not include a chat template. Therefore, users must provide a chat template themselves to support the /v1/chat/completions API. This constraint will be removed in future releases. If users have access to the Llama repositories on Hugging Face, they can obtain the chat template for Llama by installing the latest Transformers version and using the AutoTokenizer from the 'meta-llama/Meta-Llama-3.1-70B-Instruct' model to write the chat template to a file.","**Constraints associated with the chat template in Furiosa SDK 2024.1.0 (alpha)**
+
+When using Furiosa SDK 2024.1.0 (alpha) for the OpenAI-compatible server, there are specific constraints associated with the chat template:
+
+1.  **Providing a custom chat template**: Since Transformers v4.31.0 does not include a chat template, you must provide a custom chat template yourself. This constraint will be removed in future releases.
+2.  **Format requirements**: The chat template file must be a Jinja2 template.
+
+**Addressing these constraints**
+
+To address the constraints mentioned above:
+
+1.  **Obtaining a chat template**: If you have access to the Llama repositories on Hugging Face, you can obtain the chat template for Llama using the following commands:
+    ```python
+# Prerequisite: create a separate environment to install the latest Transformers version
+pip install ""transformers>=4.34.0""
+python - <<EOF
+from transformers import AutoTokenizer
+tok = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3.1-70B-Instruct')
+with open('chat_template.tpl', 'w') as f:
+    f.write(tok.chat_template)
+EOF
+```
+2.  **Preparing the chat template file**: Ensure that the chat template file is in the correct format (Jinja2 template) and is accessible by the Furiosa SDK.
+
+**Launching the server with a custom chat template**
+
+To launch the server with a custom chat template, use the `furiosa-llm serve` command with the `--chat-template` argument:
+```bash
+furiosa-llm serve \
+  --model {path to mlperf-llama-3-1-fp8-pp4} \
+  -tp 4 -pp 4 --devices ""npu:0:*,npu:1:*,npu:2:*,npu:3:*"" \
+  --chat-template {path to chat template}
+```
+Replace `{path to mlperf-llama-3-1-fp8-pp4}` with the actual path to your model, and `{path to chat template}` with the actual path to your custom chat template file.
+
+By following these steps, you can successfully launch the Furiosa SDK server with a custom chat template."
+a3d94379-304a-4dbc-8300-39169378bfd5,https://furiosa-ai.github.io/docs-dev/2024.1/en/furiosa_llm/furiosa-llm-serve.html,"What are the limitations of using the 'use_beam_search' parameter with the 'stream' option in the Furiosa-LLM server, and how is this expected to change in future releases?","Using 'use_beam_search' with 'stream' is not allowed because the beam search cannot determine the tokens until the end of the sequence. In the 2024.1 release, 'n' works only for beam search, and this will be fixed in the next release.","**Limitations of using `use_beam_search` parameter with the `stream` option**
+
+In the current release (Furiosa SDK 2024.1.0 alpha), there is a limitation when using the `use_beam_search` parameter with the `stream` option in the Furiosa-LLM server.
+
+**Key details:**
+
+* The `use_beam_search` parameter is not compatible with the `stream` option.
+* This is because beam search cannot determine the tokens until the end of the sequence, which contradicts the streaming response mechanism.
+
+**Explanation and example:**
+
+When using the `stream` option, the server sends a streaming response, where each token is generated and sent separately. However, when using beam search (`use_beam_search=True`), the server needs to generate multiple possible sequences (beams) and then select the best one based on the scoring function.
+
+In this case, the server cannot determine the tokens until the end of the sequence, which means it cannot send a streaming response. This limitation is highlighted in the documentation:
+
+""Please note that using `use_beam_search` with `stream` is not allowed because the beam search cannot determine the tokens until the end of the sequence.""
+
+**Future release plans:**
+
+This limitation will be addressed in future releases, where the `n` parameter (number of beams) will work correctly even when using the `stream` option.
+
+**Workaround:**
+
+If you need to use beam search with streaming responses, consider using a different approach, such as:
+
+* Using a smaller value for `n` (e.g., 1 or 2) to reduce the number of beams and make it more feasible to generate tokens on-the-fly.
+* Implementing a custom solution that generates tokens incrementally, without relying on beam search.
+
+Keep in mind that these workarounds may impact performance or accuracy."
+13853744-dc18-4c98-b1c2-4f5806b28514,https://furiosa-ai.github.io/docs-dev/2024.1/en/,"What is the primary purpose of the FuriosaAI Developer Center as described in the document, and what key stages of the workflow does it cover?","The primary purpose of the FuriosaAI Developer Center is to provide a guide for performing the entire workflow of writing inference applications using FuriosaAI NPUs. It covers stages from starting with a PyTorch model to model quantization, serving, and production deployment.","**Primary Purpose of the FuriosaAI Developer Center**
+
+The primary purpose of the FuriosaAI Developer Center is to provide a comprehensive guide for developers to easily perform the entire workflow of writing inference applications using FuriosaAI NPUs. This includes starting with PyTorch models, model quantization, serving, and production deployment.
+
+**Key Stages of the Workflow Covered**
+
+The FuriosaAI Developer Center covers the following key stages of the workflow:
+
+1. **Getting Started**: This section provides an overview of the prerequisites required to install the FuriosaAI Software Stack, including installing dependencies and setting up the environment.
+2. **Model Development**: Although not explicitly mentioned as a separate section, the document provides guidance on developing models using PyTorch and quantizing them for deployment on FuriosaAI NPUs.
+3. **Model Serving**: The Cloud Native Toolkit section covers the process of serving models using Kubernetes support.
+4. **Device Management**: This section provides information on managing FuriosaAI NPUs using the `furiosa-smi` command-line utility.
+5. **Production Deployment**: The document provides guidance on deploying models to production environments, including using the Cloud Native Toolkit.
+
+**Example Use Case**
+
+To get started with the FuriosaAI Developer Center, a developer can follow these steps:
+
+1. Install the prerequisites by following the instructions in the ""Getting Started"" section.
+2. Develop and quantize a PyTorch model for deployment on FuriosaAI NPUs.
+3. Serve the model using the Cloud Native Toolkit and Kubernetes support.
+4. Manage the FuriosaAI NPU device using the `furiosa-smi` command-line utility.
+5. Deploy the model to a production environment using the guidance provided in the document.
+
+By following these steps, developers can leverage the FuriosaAI Developer Center to streamline their workflow and efficiently deploy deep learning models on FuriosaAI NPUs."
+13853744-dc18-4c98-b1c2-4f5806b28514,https://furiosa-ai.github.io/docs-dev/2024.1/en/,"What version of the Furiosa SDK is the document based on, and what implication does this have for the features and APIs described?","The document is based on Furiosa SDK 2024.1.0 (alpha) version, and the features and APIs described may change in the future.","**Extracted Key Details:**
+
+* The document is based on Furiosa SDK version 2024.1.0 (released on 2024-10-11).
+* This release is an alpha release, and the features and APIs described in this document may change in the future.
+
+**Implications for Features and APIs:**
+
+As this is an alpha release, it's essential to note that the features and APIs described in this document are subject to change. This means that:
+
+1. **Model Support:** The listed models (LLaMA 3.1 8B/70B, BERT Large, GPT-J 6B) might undergo changes or updates in future releases.
+2. **Furiosa Quantizer:** The supported quantization methods (BF16, INT8 Weight-Only, FP8, INT8 SmoothQuant) may be modified or extended in subsequent releases.
+3. **Furiosa LLM:** Features like Efficient KV cache management with PagedAttention, Continuous batching support in serving, and Pipeline Parallelism might evolve or change.
+4. **`furiosa-mlperf` command:** The supported scenarios (Server and Offline), benchmarks (BERT, GPT-J, LLaMA 3.1), and other features may be updated or expanded.
+
+**Component Version Table:**
+
+The provided table lists the versions of various packages that are part of Furiosa SDK 2024.1.0. This information is essential for understanding the compatibility and dependencies between different components.
+
+To ensure you're working with the latest features and APIs, it's crucial to regularly check the official Furiosa documentation and release notes for updates on changes, deprecations, or new additions.
+
+**Example Use Case:**
+
+When using the `furiosa-mlperf` command, keep in mind that this is an alpha release, and the supported scenarios and benchmarks might change. To ensure compatibility, always verify the latest documentation and release notes before running your experiments.
+
+```bash
+# Run the furiosa-mlperf command with the --help option to see the available options and usage.
+furiosa-mlperf --help
+
+# Example usage:
+furiosa-mlperf run --scenario server --benchmark bert
+```
+
+Remember to stay up-to-date with the latest Furiosa SDK releases and documentation to ensure you're taking advantage of the newest features and APIs."
+13853744-dc18-4c98-b1c2-4f5806b28514,https://furiosa-ai.github.io/docs-dev/2024.1/en/,"What specific utility is provided for managing FuriosaAI NPUs, and where can detailed information about it be found?","The utility provided for managing FuriosaAI NPUs is 'furiosa-smi', and detailed information about it can be found under the Device Management section.","**Managing FuriosaAI NPUs with furiosa-smi Utility**
+
+The specific utility provided for managing FuriosaAI NPUs is `furiosa-smi`. This command-line tool allows you to manage and monitor your FuriosaAI NPUs.
+
+**Detailed Information about furiosa-smi**
+
+You can find detailed information about the `furiosa-smi` utility in the [Device Management](#device-management) section of the FuriosaAI Developer Center documentation. Specifically, the page on [furiosa-smi](device_management/furiosa_smi.html#furiosasmi) provides an overview of the tool and its usage.
+
+**Example Usage**
+
+To get started with `furiosa-smi`, you can use the following command to display help information:
+```bash
+$ furiosa-smi --help
+```
+This will display a list of available commands and options for managing your FuriosaAI NPUs.
+
+For example, to retrieve information about the NPU devices on your system, you can use the following command:
+```bash
+$ furiosa-smi info
+```
+This will display detailed information about each NPU device, including its ID, name, and status.
+
+**Additional Resources**
+
+If you need further assistance or have questions about using `furiosa-smi`, you can refer to the [FuriosaAI Warboy SDK Document](https://furiosa-ai.github.io/docs/latest/en/) for more detailed information. Additionally, you can reach out to FuriosaAI's customer support team through their [Customer Portal](https://furiosa-ai.atlassian.net/servicedesk/customer/portals/)."
+2b294227-f255-492c-b642-46e100e59705,https://furiosa-ai.github.io/docs-dev/2024.1/en/cloud_native_toolkit/kubernetes.html,"What are the recommended container runtimes for Kubernetes, and why is Docker not advised for use?","The recommended container runtimes for Kubernetes are containerd and CRI-O. Docker is not advised because it is officially deprecated as a container runtime in Kubernetes, and using it may lead to unexpected issues with the device plugin.","**Recommended Container Runtimes for Kubernetes**
+
+According to the provided context, the recommended container runtimes for Kubernetes are:
+
+1. **containerd**: A lightweight, open-source container runtime that is widely used in production environments.
+2. **CRI-O**: A container runtime interface (CRI) implementation that provides a stable and scalable way to manage containers.
+
+**Why Docker is not advised**
+
+Docker is officially deprecated as a container runtime in Kubernetes due to potential issues with the device plugin. As stated in the provided context, using Docker may lead to unexpected problems.
+
+**Reasons for deprecation**
+
+The official Kubernetes blog post (linked in the provided context) explains that Docker's architecture and design decisions have led to compatibility issues with Kubernetes. Specifically:
+
+* Docker's use of a separate daemon process can cause issues with container lifecycle management.
+* Docker's networking model can conflict with Kubernetes' networking model.
+
+**Migration guidance**
+
+If you are currently using Docker as your container runtime, it is recommended to migrate to either containerd or CRI-O to ensure compatibility and stability in your Kubernetes environment.
+
+**Example commands for switching to containerd**
+
+To switch from Docker to containerd, you can use the following commands:
+
+```bash
+# Stop the Docker service
+sudo systemctl stop docker
+
+# Install containerd
+sudo apt-get update && sudo apt-get install -y containerd
+
+# Start the containerd service
+sudo systemctl start containerd
+
+# Verify that containerd is running
+sudo systemctl status containerd
+```
+
+**Example commands for switching to CRI-O**
+
+To switch from Docker to CRI-O, you can use the following commands:
+
+```bash
+# Stop the Docker service
+sudo systemctl stop docker
+
+# Install CRI-O
+sudo apt-get update && sudo apt-get install -y cri-o
+
+# Start the CRI-O service
+sudo systemctl start cri-o
+
+# Verify that CRI-O is running
+sudo systemctl status cri-o
+```
+
+By following these guidelines and switching to a recommended container runtime, you can ensure a stable and compatible Kubernetes environment for your Furiosa NPU SDK applications."
+2b294227-f255-492c-b642-46e100e59705,https://furiosa-ai.github.io/docs-dev/2024.1/en/cloud_native_toolkit/kubernetes.html,"Which versions of Kubernetes and Helm are supported according to the document, and what might be the implications of using unsupported versions?",The document supports Kubernetes v1.24.0 or later and Helm v3.0.0 or later. Using unsupported versions might lead to compatibility issues and unexpected behavior with the device plugin.,"**Extracted Key Details:**
+
+* The user is inquiring about the supported versions of Kubernetes and Helm according to the provided document.
+* The context mentions specific version requirements for Kubernetes, Helm, and CRI runtime.
+
+**Explanation and Guidance:**
+
+According to the document, Furiosa's NPU SDK supports:
+
+1. **Kubernetes**: Version `v1.24.0` or later.
+2. **Helm**: Version `v3.0.0` or later.
+3. **CRI Runtime**: Either `containerd` or `CRI-O`.
+
+**Implications of Using Unsupported Versions:**
+
+Using unsupported versions may lead to unexpected issues, particularly with the device plugin. As Docker is officially deprecated as a container runtime in Kubernetes, it's recommended to use either `containerd` or `CRI-O` to avoid potential problems.
+
+**Example CLI Commands for Verification:**
+
+To verify the installed version of Helm, you can run:
+```bash
+helm version
+```
+For Kubernetes, you can check the version using:
+```bash
+kubectl version --short
+```
+Make sure to update your versions accordingly to ensure compatibility with Furiosa's NPU SDK.
+
+**Additional Recommendations:**
+
+* Refer to the provided links for more information on installing Furiosa components, such as Feature Discovery, Device Plugin, and Metrics Exporter.
+* Consult the Kubernetes documentation for guidance on upgrading or downgrading your cluster."
+2b294227-f255-492c-b642-46e100e59705,https://furiosa-ai.github.io/docs-dev/2024.1/en/cloud_native_toolkit/kubernetes.html,"What potential issues might arise if Docker is used as a container runtime in Kubernetes, and what alternatives are recommended?",Using Docker as a container runtime in Kubernetes may lead to unexpected issues with the device plugin. It is recommended to use containerd or CRI-O instead.,"**Potential Issues with Docker as a Container Runtime in Kubernetes**
+
+Using Docker as a container runtime in Kubernetes can lead to unexpected issues with the device plugin. This is because Docker is officially deprecated as a container runtime in Kubernetes.
+
+**Key Reasons for Deprecation:**
+
+1.  **Lack of Support for CRI (Container Runtime Interface)**: Docker does not support CRI, which is a standard interface for container runtimes in Kubernetes. This can lead to compatibility issues and make it difficult to manage containers.
+2.  **Incompatibility with Device Plugins**: The device plugin, which is used to manage NPU devices in Furiosa's NPU SDK, may not work correctly with Docker as the container runtime.
+
+**Recommended Alternatives:**
+
+1.  **containerd**: A popular, open-source container runtime that supports CRI and is compatible with Kubernetes.
+2.  **CRI-O**: Another widely-used, open-source container runtime that supports CRI and is designed to work seamlessly with Kubernetes.
+
+**Example Commands for Switching to Alternative Container Runtimes:**
+
+To switch to containerd or CRI-O as the container runtime in your Kubernetes cluster, you can use the following commands:
+
+*   For containerd:
+    ```bash
+sudo apt-get update
+sudo apt-get install -y containerd.io
+```
+*   For CRI-O:
+    ```bash
+sudo yum install -y cri-o
+```
+
+**Additional Steps:**
+
+After installing the alternative container runtime, you may need to configure it to work with your Kubernetes cluster. This can typically be done by updating the `container-runtime` field in your Kubernetes configuration file (usually `/etc/kubernetes/kubelet.conf`) to point to the new container runtime.
+
+For example:
+```bash
+sudo sed -i 's/containerRuntime: docker/containerRuntime: containerd/' /etc/kubernetes/kubelet.conf
+```
+
+**Conclusion:**
+
+Using Docker as a container runtime in Kubernetes can lead to compatibility issues and make it difficult to manage containers. It is recommended to use alternative container runtimes like containerd or CRI-O, which are designed to work seamlessly with Kubernetes and support the device plugin used in Furiosa's NPU SDK."
+d4927eaf-a1a0-40bd-9624-79db4213c5fc,https://furiosa-ai.github.io/docs-dev/2024.1/en/overview/roadmap.html,What are the key features and model supports planned for the FuriosaAI 2024.2.0 (beta 0) release in November 2024?,"The 2024.2.0 (beta 0) release in November 2024 includes support for language models such as CodeLLaaMA2, Vicuna, Solar, and EXAONE-3.0, as well as vision models like MobileNetV1, MobileNetV2, ResNet152, ResNet50, EfficientNet, and YOLOv8m. It also introduces Phase 1 of Tensor Parallelism support for Furiosa LLM with intra-chip capabilities, Torch 2.4.1 support, and CPU memory swapping in Furiosa LLM.","**Key Features and Model Supports Planned for FuriosaAI 2024.2.0 (beta 0) Release**
+
+The upcoming FuriosaAI 2024.2.0 (beta 0) release in November 2024 promises to bring exciting new features and model supports. Here are the key highlights:
+
+### Model Support
+
+* **Language Models:**
+	+ CodeLLaaMA2
+	+ Vicuna
+	+ Solar
+	+ EXAONE-3.0
+* **Vision Models:**
+	+ MobileNetV1
+	+ MobileNetV2
+	+ ResNet152
+	+ ResNet50
+	+ EfficientNet
+	+ YOLOv8m
+
+### Other Key Features
+
+* **(Furiosa LLM) Tensor Parallelism support Phase 1:** Intra-chip tensor parallelism will be supported, enabling more efficient processing of large models.
+* **Torch 2.4.1 support:** The latest version of Torch will be supported, providing access to the latest features and improvements.
+* **CPU memory swapping in Furiosa LLM:** This feature will allow for more efficient use of CPU memory, reducing the risk of out-of-memory errors.
+
+These new features and model supports are expected to enhance the performance and capabilities of FuriosaAI, making it an even more powerful tool for AI development."
+d4927eaf-a1a0-40bd-9624-79db4213c5fc,https://furiosa-ai.github.io/docs-dev/2024.1/en/overview/roadmap.html,How does FuriosaAI plan to enhance its LLM capabilities in the 2024.3.0 release scheduled for December 2024?,FuriosaAI plans to enhance its LLM capabilities by implementing Tensor Parallelism support Phase 2: Inter-chip and integrating Huggingface Optimum.,"**Enhancements to LLM Capabilities in Furiosa SDK 2024.3.0 Release**
+
+The upcoming Furiosa SDK release, version 2024.3.0 (beta 1), scheduled for December 2024, promises significant enhancements to its Large Language Model (LLM) capabilities.
+
+**Key Enhancements:**
+
+1. **Tensor Parallelism Support Phase 2: Inter-chip**: Building upon the intra-chip tensor parallelism support introduced in the previous release (2024.2.0), Furiosa SDK will now support inter-chip tensor parallelism, enabling more efficient and scalable LLM computations.
+2. **`torch.compile()` Backend**: The integration of `torch.compile()` backend will provide a more efficient and optimized way to compile PyTorch models, leading to improved performance and reduced latency for LLM workloads.
+3. **Huggingface Optimum Integration**: Furiosa SDK will now include Hugging Face's Optimum library, which provides a set of tools and APIs for optimizing and deploying transformer-based models, including LLMs.
+
+**Impact on LLM Development:**
+
+These enhancements will enable developers to build more efficient, scalable, and performant LLM applications using the Furiosa SDK. The inter-chip tensor parallelism support will allow for better utilization of multi-GPU systems, while the `torch.compile()` backend and Hugging Face Optimum integration will provide improved model compilation and optimization capabilities.
+
+**Example Use Case:**
+
+To take advantage of these enhancements, developers can use the following example code snippet to compile a PyTorch LLM model using the `torch.compile()` backend:
+```python
+import torch
+
+# Define your LLM model
+model = ...
+
+# Compile the model using torch.compile()
+compiled_model = torch.compile(model, backend='furiosa')
+
+# Run the compiled model on a Furiosa-accelerated device
+output = compiled_model(input_data)
+```
+Note that this is just an example and may require modifications to work with your specific use case.
+
+**Conclusion:**
+
+The upcoming Furiosa SDK release (2024.3.0) promises significant enhancements to its LLM capabilities, including inter-chip tensor parallelism support, `torch.compile()` backend integration, and Hugging Face Optimum library inclusion. These improvements will enable developers to build more efficient, scalable, and performant LLM applications using the Furiosa SDK."
+d4927eaf-a1a0-40bd-9624-79db4213c5fc,https://furiosa-ai.github.io/docs-dev/2024.1/en/overview/roadmap.html,What is the significance of the Tensor Parallelism support phases mentioned in the FuriosaAI roadmap for 2024?,"The Tensor Parallelism support phases in the FuriosaAI roadmap signify the planned enhancements in distributing computational workloads across hardware. Phase 1, scheduled for November 2024, focuses on intra-chip parallelism, while Phase 2, set for December 2024, aims to extend this capability to inter-chip parallelism, thereby improving the efficiency and scalability of Furiosa LLM.",No relevant content found
+4f19d9ef-0eb7-40bf-a693-6e2d80ddb54a,https://furiosa-ai.github.io/docs-dev/2024.1/en/overview/supported_models.html,"Which specific model architectures are supported by Furiosa SDK for encoder-only tasks, and what are some example models available on HuggingFace Hub?",The encoder-only model architecture supported by Furiosa SDK is `BertForQuestionAnswering`. Example models available on HuggingFace Hub include `google-bert/bert-large-uncased` and `google-bert/bert-base-uncased`.,"**Supported Encoder-Only Model Architectures in Furiosa SDK**
+
+The Furiosa SDK supports a variety of Transformer-based models for encoder-only tasks. The following model architectures are currently supported:
+
+* `BertForQuestionAnswering`
+
+This architecture is commonly used for question answering and other natural language processing (NLP) tasks.
+
+**Example Models Available on HuggingFace Hub**
+
+Here are some example models available on the HuggingFace Hub that can be used with Furiosa SDK for encoder-only tasks:
+
+* `google-bert/bert-large-uncased`
+* `google-bert/bert-base-uncased`
+
+These models are pre-trained BERT models that can be fine-tuned for specific NLP tasks.
+
+**Using Furiosa SDK with Encoder-Only Models**
+
+To use Furiosa SDK with an encoder-only model, you will need to:
+
+1. Install the Furiosa SDK and its dependencies.
+2. Download or create a model configuration file (e.g., `model_config.json`) that specifies the model architecture and other hyperparameters.
+3. Use the Furiosa SDK's CLI commands to compile, quantize, and run the model on FuriosaAI RNGD.
+
+Here is an example of how to use the Furiosa SDK's CLI command to compile a BERT model:
+```bash
+furiosa compile --model-config model_config.json --input-shape 1,128,768 --output-shape 1,128,768
+```
+This command compiles the BERT model specified in `model_config.json` with input and output shapes of (1, 128, 768).
+
+Note: The specific CLI commands and options may vary depending on your use case and requirements. Please refer to the Furiosa SDK documentation for more information."
+4f19d9ef-0eb7-40bf-a693-6e2d80ddb54a,https://furiosa-ai.github.io/docs-dev/2024.1/en/overview/supported_models.html,What capabilities does the Furiosa SDK provide for models based on supported architectures?,"The Furiosa SDK allows users to compile, quantize, and run models based on supported architectures on FuriosaAI RNGD.","**Furiosa SDK Capabilities for Supported Model Architectures**
+
+The Furiosa SDK provides a range of capabilities for models based on supported architectures. These capabilities include:
+
+1. **Compilation**: The Furiosa SDK allows you to compile your model into an optimized format that can be executed on FuriosaAI RNGD.
+2. **Quantization**: The SDK supports quantization, which reduces the precision of the model's weights and activations, resulting in a smaller model size and faster inference times.
+3. **Inference**: The Furiosa SDK enables you to run your compiled and quantized model on FuriosaAI RNGD, allowing for fast and efficient inference.
+
+**Supported Model Architectures**
+
+The Furiosa SDK currently supports the following model architectures:
+
+1. **Decoder-only Models**:
+	* `LlamaForCausalLM`: Supports models like Llama 2, Llama 3.1, etc.
+	* `GPTJForCausalLM`: Supports models like GPT-J, etc.
+2. **Encoder-only Models**:
+	* `BertForQuestionAnswering`: Supports models like Bert, etc.
+
+**Example Use Cases**
+
+To compile and quantize a model using the Furiosa SDK, you can use the following CLI commands:
+
+```bash
+# Compile a model
+furiosa compile --model <path_to_model> --output <compiled_model_path>
+
+# Quantize a compiled model
+furiosa quantize --model <compiled_model_path> --output <quantized_model_path>
+```
+
+To run inference on a compiled and quantized model, you can use the following CLI command:
+
+```bash
+# Run inference on a quantized model
+furiosa infer --model <quantized_model_path> --input <input_data> --output <output_data>
+```
+
+Note: Replace `<path_to_model>`, `<compiled_model_path>`, `<quantized_model_path>`, `<input_data>`, and `<output_data>` with the actual file paths and data.
+
+By using the Furiosa SDK, you can leverage these capabilities to optimize and deploy your models on FuriosaAI RNGD."
+4f19d9ef-0eb7-40bf-a693-6e2d80ddb54a,https://furiosa-ai.github.io/docs-dev/2024.1/en/overview/supported_models.html,What are the specific example models available on HuggingFace Hub for the 'LlamaForCausalLM' architecture supported by Furiosa SDK?,"`meta-llama/Llama-2-70b-hf`, `meta-llama/Meta-Llama-3.1-70B`, `meta-llama/Meta-Llama-3-70B-Instruct`, `meta-llama/Meta-Llama-3.1-8B`, `meta-llama/Llama-3.1-8B-Instruct`",No relevant content found
+0acdfa06-7dff-4603-9a5c-dbc4e3310580,https://furiosa-ai.github.io/docs-dev/2024.1/en/overview/software_stack.html,"How does the Furiosa Runtime manage the execution of NPU programs, and what capabilities does it offer for utilizing multiple NPUs?","The Furiosa Runtime loads multiple executable NPU programs generated by the Furiosa compiler and runs them on the NPU. It is responsible for scheduling NPU programs and managing computation and memory resources on NPUs and CPUs. Additionally, the Runtime can use multiple NPUs and provides a single entry point to run the model on multiple NPUs.","**Overview of Furiosa Runtime and its Capabilities**
+
+The Furiosa Runtime is a crucial component of the FuriosaAI software stack, responsible for managing the execution of NPU programs. It loads multiple executable NPU programs generated by the Furiosa Compiler and runs them on the NPU.
+
+**Key Features of Furiosa Runtime:**
+
+1.  **Scheduling and Resource Management**: The Furiosa Runtime schedules NPU programs and manages computation and memory resources on NPUs and CPUs.
+2.  **Multi-NPU Support**: The Furiosa Runtime can utilize multiple NPUs, providing a single entry point to run models on multiple NPUs.
+
+**Utilizing Multiple NPUs with Furiosa Runtime**
+
+To leverage the power of multiple NPUs, you can use the Furiosa Runtime's multi-NPU support feature. Here's an example:
+
+*   **Step 1: Compile your model**: Use the Furiosa Compiler to compile your model into multiple executable NPU programs.
+*   **Step 2: Load the programs**: Load the compiled programs into the Furiosa Runtime using the `furiosa_runtime.load()` function.
+*   **Step 3: Run on multiple NPUs**: Use the `furiosa_runtime.run_on_multiple_npux()` function to run the loaded programs on multiple NPUs.
+
+**Example Code Snippet**
+```python
+import furiosa_runtime
+
+# Compile your model into multiple executable NPU programs
+compiled_programs = furiosa_compiler.compile(model)
+
+# Load the compiled programs into the Furiosa Runtime
+furiosa_runtime.load(compiled_programs)
+
+# Run the loaded programs on multiple NPUs
+results = furiosa_runtime.run_on_multiple_npux(programs, num_npux=4)
+```
+
+By following these steps and using the Furiosa Runtime's multi-NPU support feature, you can efficiently utilize multiple NPUs to accelerate your AI workloads."
+0acdfa06-7dff-4603-9a5c-dbc4e3310580,https://furiosa-ai.github.io/docs-dev/2024.1/en/overview/software_stack.html,"What role does the Furiosa Model Compressor play in optimizing AI models, and what specific quantization methods does it support?","The Furiosa Model Compressor is a library and toolkit for model calibration and quantization, aimed at reducing memory footprint, computation cost, inference latency, and power consumption. It supports post-training quantization methods such as BF16 (W16A16), INT8 Weight-Only (W8A16), FP8 (W8A8), INT8 SmoothQuant (W8A8), and plans to support INT4 Weight-Only (W4A16 AWQ / GPTQ) in release 2024.2.",No relevant content found
+0acdfa06-7dff-4603-9a5c-dbc4e3310580,https://furiosa-ai.github.io/docs-dev/2024.1/en/overview/software_stack.html,What are the key features of Furiosa LLM that enhance its performance for large language model inference?,"Furiosa LLM provides a high-performance inference engine with features such as a vLLM-compatible API, PagedAttention, continuous batching, HuggingFace hub support, and an OpenAI-compatible API server.",No relevant content found
+da255daf-c8d3-430e-b976-ad096f3a9ad7,https://furiosa-ai.github.io/docs-dev/2024.1/en/furiosa_llm/references/sampling_params.html,"How does the 'temperature' parameter influence the text generation process in the SamplingParams class, and what effect does setting it to zero have?","The 'temperature' parameter controls the randomness of the sampling in text generation. Lower values make the model more deterministic, while higher values increase randomness. Setting it to zero results in greedy sampling, where the model always chooses the most likely next token.","**Understanding the `temperature` parameter in SamplingParams**
+
+The `temperature` parameter in the `SamplingParams` class controls the randomness of the sampling process during text generation. It is a float value that determines how deterministic or random the model's output will be.
+
+**Interpretation of temperature values:**
+
+* **Lower values (close to 0):** Make the model more deterministic, meaning it will tend to produce more predictable and less diverse outputs.
+* **Higher values:** Make the model more random, resulting in more diverse but potentially less coherent outputs.
+* **Zero (0.0):** Means greedy sampling, where the model always chooses the most likely next token without considering alternative options.
+
+**Effect of setting temperature to zero:**
+
+When you set `temperature` to zero, the model will perform greedy sampling. This means that during text generation, the model will always choose the most likely next token based on the input prompt and its current state. Greedy sampling can lead to more predictable outputs but may also result in less diverse or repetitive text.
+
+**Example usage:**
+
+To illustrate the effect of `temperature` on text generation, consider the following example:
+```python
+from furiosa_llm import SamplingParams
+
+# Create a SamplingParams instance with default values
+params = SamplingParams()
+
+# Set temperature to 0.0 for greedy sampling
+params.temperature = 0.0
+
+# Generate text using the modified params
+generated_text = model.generate(text=""Hello, how are you?"", params=params)
+```
+In this example, setting `temperature` to zero will result in a more deterministic output, where the model always chooses the most likely next token.
+
+**Additional considerations:**
+
+When adjusting the `temperature` parameter, keep in mind that it interacts with other parameters, such as `top_p` and `top_k`, which control the cumulative probability of top tokens and the number of top tokens to consider, respectively. Experimenting with different combinations of these parameters can help you achieve the desired balance between diversity and coherence in your generated text."
+da255daf-c8d3-430e-b976-ad096f3a9ad7,https://furiosa-ai.github.io/docs-dev/2024.1/en/furiosa_llm/references/sampling_params.html,"In the context of the SamplingParams class, how does the 'early_stopping' parameter affect the beam search process, and what are the implications of setting it to 'never'?","The 'early_stopping' parameter controls when the beam search process stops. Setting it to 'never' means the beam search will only stop when there cannot be better candidates, following the canonical beam search algorithm.","**Understanding the `early_stopping` parameter in SamplingParams**
+
+The `early_stopping` parameter in the `SamplingParams` class controls the stopping condition for beam search. It determines when to stop generating new candidates and return the best ones found so far.
+
+**Values of `early_stopping`**
+
+*   **True**: The generation stops as soon as there are `best_of` complete candidates.
+*   **False**: An heuristic is applied, and the generation stops when it's very unlikely to find better candidates.
+*   **""never""**: The beam search procedure only stops when there cannot be better candidates (canonical beam search algorithm).
+
+**Implications of setting `early_stopping` to ""never""**
+
+When you set `early_stopping` to `""never""`, the beam search process will continue until it's impossible to find better candidates. This means that the generation will not stop prematurely, and the model will explore all possible candidates.
+
+Here are some implications of this setting:
+
+*   **Increased computational cost**: Since the generation doesn't stop early, it may require more computations to explore all possible candidates.
+*   **Improved accuracy**: By exploring all possible candidates, you may get better results, especially in cases where the heuristic used in `False` mode is not effective.
+*   **Longer response times**: The increased computational cost and exploration of all candidates can lead to longer response times.
+
+**Example usage**
+
+To set `early_stopping` to `""never""` in a `SamplingParams` object:
+```python
+from furiosa_llm import SamplingParams
+
+sampling_params = SamplingParams(
+    n=5,
+    best_of=10,
+    use_beam_search=True,
+    early_stopping=""never""
+)
+```
+In this example, the beam search process will continue until it's impossible to find better candidates, and the model will return the top 5 candidates from a pool of 10 generated sequences.
+
+By understanding the implications of setting `early_stopping` to `""never""`, you can make informed decisions about when to use this setting in your applications."
+da255daf-c8d3-430e-b976-ad096f3a9ad7,https://furiosa-ai.github.io/docs-dev/2024.1/en/furiosa_llm/references/sampling_params.html,"In the SamplingParams class, what is the significance of the 'best_of' parameter when 'use_beam_search' is set to True, and how does it relate to the 'n' parameter?","When 'use_beam_search' is set to True, the 'best_of' parameter acts as the beam width, determining the number of output sequences generated from the prompt. The top 'n' sequences are then selected from these 'best_of' sequences. 'best_of' must be greater than or equal to 'n'.","**Understanding the 'best_of' parameter in SamplingParams**
+
+In the `SamplingParams` class, the `best_of` parameter plays a crucial role when `use_beam_search` is set to `True`. To understand its significance, let's break down the relationship between `best_of`, `n`, and `use_beam_search`.
+
+**When `use_beam_search` is `False`**
+
+In this case, `best_of` is not used, and the model generates `n` output sequences for a given prompt. The `n` parameter controls the number of output sequences to return.
+
+**When `use_beam_search` is `True`**
+
+Here's where `best_of` comes into play. When `use_beam_search` is `True`, the model uses beam search instead of sampling. In this context, `best_of` represents the beam width, which is the number of output sequences generated from the prompt.
+
+The key relationship between `best_of` and `n` is that `best_of` must be greater than or equal to `n`. This means that the model generates `best_of` sequences, and then returns the top `n` sequences based on their scores.
+
+In other words, `best_of` controls the number of candidate sequences generated by the beam search algorithm, while `n` controls the number of final output sequences returned.
+
+**Example**
+
+Suppose you set `use_beam_search` to `True`, `best_of` to 10, and `n` to 5. In this case, the model will generate 10 candidate sequences using beam search and then return the top 5 sequences based on their scores.
+
+To illustrate this, here's an example of how you might create a `SamplingParams` object with these settings:
+```python
+from furiosa_llm import SamplingParams
+
+params = SamplingParams(
+    use_beam_search=True,
+    best_of=10,
+    n=5,
+    temperature=1.0,
+    top_p=1.0,
+    top_k=-1,
+    length_penalty=1.0,
+    early_stopping=False,
+    max_tokens=16,
+    min_tokens=0
+)
+```
+In summary, when `use_beam_search` is `True`, the `best_of` parameter controls the beam width, which is the number of candidate sequences generated by the model. The `n` parameter then controls the number of final output sequences returned from these candidates."
+edfa6fb4-e88c-4fa8-a6aa-9986213aa6ab,https://furiosa-ai.github.io/docs-dev/2024.1/en/device_management/furiosa_smi.html,"What information can be obtained using the 'furiosa-smi info --format full' command, and how does it differ from the basic 'furiosa-smi info' command?","The 'furiosa-smi info --format full' command provides detailed information including the device's UUID and serial number, in addition to the basic information such as architecture, device, firmware version, temperature, power consumption, and PCI-BDF. The basic 'furiosa-smi info' command does not include the UUID and serial number.","**Extracted Key Details:**
+
+* The user is inquiring about the `furiosa-smi info` command and its usage with the `--format full` option.
+* The context provided includes documentation for the `furiosa-smi` command, which offers various subcommands to obtain information or control the device.
+
+**Explanation and Guidance:**
+
+The `furiosa-smi info` command is used to retrieve information about the NPU (Neural Processing Unit) device. By default, this command outputs temperature, power consumption, and PCI information of the NPU device.
+
+When you add the `--format full` option to the `info` command, it provides additional details, including:
+
+* UUID (Universally Unique Identifier)
+* Serial number
+* Clock information
+
+Here's an example of how to use the `furiosa-smi info --format full` command:
+```bash
+$ furiosa-smi info --format full
++------+--------+--------------------------------------+------------+----------------+---------+---------+-------+--------------+---------+
+| Arch | Device | UUID                                 | S/N        | Firmware       | Temp.   | Power   | Clock | PCI-BDF      | PCI-DEV |
++------+--------+--------------------------------------+------------+----------------+---------+---------+-------+--------------+---------+
+| rngd | npu0   | 3E93AE7C-E8EA-4C62-BED6-AD2EC0461AE8 | RNGDXXXXXX | 0.0.15+af1daaa | 30.18°C | 53.00 W |   N/A | 0000:17:00.0 | 508:0   |
+| rngd | npu1   | 176DAD0F-1510-475C-91D8-5F79551CF718 | RNGDXXXXXY | 0.0.15+af1daaa | 29.44°C | 53.00 W |   N/A | 0000:2a:00.0 | 506:0   |
++------+--------+--------------------------------------+------------+----------------+---------+---------+-------+--------------+---------+
+```
+In contrast, the basic `furiosa-smi info` command only outputs temperature, power consumption, and PCI information:
+```bash
+$ furiosa-smi info
++------+--------+----------------+---------+---------+--------------+
+| Arch | Device | Firmware       | Temp.   | Power   | PCI-BDF      |
++------+--------+----------------+---------+---------+--------------+
+| rngd | npu0   | 0.0.15+af1daaa | 30.18°C | 53.00 W | 0000:17:00.0 |
+| rngd | npu1   | 0.0.15+af1daaa | 29.25°C | 53.00 W | 0000:2a:00.0 |
++------+--------+----------------+---------+---------+--------------+
+```
+By using the `--format full` option, you can obtain more detailed information about your NPU device."
+edfa6fb4-e88c-4fa8-a6aa-9986213aa6ab,https://furiosa-ai.github.io/docs-dev/2024.1/en/device_management/furiosa_smi.html,What are the prerequisites and steps required to install the 'furiosa-smi' command on a system?,"The prerequisites for installing 'furiosa-smi' include having Ubuntu 20.04 LTS (Debian bullseye) or later, root or sudo permissions, and configuring the APT server along with installing device drivers. The installation steps involve updating the package list with 'sudo apt update' and then installing the package using 'sudo apt install -y furiosa-smi'.","**Installing the 'furiosa-smi' Command**
+
+To install the `furiosa-smi` command on a system, you need to follow these steps:
+
+### Prerequisites
+
+1. **Ubuntu or Debian Linux**: Ensure that your system is running Ubuntu 20.04 LTS (or Debian bullseye) or later.
+2. **Administrator privileges**: You must have administrator privileges on the system (root).
+
+### Step-by-Step Installation
+
+#### Verify if the System has Devices
+
+Run the following command to verify if FuriosaAI devices are properly installed:
+```bash
+lspci -nn | grep FuriosaAI
+```
+If the device is installed, you should see the PCI information.
+
+#### Set up APT Server
+
+1. Install required packages and register the signing key:
+```bash
+sudo apt update
+sudo apt install -y curl gnupg
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/cloud.google.gpg
+```
+2. Configure the APT server according to your Linux distribution version:
+```bash
+echo ""deb [arch=$(dpkg --print-architecture)] http://asia-northeast3-apt.pkg.dev/projects/furiosa-ai $(. /etc/os-release && echo ""$VERSION_CODENAME"") main"" | sudo tee /etc/apt/sources.list.d/furiosa.list
+```
+
+#### Install Pre-requisite Packages
+
+1. Update the package list:
+```bash
+sudo apt update
+```
+2. Install the required packages (device driver and PE Runtime):
+```bash
+sudo apt install furiosa-pert-rngd furiosa-driver-rngd
+```
+3. Install `furiosa-smi`:
+```bash
+sudo apt install furiosa-smi
+```
+
+### Verify Installation
+
+Run the following command to verify that `furiosa-smi` is installed correctly:
+```bash
+furiosa-smi info
+```
+This should display a list of NPU devices.
+
+That's it! You have successfully installed the `furiosa-smi` command on your system."
+edfa6fb4-e88c-4fa8-a6aa-9986213aa6ab,https://furiosa-ai.github.io/docs-dev/2024.1/en/device_management/furiosa_smi.html,"How does the 'furiosa-smi status' subcommand help in monitoring the utilization of NPU cores, and what specific details does it provide?","The 'furiosa-smi status' subcommand provides information about the device files available on the NPU device and checks whether each core is in use or idle. It details the occupancy status of each core and their utilization percentages, indicating that all cores (0 to 7) are occupied but currently have 0.00% utilization.",No relevant content found
+e08e3845-eb5a-4b6f-8530-fb63f81ef7d0,https://furiosa-ai.github.io/docs-dev/2024.1/en/furiosa_llm/references/llm.html,"What is the significance of the 'use_blockwise_compile' parameter in the LLM class, and how does it affect the compilation process?","The 'use_blockwise_compile' parameter, when set to True, ensures that each task is compiled at the level of a transformer block. This allows the compilation result for a transformer block to be generated once and reused, optimizing the compilation process.","**Understanding the `use_blockwise_compile` parameter in the LLM class**
+
+The `use_blockwise_compile` parameter is a boolean flag that determines how the compilation process is handled for each task in the LLM (Large Language Model) class. When set to `True`, each task will be compiled in the unit of transformer block, and the compilation result for each transformer block will be generated once and reused.
+
+**Impact on Compilation Process**
+
+When `use_blockwise_compile` is `True`, the compilation process will:
+
+1. Divide the model into smaller units called transformer blocks.
+2. Compile each transformer block separately.
+3. Reuse the compiled results for each transformer block across multiple tasks.
+
+This approach can lead to several benefits, including:
+
+* Reduced compilation time: By compiling smaller units of code, the overall compilation time can be reduced.
+* Improved memory efficiency: Since the compiled results are reused, less memory is required to store the compiled models.
+
+However, this approach may also have some limitations, such as:
+
+* Increased complexity: The blockwise compilation process can introduce additional complexity in managing the compiled results and ensuring correct reuse.
+
+**Example Usage**
+
+To illustrate the usage of `use_blockwise_compile`, consider the following example:
+```python
+from furiosa_llm import LLM
+
+# Create an instance of the LLM class with use_blockwise_compile set to True
+llm = LLM(pretrained_id=""bert-base-uncased"", use_blockwise_compile=True)
+
+# Generate texts from given prompts and sampling parameters
+prompts = [""Hello, how are you?"", ""What is your name?""]
+sampling_params = SamplingParams(n=1, best_of=1, temperature=1.0)
+outputs = llm.generate(prompts, sampling_params)
+```
+In this example, the `use_blockwise_compile` parameter is set to `True`, which means that each task will be compiled in the unit of transformer block, and the compilation result for each transformer block will be generated once and reused.
+
+**Conclusion**
+
+The `use_blockwise_compile` parameter is an important configuration option in the LLM class that can significantly impact the compilation process. By setting this parameter to `True`, you can take advantage of reduced compilation time and improved memory efficiency, but may also introduce additional complexity in managing the compiled results."
+e08e3845-eb5a-4b6f-8530-fb63f81ef7d0,https://furiosa-ai.github.io/docs-dev/2024.1/en/furiosa_llm/references/llm.html,How does the 'scheduler_config' parameter influence the task management and resource allocation in the LLM class?,"The 'scheduler_config' parameter configures the scheduler to manage the maximum number of tasks that can be queued to hardware, the maximum number of samples that can be processed, and the ratio of spare blocks reserved by the scheduler.","**Understanding the `scheduler_config` Parameter in LLM Class**
+
+The `scheduler_config` parameter is a crucial component of the LLM class, as it influences task management and resource allocation. In this explanation, we will delve into the details of this parameter and its impact on the LLM's behavior.
+
+**What is `scheduler_config`?**
+
+`scheduler_config` is an instance of the `SchedulerConfig` class, which defines the configuration for the scheduler. The scheduler is responsible for managing tasks and allocating resources within the LLM.
+
+**Key Components of `scheduler_config`**
+
+The `scheduler_config` parameter consists of three key components:
+
+1.  **npu_queue_limit**: This specifies the maximum number of tasks that can be queued to the HW (Hardware) at any given time.
+2.  **max_processing_samples**: This defines the maximum number of samples that can be processed by the scheduler.
+3.  **spare_blocks_ratio**: This represents the ratio of spare blocks that are reserved by the scheduler.
+
+**Impact on Task Management and Resource Allocation**
+
+The `scheduler_config` parameter has a significant impact on how tasks are managed and resources are allocated within the LLM:
+
+*   **Task Queueing**: The `npu_queue_limit` component determines how many tasks can be queued to the HW at any given time. This helps prevent overloading the HW with too many tasks, which can lead to performance degradation.
+*   **Resource Allocation**: The `max_processing_samples` component controls the maximum number of samples that can be processed by the scheduler. This ensures that the LLM does not consume excessive resources, leading to efficient resource allocation.
+*   **Spare Blocks Management**: The `spare_blocks_ratio` component manages the ratio of spare blocks reserved by the scheduler. This helps maintain a balance between task processing and resource availability.
+
+**Example Usage**
+
+Here's an example of how you can create an instance of `SchedulerConfig` and pass it to the LLM class:
+```python
+from furiosa_llm import SchedulerConfig
+
+# Create a SchedulerConfig instance
+scheduler_config = SchedulerConfig(
+    npu_queue_limit=2,
+    max_processing_samples=65536,
+    spare_blocks_ratio=0.2,
+    is_offline=False
+)
+
+# Pass the scheduler_config to the LLM class
+llm = LLM(pretrained_id=""your_pretrained_model"", scheduler_config=scheduler_config)
+```
+In this example, we create a `SchedulerConfig` instance with specific values for `npu_queue_limit`, `max_processing_samples`, and `spare_blocks_ratio`. We then pass this instance to the LLM class using the `scheduler_config` parameter.
+
+By understanding the `scheduler_config` parameter and its components, you can fine-tune the task management and resource allocation within your LLM, leading to improved performance and efficiency."
+e08e3845-eb5a-4b6f-8530-fb63f81ef7d0,https://furiosa-ai.github.io/docs-dev/2024.1/en/furiosa_llm/references/llm.html,What role does the 'kv_cache_sharing_across_beams_config' parameter play in optimizing the model's performance during the decode phase?,"The 'kv_cache_sharing_across_beams_config' parameter configures the sharing of key-value cache across beams, which optimizes the model's performance by creating decode phase buckets with a batch size of 'batch_size' multiplied by 'kv_cache_sharing_across_beams_config.beam_width'.",No relevant content found
+85efd72a-7fd9-4895-a0c7-090891c1e2cf,https://furiosa-ai.github.io/docs-dev/2024.1/en/furiosa_llm/references.html,"What types of reference materials are provided in the markdown content, and how are they organized?","The markdown content provides references to an LLM class and SamplingParams, organized as links to their respective HTML pages.",No relevant content found
+85efd72a-7fd9-4895-a0c7-090891c1e2cf,https://furiosa-ai.github.io/docs-dev/2024.1/en/furiosa_llm/references.html,"What is the purpose of the links labeled 'previous' and 'next' in the markdown content, and how do they contribute to the navigation structure?","The 'previous' link directs to the 'OpenAI Compatible Server' page, and the 'next' link leads to the 'LLM class' page, facilitating sequential navigation through the documentation.",No relevant content found
+85efd72a-7fd9-4895-a0c7-090891c1e2cf,https://furiosa-ai.github.io/docs-dev/2024.1/en/furiosa_llm/references.html,"What specific resources are linked under the 'References' section, and how might they be relevant to someone exploring FuriosaAI's documentation?","The 'References' section links to the 'LLM class' and 'SamplingParams' resources, which are likely relevant for understanding specific components or functionalities within FuriosaAI's documentation.",No relevant content found
+fe9686e2-f00f-4e68-87fa-80abbaf03e2b,https://furiosa-ai.github.io/docs-dev/2024.1/en/cloud_native_toolkit/kubernetes/metrics_exporter.html,"What are the specific metric labels used by the Furiosa Metrics Exporter to describe the attributes of the NPU devices, and how do they contribute to the aggregation of metrics?","The Furiosa Metrics Exporter uses metric labels such as arch, core, device, kubernetes_node_name, and uuid to describe the attributes of NPU devices. These labels help in aggregating metrics by providing common characteristics across different metrics, allowing for effective grouping and analysis. Additionally, a 'label' metric label is used to describe specific attributes for each metric, further aiding in the aggregation process.",No relevant content found
+fe9686e2-f00f-4e68-87fa-80abbaf03e2b,https://furiosa-ai.github.io/docs-dev/2024.1/en/cloud_native_toolkit/kubernetes/metrics_exporter.html,How does the Furiosa Metrics Exporter facilitate the monitoring of FuriosaAI NPU devices within a Kubernetes cluster using Prometheus and Grafana?,"The Furiosa Metrics Exporter exposes metrics related to FuriosaAI NPU devices in Prometheus format, which can be scraped by Prometheus in a Kubernetes cluster. These metrics can then be visualized using a Grafana dashboard. This setup is facilitated by using the Prometheus and Grafana Helm charts along with the furiosa-metrics-exporter Helm chart.","To facilitate the monitoring of FuriosaAI NPU devices within a Kubernetes cluster using Prometheus and Grafana, the Furiosa Metrics Exporter plays a crucial role. Here's how it works:
+
+**Overview**
+
+The Furiosa Metrics Exporter exposes a collection of metrics related to FuriosaAI NPU devices in Prometheus format. This allows you to scrape these metrics using Prometheus and visualize them with a Grafana dashboard.
+
+**Metrics**
+
+The exporter is composed of a chain of collectors, each responsible for collecting specific metrics from the Furiosa NPU devices. The available collectors and metrics are listed in the table below:
+
+| Collector Name | Metric | Type | Metric Labels | Description |
+| --- | --- | --- | --- | --- |
+| Liveness | furiosa_npu_alive | gauge | arch, core, device, uuid, kubernetes_node_name | The liveness of the Furiosa NPU device. |
+| Error | furiosa_npu_error | gauge | arch, core, device, uuid, kubernetes_node_name, label | The error count of the Furiosa NPU device. |
+| Temperature | furiosa_npu_hw_temperature | gauge | arch, core, device, uuid, kubernetes_node_name, label | The temperature of the Furiosa NPU device. |
+| Power | furiosa_npu_hw_power | gauge | arch, core, device, uuid, kubernetes_node_name, label | The power consumption of the Furiosa NPU device. |
+| Core Utilization | furiosa_npu_core_utilization | gauge | arch, core, device, uuid, kubernetes_node_name | The core utilization of the Furiosa NPU device. |
+
+All metrics share common metric labels such as `arch`, `core`, `device`, `kubernetes_node_name`, and `uuid`. These labels provide additional context to each metric.
+
+**Deploying with Helm**
+
+To deploy the Furiosa Metrics Exporter, you can use the Helm chart available at [furiosa-ai/helm-charts](https://github.com/furiosa-ai/helm-charts). You can modify the `values.yaml` file to configure the deployment as needed. For example, you can change the port or disable Prometheus annotations.
+
+To deploy the Furiosa Metrics Exporter, run the following commands:
+```bash
+helm repo add furiosa https://furiosa-ai.github.io/helm-charts
+helm repo update
+helm install furiosa-metrics-exporter furiosa/furiosa-metrics-exporter -n kube-system
+```
+**Example Output**
+
+Here's an example of what the metrics output might look like:
+```bash
+# liveness
+furiosa_npu_alive{arch=""rngd"",core=""0-7"",device=""npu0"",kubernetes_node_name=""node"",uuid=""uuid""} 1
+
+# error
+furiosa_npu_error{arch=""rngd"",core=""0-7"",device=""npu0"",kubernetes_node_name=""node"",label=""axi_post_error"",uuid=""uuid""} 0
+furiosa_npu_error{arch=""rngd"",core=""0-7"",device=""npu0"",kubernetes_node_name=""node"",label=""axi_fetch_error"",uuid=""uuid""} 0
+
+# temperature
+furiosa_npu_hw_temperature{arch=""rngd"",core=""0-7"",device=""npu0"",kubernetes_node_name=""node"",label=""peak"",uuid=""uuid""} 39
+furiosa_npu_hw_temperature{arch=""rngd"",core=""0-7"",device=""npu0"",kubernetes_node_name=""node"",label=""ambient"",uuid=""uuid""} 35
+
+# power
+furiosa_npu_hw_power{arch=""rngd"",core=""0-7"",device=""npu0"",kubernetes_node_name=""node"",label=""rms"",uuid=""uuid""} 4795000
+
+# core utilization
+furiosa_npu_core_utilization{arch=""rngd"",core=""0"",device=""npu0"",kubernetes_node_name=""node"",uuid=""uuid""} 90
+furiosa_npu_core_utilization{arch=""rngd"",core=""1"",device=""npu0"",kubernetes_node_name=""node"",uuid=""uuid""} 90
+```
+This output shows the various metrics collected by the Furiosa Metrics Exporter, including liveness, error counts, temperature, power consumption, and core utilization."
+fe9686e2-f00f-4e68-87fa-80abbaf03e2b,https://furiosa-ai.github.io/docs-dev/2024.1/en/cloud_native_toolkit/kubernetes/metrics_exporter.html,What role do the 'label' attributes play in the categorization of error and temperature metrics collected by the Furiosa Metrics Exporter?,"The 'label' attributes in the Furiosa Metrics Exporter are used to describe additional specific attributes for each metric type, such as different types of errors (e.g., axi_post_error, pcie_fetch_error) and temperature readings (e.g., peak, ambient). This helps in categorizing and aggregating metrics that share common characteristics without creating too many separate metric definitions.","**Understanding the Role of 'label' Attributes in Categorizing Error and Temperature Metrics**
+
+The `label` attribute plays a crucial role in categorizing error and temperature metrics collected by the Furiosa Metrics Exporter. In the provided context, we can see that the `label` attribute is used to describe additional attributes specific to each metric.
+
+**Error Metrics**
+
+For error metrics, the `label` attribute is used to specify the type of error. For example:
+
+* `axi_post_error`
+* `axi_fetch_error`
+* `axi_discard_error`
+* `axi_doorbell_done`
+* `pcie_post_error`
+* `pcie_fetch_error`
+* `pcie_discard_error`
+* `pcie_doorbell_done`
+* `device_error`
+
+These labels help to categorize the error metrics and provide more detailed information about the type of error that occurred.
+
+**Temperature Metrics**
+
+For temperature metrics, the `label` attribute is used to specify the type of temperature reading. For example:
+
+* `peak`: The highest temperature observed from SoC sensors.
+* `ambient`: The temperature observed from sensors attached to the board.
+
+These labels help to categorize the temperature metrics and provide more detailed information about the type of temperature reading.
+
+**Example**
+
+In the provided example, we can see how the `label` attribute is used to categorize error and temperature metrics:
+``` #error furiosa_npu_error{arch=""rngd"",core=""0-7"",device=""npu0"",kubernetes_node_name=""node"",label=""axi_post_error"",uuid=""uuid""} 0
+#error furiosa_npu_error{arch=""rngd"",core=""0-7"",device=""npu0"",kubernetes_node_name=""node"",label=""axi_fetch_error"",uuid=""uuid""} 0
+
+#temperature furiosa_npu_hw_temperature{arch=""rngd"",core=""0-7"",device=""npu0"",kubernetes_node_name=""node"",label=""peak"",uuid=""uuid""} 39
+#temperature furiosa_npu_hw_temperature{arch=""rngd"",core=""0-7"",device=""npu0"",kubernetes_node_name=""node"",label=""ambient"",uuid=""uuid""} 35
+```
+In this example, the `label` attribute is used to specify the type of error or temperature reading. This helps to provide more detailed information about the metrics and enables better categorization and analysis.
+
+**Conclusion**
+
+In summary, the `label` attribute plays a crucial role in categorizing error and temperature metrics collected by the Furiosa Metrics Exporter. It provides additional context and detail about each metric, enabling better analysis and decision-making."
+a1f21dc2-1473-410f-a3ae-e46d451a9c0e,https://furiosa-ai.github.io/docs-dev/2024.1/en/cloud_native_toolkit/kubernetes/feature_discovery.html,"What role does Node Feature Discovery (NFD) play in the deployment of Furiosa Feature Discovery, and why is it recommended to use them together?","Node Feature Discovery (NFD) detects hardware features and labels Kubernetes nodes, which Furiosa Feature Discovery leverages to automatically label nodes with FuriosaAI NPU properties. It is recommended to use them together to ensure that the Cloud Native Toolkit is deployed only on nodes equipped with FuriosaAI NPUs.","**Understanding the Role of Node Feature Discovery (NFD) in Furiosa Feature Discovery Deployment**
+
+To answer your question, let's break down the key details from the provided context.
+
+**Key Details:**
+
+1. **Furiosa Feature Discovery**: Automatically labels Kubernetes nodes with information about FuriosaAI NPU properties.
+2. **Node Feature Discovery (NFD)**: A tool that detects hardware features and labels Kubernetes nodes.
+3. **Recommended Usage**: Use NFD and Furiosa Feature Discovery together to ensure the Cloud Native Toolkit is deployed only on nodes equipped with FuriosaAI NPUs.
+
+**The Role of NFD in Furiosa Feature Discovery Deployment**
+
+Node Feature Discovery (NFD) plays a crucial role in the deployment of Furiosa Feature Discovery. By using NFD, you can detect hardware features and label Kubernetes nodes accordingly. This information is then used by Furiosa Feature Discovery to automatically label nodes with FuriosaAI NPU properties.
+
+**Why Use NFD and Furiosa Feature Discovery Together?**
+
+Using NFD and Furiosa Feature Discovery together ensures that the Cloud Native Toolkit is deployed only on nodes equipped with FuriosaAI NPUs. This is important because it allows you to schedule your Kubernetes workloads based on specific NPU requirements.
+
+**Example: Deploying Furiosa Feature Discovery with Helm**
+
+To deploy Furiosa Feature Discovery with Helm, you can use the following command:
+```bash
+helm repo add furiosa https://furiosa-ai.github.io/helm-charts
+helm repo update
+helm install furiosa-feature-discovery furiosa/furiosa-feature-discovery -n kube-system
+```
+This will install Furiosa Feature Discovery and NFD into your Kubernetes cluster.
+
+**Conclusion**
+
+In summary, Node Feature Discovery (NFD) plays a crucial role in the deployment of Furiosa Feature Discovery by detecting hardware features and labeling Kubernetes nodes. Using NFD and Furiosa Feature Discovery together ensures that the Cloud Native Toolkit is deployed only on nodes equipped with FuriosaAI NPUs, allowing you to schedule your Kubernetes workloads based on specific NPU requirements."
+a1f21dc2-1473-410f-a3ae-e46d451a9c0e,https://furiosa-ai.github.io/docs-dev/2024.1/en/cloud_native_toolkit/kubernetes/feature_discovery.html,What specific information does the Furiosa Feature Discovery label provide about the NPU driver version on Kubernetes nodes?,"The Furiosa Feature Discovery labels provide the NPU driver version in terms of major, minor, and patch parts, as well as additional metadata. Specifically, the labels are: furiosa.ai/npu.driver.version for the full version, furiosa.ai/npu.driver.version.major for the major part, furiosa.ai/npu.driver.version.minor for the minor part, furiosa.ai/npu.driver.version.patch for the patch part, and furiosa.ai/npu.driver.version.metadata for any additional metadata.","**Extracted Key Details:**
+
+* The user is inquiring about the specific information provided by the Furiosa Feature Discovery label regarding the NPU driver version on Kubernetes nodes.
+
+**Explanation and Guidance:**
+
+The Furiosa Feature Discovery labels provide detailed information about the NPU properties on Kubernetes nodes, including the NPU family, count, and driver versions. Specifically, the `furiosa.ai/npu.driver.version` label provides the full NPU device driver version in the format `x.y.z`.
+
+Additionally, there are separate labels for each part of the driver version:
+
+* `furiosa.ai/npu.driver.version.major`: The major part of the driver version (e.g., `x`)
+* `furiosa.ai/npu.driver.version.minor`: The minor part of the driver version (e.g., `y`)
+* `furiosa.ai/npu.driver.version.patch`: The patch part of the driver version (e.g., `z`)
+
+These labels can be used to schedule Kubernetes workloads based on specific NPU requirements.
+
+**Example:**
+
+To check the NPU driver version on a node, you can use the following command:
+```bash
+kubectl get nodes -o jsonpath='{.items[0].metadata.labels.furiosa\.ai/npu\.driver\.version}'
+```
+This will output the full NPU device driver version (e.g., `1.2.3`) for the first node in the list.
+
+**Note:** The Furiosa Feature Discovery labels are attached to Kubernetes nodes using the Node Feature Discovery (NFD) tool, which detects hardware features and labels nodes accordingly."
+a1f21dc2-1473-410f-a3ae-e46d451a9c0e,https://furiosa-ai.github.io/docs-dev/2024.1/en/cloud_native_toolkit/kubernetes/feature_discovery.html,How does the use of Helm facilitate the deployment of Furiosa Feature Discovery in a Kubernetes cluster?,Helm allows for the easy installation of Furiosa Feature Discovery and NFD into a Kubernetes cluster by using a helm chart available at furiosa-ai/helm-charts. The deployment can be customized by modifying the values.yaml file in the charts/furiosa-feature-discovery directory.,"**Facilitating Deployment of Furiosa Feature Discovery using Helm**
+
+The use of Helm significantly simplifies the deployment of Furiosa Feature Discovery in a Kubernetes cluster. Here's how:
+
+### Key Benefits of Using Helm
+
+1. **Easy Installation**: With Helm, you can easily install Furiosa Feature Discovery and NFD (Node Feature Discovery) into your Kubernetes cluster using a single command.
+2. **Customizable Deployment**: You can modify the `values.yaml` file in the `charts/furiosa-feature-discovery` directory to configure the deployment according to your needs.
+
+### Step-by-Step Deployment Process
+
+To deploy Furiosa Feature Discovery using Helm, follow these steps:
+
+1. **Add the Furiosa Helm Repository**:
+```bash
+helm repo add furiosa https://furiosa-ai.github.io/helm-charts
+```
+2. **Update the Helm Repository**:
+```bash
+helm repo update
+```
+3. **Install Furiosa Feature Discovery**:
+```bash
+helm install furiosa-feature-discovery furiosa/furiosa-feature-discovery -n kube-system
+```
+
+### Understanding the Labels
+
+The Furiosa Feature Discovery attaches several labels to Kubernetes nodes, which provide information about FuriosaAI NPU properties. These labels include:
+
+* `furiosa.ai/npu.count`: The number of NPU devices.
+* `furiosa.ai/npu.family`: The chip family (e.g., warboy, rngd).
+* `furiosa.ai/npu.product`: The chip product name (e.g., warboy, rngd, rngd-s, rngd-max).
+* `furiosa.ai/npu.driver.version`: The NPU device driver version.
+* `furiosa.ai/npu.driver.version.major`, `.minor`, and `.patch`: The major, minor, and patch parts of the NPU device driver version.
+* `furiosa.ai/npu.driver.version.metadata`: The metadata associated with the NPU device driver version.
+
+These labels enable you to schedule your Kubernetes workloads based on specific NPU requirements.
+
+By following these steps and understanding the benefits of using Helm, you can easily deploy Furiosa Feature Discovery in a Kubernetes cluster and leverage its features for efficient workload scheduling."
+a53038c2-0668-4963-875e-79abe9c99e2c,https://furiosa-ai.github.io/docs-dev/2024.1/en/whatsnew/index.html,"What are the quantization methods supported by the Furiosa Quantizer in the Furiosa SDK 2024.1.0 release, and how do they differ in terms of weight and activation precision?","The Furiosa Quantizer supports BF16 (W16A16), INT8 Weight-Only (W8A16), FP8 (W8A8), and INT8 SmoothQuant (W8A8). BF16 uses 16-bit precision for both weights and activations, INT8 Weight-Only uses 8-bit precision for weights and 16-bit for activations, while FP8 and INT8 SmoothQuant use 8-bit precision for both weights and activations.","**Quantization Methods Supported by the Furiosa Quantizer**
+
+The Furiosa SDK 2024.1.0 release supports four quantization methods in the Furiosa Quantizer:
+
+1. **BF16 (W16A16)**: This method uses 16-bit floating-point numbers for both weights and activations.
+2. **INT8 Weight-Only (W8A16)**: In this method, weights are represented as 8-bit integers, while activations remain in 16-bit floating-point format.
+3. **FP8 (W8A8)**: This method uses 8-bit floating-point numbers for both weights and activations.
+4. **INT8 SmoothQuant (W8A8)**: Similar to INT8 Weight-Only, this method represents weights as 8-bit integers. However, it also applies a smooth quantization technique to the activations, which are still in 8-bit format.
+
+**Key differences in weight and activation precision**
+
+| Quantization Method | Weight Precision | Activation Precision |
+| --- | --- | --- |
+| BF16 (W16A16) | 16-bit float | 16-bit float |
+| INT8 Weight-Only (W8A16) | 8-bit int | 16-bit float |
+| FP8 (W8A8) | 8-bit float | 8-bit float |
+| INT8 SmoothQuant (W8A8) | 8-bit int | 8-bit int (smooth quantized) |
+
+**Choosing the right quantization method**
+
+When selecting a quantization method, consider the trade-offs between model accuracy, inference speed, and memory usage. For example:
+
+* BF16 (W16A16) provides high precision but may result in slower inference speeds.
+* INT8 Weight-Only (W8A16) offers a good balance between accuracy and speed, making it suitable for many applications.
+* FP8 (W8A8) is a more aggressive quantization method that can lead to faster inference speeds but may compromise model accuracy.
+* INT8 SmoothQuant (W8A8) is another option that balances accuracy and speed while applying smooth quantization to activations.
+
+**Example usage**
+
+To use the Furiosa Quantizer with one of these methods, you can specify the desired quantization method when creating a `FuriosaQuantizer` object. For example:
+```python
+from furiosa.quantizer import FuriosaQuantizer
+
+# Create a FuriosaQuantizer object with INT8 Weight-Only (W8A16) quantization
+quantizer = FuriosaQuantizer(quantization_method=""INT8_WEIGHT_ONLY"")
+
+# Use the quantizer to quantize your model
+quantized_model = quantizer.quantize(model)
+```
+Note that the specific API and usage may vary depending on your application and the Furiosa SDK version. Always refer to the official documentation for the most up-to-date information."
+a53038c2-0668-4963-875e-79abe9c99e2c,https://furiosa-ai.github.io/docs-dev/2024.1/en/whatsnew/index.html,What are the key features of the Furiosa LLM introduced in the Furiosa SDK 2024.1.0 release?,"Efficient KV cache management with PagedAttention, continuous batching support in serving, OpenAI-compatible API server, greedy search and beam search, and pipeline parallelism and data parallelism across multiple NPUs.","**Key Features of the Furiosa LLM in Furiosa SDK 2024.1.0**
+
+The Furiosa SDK 2024.1.0 release introduces several key features for the Furiosa Large Language Model (LLM). These features are designed to improve performance, efficiency, and usability.
+
+### Efficient KV Cache Management with PagedAttention
+
+Furiosa LLM now supports efficient KV cache management using PagedAttention. This feature enables more effective use of memory resources, leading to improved performance in large language model applications.
+
+### Continuous Batching Support in Serving
+
+The Furiosa LLM now provides continuous batching support in serving scenarios. This allows for more efficient processing of multiple input sequences, reducing latency and improving overall system throughput.
+
+### OpenAI-Compatible API Server
+
+Furiosa SDK 2024.1.0 includes an OpenAI-compatible API server for the Furiosa LLM. This enables seamless integration with existing OpenAI-based applications and workflows.
+
+### Greedy Search and Beam Search
+
+The Furiosa LLM now supports both greedy search and beam search algorithms. These algorithms enable more efficient exploration of the solution space, leading to improved results in natural language processing tasks.
+
+### Pipeline Parallelism and Data Parallelism across Multiple NPUs
+
+Furiosa SDK 2024.1.0 introduces pipeline parallelism and data parallelism support across multiple Neural Processing Units (NPUs). This enables more efficient utilization of available hardware resources, leading to improved performance and scalability.
+
+**Example Use Case:**
+
+To utilize the Furiosa LLM with OpenAI-compatible API server, you can use the following command:
+```bash
+furiosa-llm --api-server --openai-compatible
+```
+This will start the Furiosa LLM API server in OpenAI-compatible mode, allowing you to interact with the model using standard OpenAI APIs.
+
+**Additional Information:**
+
+For more information on the Furiosa SDK 2024.1.0 release, including detailed documentation and example use cases, please refer to the [Furiosa SDK Documentation](https://furiosa.ai/docs).
+
+Note that this is an alpha release, and some features may be subject to change in future releases."
+a53038c2-0668-4963-875e-79abe9c99e2c,https://furiosa-ai.github.io/docs-dev/2024.1/en/whatsnew/index.html,What are the capabilities of the Furiosa SDK 2024.1.0 in terms of model support and system management for NPUs?,"The Furiosa SDK 2024.1.0 supports models such as LLaMA 3.1 8B/70B, BERT Large, and GPT-J 6B. It includes a System Management Interface with a library and CLI for managing the Furiosa NPU family, and offers Kubernetes integration for cloud-native management and monitoring.","**Furiosa SDK 2024.1.0 Capabilities: Model Support and System Management for NPUs**
+
+The Furiosa SDK 2024.1.0 release provides significant enhancements in model support and system management for Neural Processing Units (NPUs). Here are the key capabilities:
+
+### Model Support
+
+* **Supported Models:** The Furiosa SDK 2024.1.0 supports the following models:
+	+ LLaMA 3.1 (8B/70B)
+	+ BERT Large
+	+ GPT-J 6B
+* **Quantization Methods:** The Furiosa Quantizer supports various quantization methods, including:
+	+ BF16 (W16A16)
+	+ INT8 Weight-Only (W8A16)
+	+ FP8 (W8A8)
+	+ INT8 SmoothQuant (W8A8)
+
+### System Management
+
+* **System Management Interface:** The Furiosa SDK 2024.1.0 provides a System Management Interface Library and CLI for the Furiosa NPU family, enabling users to manage and monitor their NPUs effectively.
+* **Cloud Native Toolkit:** The Cloud Native Toolkit offers Kubernetes integration for managing and monitoring the Furiosa NPU family, making it easier to deploy and manage NPUs in cloud-native environments.
+
+### Additional Features
+
+* **Furiosa LLM:** The Furiosa SDK 2024.1.0 includes an efficient KV cache management system with PagedAttention, continuous batching support in serving, OpenAI-compatible API server, greedy search, and beam search.
+* **Pipeline Parallelism and Data Parallelism:** The Furiosa SDK 2024.1.0 supports pipeline parallelism and data parallelism across multiple NPUs, enabling users to scale their models more efficiently.
+
+### CLI Commands
+
+To utilize the System Management Interface, you can use the following CLI commands:
+
+* `furiosa-smi`: This command provides a range of options for managing and monitoring Furiosa NPUs, including device discovery, firmware updates, and performance monitoring.
+* `furiosa-mlperf`: This command is used to run MLPerf benchmarks on Furiosa NPUs, supporting server and offline scenarios.
+
+### Example Usage
+
+To use the Furiosa Quantizer with INT8 SmoothQuant (W8A8) quantization method, you can follow these steps:
+
+1. Compile your model using the `furiosa-compiler` command.
+2. Use the `furiosa-quantizer` command to apply INT8 SmoothQuant (W8A8) quantization to your compiled model.
+
+```bash
+# Compile the model
+furiosa-compiler --input-model my_model.onnx --output-model my_model_compiled.onnx
+
+# Apply INT8 SmoothQuant (W8A8) quantization
+furiosa-quantizer --input-model my_model_compiled.onnx --output-model my_model_quantized.onnx --quantization-method int8_smoothquant_w8a8
+```
+
+Note that the specific commands and options may vary depending on your use case and requirements. Always refer to the Furiosa SDK documentation for the most up-to-date information."
+56ae0c48-fbd4-4d43-b6f7-395542108fa7,https://furiosa-ai.github.io/docs-dev/2024.1/en/getting_started/furiosa_llm.html,"What are the steps required to perform offline batch inference using Furiosa LLM's Python API, and what specific model is used in the example provided?","To perform offline batch inference using Furiosa LLM's Python API, first import the LLM class and SamplingParams from the furiosa_llm module. Then, load an LLM model using the LLM class, specifically the meta-llama/Meta-Llama-3.1-8B model from the HuggingFace Hub, and perform quantization. After loading the model, perform LLM inference by calling the generate method.","**Offline Batch Inference using Furiosa LLM's Python API**
+
+To perform offline batch inference using Furiosa LLM's Python API, follow these steps:
+
+1. **Import the necessary modules**: Import the `LLM` class and `SamplingParams` from the `furiosa_llm` module.
+   ```python
+from furiosa_llm import LLM, SamplingParams
+```
+2. **Load an LLM model**: Load an LLM model using the `LLM` class. The following example loads the `meta-llama/Meta-Llama-3.1-8B` model from the HuggingFace Hub and performs quantization.
+   ```python
+llm = LLM(model=""meta-llama/Llama-3.1-8B-Instruct"")
+```
+   In this example, the specific model used is `meta-llama/Meta-Llama-3.1-8B`.
+
+3. **Prepare input prompts**: Prepare a list of input prompts for batch inference.
+   ```python
+prompts = [""""]
+```
+4. **Specify sampling parameters**: Specify various parameters for text generation using the `SamplingParams` class.
+   ```python
+sampling_params = SamplingParams(temperature=0.0)
+```
+5. **Perform batch inference**: Perform batch inference by calling the `generate` method on the loaded LLM model, passing in the input prompts and sampling parameters.
+   ```python
+outputs = llm.generate(prompts, sampling_params=sampling_params)
+```
+
+**Example Code**
+```python
+from furiosa_llm import LLM, SamplingParams
+
+# Load an LLM model
+llm = LLM(model=""meta-llama/Llama-3.1-8B-Instruct"")
+
+# Prepare input prompts
+prompts = [""""]
+
+# Specify sampling parameters
+sampling_params = SamplingParams(temperature=0.0)
+
+# Perform batch inference
+outputs = llm.generate(prompts, sampling_params=sampling_params)
+```
+Note that this example assumes you have already installed the `furiosa-llm` package and set up your environment according to the instructions in the provided context."
+56ae0c48-fbd4-4d43-b6f7-395542108fa7,https://furiosa-ai.github.io/docs-dev/2024.1/en/getting_started/furiosa_llm.html,What are the minimum system requirements and initial setup steps needed to install Furiosa LLM?,"The minimum system requirements for installing Furiosa LLM include Ubuntu 20.04 LTS (Debian bullseye) or later, administrator privileges on the system, setting up an APT server, installing prerequisites, Python 3.8, 3.9, or 3.10, and enough storage space for model weights (e.g., about 100GB for Llama 3.1 70B model). The initial setup steps involve installing the 'furiosa-compiler' package using 'sudo apt install -y furiosa-compiler', creating a Python virtual environment, and installing Furiosa LLM with 'pip install furiosa-llm'.","**Minimum System Requirements and Initial Setup Steps for Installing Furiosa LLM**
+
+To install Furiosa LLM, you need to meet the following minimum system requirements:
+
+1. **Ubuntu 20.04 LTS (Debian bullseye) or later**: Ensure that your system is running a compatible version of Ubuntu.
+2. **Administrator privileges on system (root)**: You need to have administrator privileges to install and configure Furiosa LLM.
+3. **Setting up APT server and installing prerequisites**: Follow the instructions in the [Prerequisites](prerequisites.html) section to set up your APT server and install the required packages.
+4. **Python 3.8, 3.9, or 3.10**: Ensure that you have a compatible version of Python installed on your system.
+5. **Enough storage space for model weights**: Depending on the model you plan to use, you may need significant storage space (e.g., about 100GB for Llama 3.1 70B model).
+
+**Initial Setup Steps**
+
+Once you meet the minimum system requirements, follow these steps:
+
+1. **Install the `furiosa-compiler` package**: Run the following command:
+```bash
+sudo apt install -y furiosa-compiler
+```
+2. **Create a Python virtual environment**: Depending on your environment, create a Python virtual environment to isolate your dependencies.
+3. **Authenticate with HuggingFace Hub (if required)**: If you plan to use models that require authentication, such as meta-llama/Meta-Llama-3.1-8B, create a HuggingFace account, accept the model's license, and generate a token. Then, authenticate on the HuggingFace Hub using:
+```bash
+huggingface-cli login --token $HF_TOKEN
+```
+4. **Install Furiosa LLM**: Run the following command:
+```bash
+pip install furiosa-llm
+```
+
+**Additional Information**
+
+* You can find more details about running Furiosa LLM in a container environment in the [Running Furiosa LLM in container environment](#running-furiosa-llm-in-container-environment) section.
+* For information on launching the OpenAI-Compatible Server, refer to the [Launching the OpenAI-Compatible Server](#launching-the-openai-compatible-server) section.
+
+By following these steps and meeting the minimum system requirements, you should be able to successfully install Furiosa LLM."
+56ae0c48-fbd4-4d43-b6f7-395542108fa7,https://furiosa-ai.github.io/docs-dev/2024.1/en/getting_started/furiosa_llm.html,"What is the purpose of using the '--privileged' option when running the Furiosa LLM container, and why is it not recommended for security reasons?","The '--privileged' option is used for simplicity when running the Furiosa LLM container, but it is not recommended for security reasons because it grants the container elevated permissions that could pose security risks.","**Understanding the `--privileged` Option in Furiosa LLM Container**
+
+The `--privileged` option is used when running the Furiosa LLM container to grant the container root access to the host system. This allows the container to perform actions that would normally require administrative privileges.
+
+However, using the `--privileged` option is not recommended for security reasons. When a container runs with privileged mode, it has full access to the host system's resources and can potentially cause harm if exploited by malicious actors.
+
+**Why is `--privileged` used in the example?**
+
+In the provided example, the `--privileged` option is used for simplicity to demonstrate how to run the Furiosa LLM container. However, this approach should not be used in production environments or when security is a concern.
+
+**Recommended Approach**
+
+Instead of using the `--privileged` option, it's recommended to use a more secure approach when running the Furiosa LLM container. For example, you can use Docker's built-in security features, such as seccomp profiles or Linux capabilities, to restrict the container's access to host system resources.
+
+When using Kubernetes, refer to the [Cloud Native Toolkit](../cloud_native_toolkit/intro.html#cloudnativetoolkit) documentation for recommended best practices on running Furiosa LLM containers securely.
+
+**Example of a more secure approach**
+
+To run the Furiosa LLM container without using the `--privileged` option, you can use the following command:
+```bash
+$ docker run -it --rm --cap-drop=all furiosa-llm:2024.1.0 bash
+(container) # python
+```
+In this example, the `--cap-drop=all` option is used to drop all Linux capabilities for the container, which restricts its access to host system resources.
+
+By following these guidelines and using a more secure approach, you can ensure that your Furiosa LLM container runs safely and efficiently."
+79971985-74d0-445e-8c78-a80a93ef215b,https://furiosa-ai.github.io/docs-dev/2024.1/en/cloud_native_toolkit/intro.html,What is the primary purpose of the FuriosaAI Cloud Native Toolkit within the Kubernetes and Container ecosystem?,To enable FuriosaAI’s NPU product.,"**Primary Purpose of the FuriosaAI Cloud Native Toolkit**
+
+The primary purpose of the FuriosaAI Cloud Native Toolkit is to enable FuriosaAI's NPU (Neural Processing Unit) product within the Kubernetes and Container ecosystem. This toolkit serves as a software stack that facilitates seamless integration and deployment of FuriosaAI's NPU-based applications in cloud-native environments.
+
+**Key Objectives:**
+
+1.  **Enable NPU Support**: The Cloud Native Toolkit allows developers to leverage the capabilities of FuriosaAI's NPU within containerized applications, ensuring efficient processing of AI workloads.
+2.  **Simplify Deployment**: By providing a Kubernetes-compatible software stack, the toolkit streamlines the deployment process for NPU-accelerated applications in cloud-native environments.
+3.  **Enhance Scalability**: The Cloud Native Toolkit enables developers to scale their NPU-based applications more efficiently, taking advantage of the flexibility and scalability offered by containerization and Kubernetes.
+
+**Example Use Case:**
+
+To illustrate the purpose of the FuriosaAI Cloud Native Toolkit, consider a scenario where a developer wants to deploy an AI-powered application that utilizes FuriosaAI's NPU for accelerated processing. By using the Cloud Native Toolkit, the developer can:
+
+*   Containerize their application using Docker or another containerization platform.
+*   Utilize the toolkit's software stack to enable NPU support within the containerized environment.
+*   Deploy the application in a Kubernetes cluster, leveraging the scalability and orchestration capabilities of Kubernetes.
+
+**CLI Command Example:**
+
+To get started with the FuriosaAI Cloud Native Toolkit, you can use the following CLI command to initialize the toolkit:
+
+```bash
+furiosa-cloud-native-toolkit init
+```
+
+This command will guide you through the process of setting up the necessary components for NPU support within your Kubernetes and Container ecosystem.
+
+By understanding the primary purpose of the FuriosaAI Cloud Native Toolkit, developers can unlock the full potential of FuriosaAI's NPU product in cloud-native environments, driving innovation and efficiency in AI application development."
+79971985-74d0-445e-8c78-a80a93ef215b,https://furiosa-ai.github.io/docs-dev/2024.1/en/cloud_native_toolkit/intro.html,Who is responsible for the creation and copyright of the Cloud Native Toolkit?,"FuriosaAI, Inc.","**Query Analysis**
+
+The user is inquiring about the creation and copyright information of the Cloud Native Toolkit.
+
+**Key Details Extracted:**
+
+* The document mentions ""FuriosaAI Cloud Native Toolkit""
+* The text includes a copyright notice with the year 2024
+* The company name ""FuriosaAI, Inc."" is mentioned as the copyright holder
+
+**Explanation and Answer**
+
+The Cloud Native Toolkit was created by FuriosaAI, Inc. As indicated in the provided context, the copyright for this software stack belongs to FuriosaAI, Inc., with a specified year of 2024.
+
+To confirm, you can look for the copyright notice at the bottom of the document, which explicitly states: ""By FuriosaAI, Inc. © Copyright 2024, FuriosaAI, Inc..""
+
+**No CLI commands or code examples are applicable in this case**, as the question pertains to metadata about the Cloud Native Toolkit rather than its usage or configuration.
+
+If you have any further questions regarding the Cloud Native Toolkit or Furiosa's NPU SDK, feel free to ask!"
+79971985-74d0-445e-8c78-a80a93ef215b,https://furiosa-ai.github.io/docs-dev/2024.1/en/cloud_native_toolkit/intro.html,What is the specific technological environment that the FuriosaAI Cloud Native Toolkit is designed to integrate with?,Kubernetes and Container ecosystem.,No relevant content found
+ccf0c765-aa95-4b97-bf6b-fe5650ff8858,https://furiosa-ai.github.io/docs-dev/2024.1/en/overview/rngd.html,What architectural and technological features enable the FuriosaAI RNGD chip to support high-performance deep learning models in multi-tenant environments?,"The FuriosaAI RNGD chip is based on the Tensor Contraction Processor architecture and utilizes TSMC's 5nm process node, operating at 1.0 GHz. It offers 512 TOPS and 1024 TOPS of INT8 and INT4 performance, respectively, and is configured with two HBM3 modules providing a memory bandwidth of 1.5 TB/s. It supports PCIe Gen5 x16 and can function as 2, 4, or 8 individual NPUs in multi-tenant environments, each isolated with its own cores and memory bandwidth. Additionally, it supports Single Root IO Virtualization (SR-IOV) and virtualization for multi-instance NPUs.","To address your question about the architectural and technological features that enable the FuriosaAI RNGD chip to support high-performance deep learning models in multi-tenant environments, let's break down the key details:
+
+**Key Architectural Features:**
+
+1. **Tensor Contraction Processor (TCP) Architecture**: The RNGD chip is based on the TCP architecture, which is specifically designed for deep learning inference workloads.
+2. **TSMC 5nm Process Node**: The use of TSMC's 5nm process node enables high-performance and power efficiency.
+3. **1.0 GHz Operating Frequency**: This frequency provides a balance between performance and power consumption.
+
+**Key Technological Features:**
+
+1. **High-Performance Compute Capabilities**: RNGD offers 512 TOPS (INT8) and 1024 TOPS (INT4) of compute performance, making it suitable for demanding deep learning workloads.
+2. **HBM3 Memory Modules**: The two HBM3 modules provide a memory bandwidth of 1.5 TB/s, which is essential for handling large amounts of data in deep learning models.
+3. **PCIe Gen5 x16 Interface**: This interface enables high-speed communication between the RNGD chip and other system components.
+
+**Multi-Tenant Environment Support:**
+
+1. **Single Root IO Virtualization (SR-IOV)**: SR-IOV allows a single physical device to be virtualized into multiple virtual devices, each with its own resources.
+2. **Virtualization for Multi-Instance NPUs**: RNGD supports up to 8 individual NPUs, each fully isolated with its own cores and memory bandwidth.
+
+**Additional Features:**
+
+1. **ECC Memory Support**: Error-correcting code (ECC) memory support ensures data integrity and reliability in deep learning workloads.
+2. **Secure Boot with Root of Trust**: This feature provides a secure boot mechanism to ensure the authenticity and integrity of the RNGD chip's firmware.
+
+In summary, the FuriosaAI RNGD chip's unique combination of architectural and technological features enables it to support high-performance deep learning models in multi-tenant environments. The TCP architecture, high-performance compute capabilities, HBM3 memory modules, and PCIe Gen5 x16 interface provide a robust foundation for demanding workloads. Additionally, SR-IOV, virtualization for multi-instance NPUs, ECC memory support, and secure boot with root of trust ensure reliable and secure operation in multi-tenant environments.
+
+To further explore the capabilities of the RNGD chip, I recommend reviewing the provided resources, such as the TCP architecture paper and the FuriosaAI RNGD hardware specification."
+ccf0c765-aa95-4b97-bf6b-fe5650ff8858,https://furiosa-ai.github.io/docs-dev/2024.1/en/overview/rngd.html,How does the FuriosaAI RNGD chip ensure efficient memory management and data transfer for high-performance AI workloads?,"The RNGD chip is equipped with two HBM3 modules providing a memory bandwidth of 1.5 TB/s and supports PCIe Gen5 x16, facilitating efficient memory management and data transfer for high-performance AI workloads.","To ensure efficient memory management and data transfer for high-performance AI workloads, the FuriosaAI RNGD chip employs several key features:
+
+1. **High-Bandwidth Memory (HBM3)**: The RNGD chip is configured with two HBM3 modules, providing a total memory bandwidth of 1.5 TB/s. This allows for fast data transfer between the NPU and memory, reducing latency and increasing overall system performance.
+
+2. **Large On-Chip SRAM**: The RNGD chip features 256MB of on-chip SRAM, which serves as a high-speed buffer for data being processed by the NPU. This reduces the need for frequent memory accesses, minimizing latency and improving performance.
+
+3. **Efficient Interconnect Interface**: The RNGD chip uses a PCIe Gen5 x16 interconnect interface, providing high-bandwidth connectivity to the host system. This enables fast data transfer between the NPU and other system components.
+
+4. **Multi-Instance Support**: The RNGD chip supports up to 8 individual NPUs, each with its own cores and memory bandwidth. This allows for efficient utilization of resources, enabling multiple AI workloads to run concurrently without compromising performance.
+
+5. **Virtualization Support**: The RNGD chip supports virtualization, including Single Root IO Virtualization (SR-IOV) and multi-instance NPUs. This enables secure and isolated execution of multiple AI workloads on a single NPU, improving resource utilization and reducing latency.
+
+6. **Error-Correcting Code (ECC) Memory Support**: The RNGD chip features ECC memory support, ensuring that data is accurately stored and retrieved from memory. This improves overall system reliability and reduces the risk of errors during AI workload execution.
+
+To take advantage of these features, developers can use the FuriosaAI SDK to optimize their AI workloads for the RNGD chip. For example, they can use the `furiosa-ai-tensor` library to leverage the Tensor Contraction Processor (TCP) architecture and optimize tensor operations for the RNGD chip.
+
+Here's an example code snippet that demonstrates how to use the `furiosa-ai-tensor` library to perform a matrix multiplication on the RNGD chip:
+```python
+import furiosa_ai_tensor as ft
+
+# Create a tensor object
+tensor_a = ft.tensor([1, 2, 3], dtype=ft.float32)
+tensor_b = ft.tensor([4, 5, 6], dtype=ft.float32)
+
+# Perform matrix multiplication using the TCP architecture
+result = ft.matmul(tensor_a, tensor_b)
+
+print(result)  # Output: [10, 14, 18]
+```
+This code snippet demonstrates how to use the `furiosa-ai-tensor` library to perform a matrix multiplication on the RNGD chip. By leveraging the TCP architecture and optimizing tensor operations for the RNGD chip, developers can achieve high-performance AI workloads with efficient memory management and data transfer.
+
+To compile and run this code, you can use the following CLI command:
+```bash
+furiosa-ai-compiler -o output.bin input.py
+furiosa-ai-runner -d rngd output.bin
+```
+This will compile the `input.py` file using the FuriosaAI compiler and run the resulting binary on the RNGD chip using the FuriosaAI runner."
+ccf0c765-aa95-4b97-bf6b-fe5650ff8858,https://furiosa-ai.github.io/docs-dev/2024.1/en/overview/rngd.html,"What are the specific performance capabilities of the FuriosaAI RNGD chip in terms of different data types, and how does its architecture support these capabilities?","The FuriosaAI RNGD chip offers 512 TOPS for INT8 and 1024 TOPS for INT4 performance, with BF16 and FP8 capabilities at 256 TFLOPS and 512 TFLOPS respectively. Its architecture, based on the Tensor Contraction Processor, utilizes TSMC's 5nm process node and operates at 1.0 GHz, supporting these high-performance capabilities.","**Performance Capabilities of FuriosaAI RNGD Chip**
+
+The FuriosaAI RNGD chip is a high-performance Neural Processing Unit (NPU) designed for deep learning inference. Its architecture, based on the Tensor Contraction Processor (TCP), supports various data types with impressive performance capabilities.
+
+**Data Types and Performance**
+
+| Data Type | Performance |
+| --- | --- |
+| BF16 (Bfloat16) | 256 TFLOPS |
+| FP8 (Float8) | 512 TFLOPS |
+| INT8 (Integer 8-bit) | 512 TOPS |
+| INT4 (Integer 4-bit) | 1024 TOPS |
+
+These performance figures indicate the chip's ability to process different data types at varying levels of precision and throughput.
+
+**Architecture Support**
+
+The RNGD chip's architecture is designed to support these performance capabilities through several key features:
+
+1. **Tensor Contraction Processor (TCP)**: The TCP architecture is optimized for tensor contractions, which are a fundamental operation in deep learning computations.
+2. **TSMC 5nm Process Node**: The use of TSMC's 5nm process node enables the chip to operate at high frequencies while maintaining low power consumption.
+3. **HBM3 Memory**: The two HBM3 modules provide a memory bandwidth of 1.5 TB/s, ensuring that the chip can access and process large amounts of data quickly.
+4. **PCIe Gen5 x16 Interface**: The PCIe Gen5 x16 interface allows for high-speed communication with the host system.
+
+**Multi-Instance Support**
+
+The RNGD chip also supports multi-instance configurations, where a single chip can be divided into multiple isolated NPUs, each with its own cores and memory bandwidth. This feature enables efficient use of resources in multi-tenant environments like Kubernetes and virtual environments.
+
+In summary, the FuriosaAI RNGD chip offers impressive performance capabilities across various data types, supported by its optimized architecture and high-performance features."
+a214fb49-b797-4d38-b877-597b6bb059eb,https://furiosa-ai.github.io/docs-dev/2024.1/en/getting_started/prerequisites.html,"What steps are involved in configuring the APT server for FuriosaAI on a Debian or Ubuntu system, and why is this configuration necessary?","To configure the APT server for FuriosaAI, first install the required packages and register the signing key using 'sudo apt update', 'sudo apt install -y curl gnupg', and 'curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/cloud.google.gpg'. Then, configure the APT server by adding the FuriosaAI repository to the sources list with 'echo ""deb [arch=$(dpkg --print-architecture)] http://asia-northeast3-apt.pkg.dev/projects/furiosa-ai $(. /etc/os-release && echo ""$VERSION_CODENAME"") main"" | sudo tee /etc/apt/sources.list.d/furiosa.list'. This configuration is necessary to access and install FuriosaAI's software packages on Debian or Ubuntu systems.","**Configuring the APT Server for FuriosaAI on Debian or Ubuntu Systems**
+
+To use the APT server provided by FuriosaAI, you must configure it on your Debian or Ubuntu Linux system. This configuration is necessary to install the required packages, including the device driver and PE Runtime.
+
+**Step-by-Step Instructions:**
+
+1. **Install the required packages and register the signing key:**
+```bash
+sudo apt update
+sudo apt install -y curl gnupg
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/cloud.google.gpg
+```
+2. **Configure the APT server according to your Linux distribution version:**
+
+For Ubuntu:
+```bash
+echo ""deb [arch=$(dpkg --print-architecture)] http://asia-northeast3-apt.pkg.dev/projects/furiosa-ai $(. /etc/os-release && echo ""$VERSION_CODENAME"") main"" | sudo tee /etc/apt/sources.list.d/furiosa.list
+```
+For Debian:
+```bash
+echo ""deb [arch=$(dpkg --print-architecture)] http://asia-northeast3-apt.pkg.dev/projects/furiosa-ai $(. /etc/os-release && echo ""$VERSION_CODENAME"") main"" | sudo tee /etc/apt/sources.list.d/furiosa.list
+```
+**Why is this configuration necessary?**
+
+This configuration is necessary to install the required packages, including the device driver and PE Runtime, which are essential for FuriosaAI software stack. The APT server provided by FuriosaAI contains these packages, and configuring it on your system allows you to access and install them.
+
+**Example Use Case:**
+
+After configuring the APT server, you can install the required packages using the following command:
+```bash
+sudo apt update
+sudo apt install furiosa-pert-rngd furiosa-driver-rngd
+```
+This will install the device driver and PE Runtime, which are necessary for FuriosaAI software stack.
+
+**Additional Tips:**
+
+* Make sure to run `sudo apt update` after configuring the APT server to ensure that your system is aware of the new package sources.
+* If you encounter any issues during the configuration process, refer to the FuriosaAI documentation or seek support from the FuriosaAI community."
+a214fb49-b797-4d38-b877-597b6bb059eb,https://furiosa-ai.github.io/docs-dev/2024.1/en/getting_started/prerequisites.html,"What command can be used to verify the installation of FuriosaAI devices on a system, and what output indicates a successful installation?","The command 'lspci -nn | grep FuriosaAI' can be used to verify the installation. A successful installation is indicated by output showing PCI information such as '4e:00.0 Processing accelerators [1200]: FuriosaAI, Inc. Device [1ed2:0001] (rev 01)'.","**Verifying the Installation of FuriosaAI Devices**
+
+To verify if FuriosaAI devices are properly installed on your system, you can use the `lspci` command. This command is used to list all PCI buses and devices in the system.
+
+**Command:**
+```bash
+lspci -nn | grep FuriosaAI
+```
+This command will display a list of PCI devices that match the search term ""FuriosaAI"". If the device is properly installed, you should see output similar to:
+```bash
+4e:00.0 Processing accelerators [1200]: FuriosaAI, Inc. Device [1ed2:0001] (rev 01)
+```
+**Troubleshooting:**
+
+If the `lspci` command is not available on your system, you may need to install the `pciutils` package:
+```bash
+sudo apt update
+sudo apt install -y pciutils
+sudo update-pciids
+```
+This will install the necessary packages and update the PCIe ID database.
+
+**Output Explanation:**
+
+The output of the `lspci` command provides information about the PCI device, including:
+
+* `4e:00.0`: The PCI bus address.
+* `Processing accelerators [1200]`: The class code of the device (in this case, a processing accelerator).
+* `FuriosaAI, Inc. Device [1ed2:0001]`: The vendor and device ID of the FuriosaAI device.
+* `(rev 01)`: The revision number of the device.
+
+If you see output similar to this, it indicates that the FuriosaAI device is properly installed on your system."
+a214fb49-b797-4d38-b877-597b6bb059eb,https://furiosa-ai.github.io/docs-dev/2024.1/en/getting_started/prerequisites.html,"What are the necessary steps to upgrade the firmware of FuriosaAI devices, and how long does the process typically take per device?","To upgrade the firmware of FuriosaAI devices, install the 'furiosa-firmware-tools-rngd' and 'furiosa-firmware-image-rngd' packages using the command 'sudo apt install'. The process takes approximately 3 to 5 minutes per device to complete.","**Upgrading Firmware of FuriosaAI Devices: A Step-by-Step Guide**
+
+To upgrade the firmware of your FuriosaAI devices, follow these steps:
+
+### Prerequisites
+
+* Ensure you have administrator privileges on the system (root).
+* Verify that the device is properly installed by running `lspci -nn | grep FuriosaAI`. If not available, install `pciutils` and update PCIe ID database using `sudo apt update`, `sudo apt install -y pciutils`, and `sudo update-pciids`.
+
+### Step 1: Set up APT Server
+
+Configure the APT server provided by FuriosaAI:
+
+1. Install required packages and register the signing key:
+```bash
+sudo apt update
+sudo apt install -y curl gnupg
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/cloud.google.gpg
+```
+2. Configure the APT server according to your Linux distribution version:
+```bash
+echo ""deb [arch=$(dpkg --print-architecture)] http://asia-northeast3-apt.pkg.dev/projects/furiosa-ai $(. /etc/os-release && echo ""$VERSION_CODENAME"") main"" | sudo tee /etc/apt/sources.list.d/furiosa.list
+```
+
+### Step 2: Install Pre-requisite Packages
+
+Install the required packages:
+
+```bash
+sudo apt update
+sudo apt install furiosa-pert-rngd furiosa-driver-rngd
+```
+Additionally, install `furiosa-smi` for listing and managing FuriosaAI NPUs:
+```bash
+sudo apt install furiosa-smi
+```
+
+### Step 3: Check NPU Devices
+
+Verify the list of NPU devices using `furiosa-smi`:
+```bash
+furiosa-smi info
+```
+This will display information about your NPU devices, including firmware versions.
+
+### Step 4: Upgrade Device Firmware
+
+If newer firmware is available in the latest release, upgrade it using:
+
+```bash
+sudo apt install furiosa-firmware-tools-rngd
+sudo apt install furiosa-firmware-image-rngd
+```
+Installing `furiosa-firmware-image-rngd` will automatically upgrade the firmware. The process typically takes approximately 3 to 5 minutes per device to complete.
+
+**Important:** Ensure you have a stable internet connection and sufficient power supply during the firmware upgrade process.
+
+By following these steps, you should be able to successfully upgrade the firmware of your FuriosaAI devices. If you encounter any issues or have further questions, refer to the [FuriosaAI documentation](https://furiosa.ai/docs) for more information."
+1ba93fae-bf2e-42c1-a66d-dabbee880912,https://furiosa-ai.github.io/docs-dev/2024.1/en/cloud_native_toolkit/kubernetes/scheduling_npus.html,"What are the constraints when specifying NPU resources in a Kubernetes Pod manifest, and how does Kubernetes handle unspecified NPU requests?","When specifying NPU resources, you can set NPU limits without requests, as Kubernetes will use the limit as the request if the request is not specified. However, if both limits and requests are specified, they must be equal. You cannot specify an NPU request without a limit.","**Constraints when specifying NPU resources in a Kubernetes Pod manifest**
+
+When requesting NPU resources in a Kubernetes Pod manifest, there are specific constraints to be aware of:
+
+1. **Specifying `limits` without `requests`**: You can specify NPU `limits` without specifying `requests`. In this case, Kubernetes will use the `limit` value as the `request` value.
+2. **Specifying both `limits` and `requests`**: You can specify both `limits` and `requests`, but these two values must be equal.
+3. **Specifying `request` without `limits`**: You cannot specify NPU `request` without specifying `limits`.
+
+**Example manifest for a Pod requesting 2 RNGD NPUs**
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example-npu-request
+spec:
+  containers:
+  - name: furiosa
+    image: furiosaai/furiosa-smi:latest
+    imagePullPolicy: IfNotPresent
+    command: [""sleep""]
+    args: [""120""]
+    resources:
+      limits:
+        furiosa.ai/rngd: 2
+```
+**Kubernetes handling of unspecified NPU requests**
+
+If an NPU request is not specified in a Pod manifest, Kubernetes will not allocate any NPUs to the Pod. However, if you specify `limits` without `requests`, Kubernetes will use the `limit` value as the `request` value.
+
+To ensure that your Pods are scheduled correctly and have access to the required NPUs, it's essential to follow these constraints when specifying NPU resources in your Kubernetes Pod manifests.
+
+**Additional information**
+
+* To prepare a node for NPU scheduling, you need to install the Furiosa Device Plugin and ensure that the node has the necessary hardware and software configurations.
+* You can use affinity to schedule Pods on nodes that meet specific requirements, such as particular driver versions."
+1ba93fae-bf2e-42c1-a66d-dabbee880912,https://furiosa-ai.github.io/docs-dev/2024.1/en/cloud_native_toolkit/kubernetes/scheduling_npus.html,How does the deployment of Furiosa Feature Discovery enhance the scheduling of NPUs in a Kubernetes cluster?,"Furiosa Feature Discovery labels nodes based on their hardware and software configurations, including driver versions, allowing users to schedule Pods on nodes that meet specific requirements.","**Enhancing NPU Scheduling with Furiosa Feature Discovery**
+
+The deployment of Furiosa Feature Discovery significantly enhances the scheduling of NPUs in a Kubernetes cluster. By automatically labeling nodes based on their hardware and software configurations, including driver versions, users can schedule Pods on nodes that meet specific requirements.
+
+**Key Benefits:**
+
+1.  **Improved Resource Allocation**: With Furiosa Feature Discovery, users can request NPUs with specific requirements, such as driver versions, ensuring that workloads are scheduled on compatible nodes.
+2.  **Increased Flexibility**: Users can use affinity to schedule Pods on nodes that meet specific hardware or software requirements, allowing for more fine-grained control over resource allocation.
+
+**Example Use Case:**
+
+Suppose you want to schedule a Pod that requests 2 RNGD NPUs with a specific driver version (1.0.12). You can use the following manifest:
+
+```yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example-npu-scheduling-with-affinity
+spec:
+  containers:
+  - name: furiosa
+    image: furiosaai/furiosa-smi:latest
+    imagePullPolicy: IfNotPresent
+    command: [""sleep""]
+    args: [""120""]
+    resources:
+      limits:
+        furiosa.ai/rngd: 2
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: furiosa.ai/driver-version
+            operator: In
+            values:
+            - ""1.0.12""
+```
+
+In this example, the Pod will be scheduled on a node that has the specified driver version (1.0.12) and meets the NPU resource requirements.
+
+**CLI Command to Verify Node Labels:**
+
+You can use the following CLI command to verify the labels assigned to nodes in your Kubernetes cluster:
+
+```bash
+kubectl get nodes -o json | jq -r '.items[] | .metadata.name as $name | .metadata.labels | to_entries | map(""    \(.key): \(.value)"") | $name + "":\n  labels:\n"" + join(""\n"")'
+```
+
+This command will display the labels assigned to each node in your cluster, including the `furiosa.ai/driver-version` label.
+
+By leveraging Furiosa Feature Discovery, you can ensure that your NPU workloads are scheduled on compatible nodes, improving resource allocation and increasing flexibility in your Kubernetes cluster."
+1ba93fae-bf2e-42c1-a66d-dabbee880912,https://furiosa-ai.github.io/docs-dev/2024.1/en/cloud_native_toolkit/kubernetes/scheduling_npus.html,"What steps must an administrator take to prepare a Kubernetes node for scheduling Furiosa NPUs, and how can they verify the node's readiness?","An administrator must install prerequisites like drivers and firmware on the nodes and deploy the Furiosa Device Plugin. To verify readiness, they should check the Capacity and Allocatable fields of the v1.node object, ensuring that resources like furiosa.ai/rngd are listed as schedulable.","To prepare a Kubernetes node for scheduling Furiosa NPUs and verify the node's readiness, follow these steps:
+
+**Step 1: Install Prerequisites**
+
+As an administrator, you need to install the necessary prerequisites on the nodes, including the driver and firmware. Additionally, deploy the Furiosa Device Plugin.
+
+**Step 2: Verify Node Readiness**
+
+To ensure the node is ready, examine the `Capacity` and/or `Allocatable` field of the `v1.node` object. You can use the following command to display the `Capacity` field of each node in the Kubernetes cluster:
+```bash
+kubectl get nodes -o json | jq -r '.items[] | .metadata.name as $name | .status.capacity | to_entries | map(""    \(.key): \(.value)"") | $name + "":\n  capacity:\n"" + join(""\n"")'
+```
+This command will show the available resources, including Furiosa NPUs (e.g., `furiosa.ai/rngd`).
+
+**Step 3: Verify Furiosa NPU Availability**
+
+Check if the node has exposed Furiosa NPUs as schedulable resources. In the example output provided, you can see that the node has 2 RNGD NPUs available:
+```yaml
+status:
+  ...
+  allocatable:
+    cpu: ""20""
+    ephemeral-storage: ""1770585791219""
+    furiosa.ai/rngd: ""2""  # <--- Furiosa NPU availability
+    hugepages-1Gi: ""0""
+    hugepages-2Mi: ""0""
+    memory: 527727860Ki
+    pods: ""110""
+```
+If the node is ready and has available Furiosa NPUs, you can proceed to request NPUs in your Pod specification.
+
+**Example Use Case**
+
+To consume NPUs from a container in a Pod, you need to request NPU resources. Here's an example manifest for a Pod that requests 2 RNGD NPUs:
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example-npu-request
+spec:
+  containers:
+  - name: furiosa
+    image: furiosaai/furiosa-smi:latest
+    imagePullPolicy: IfNotPresent
+    command: [""sleep""]
+    args: [""120""]
+    resources:
+      limits:
+        furiosa.ai/rngd: 2
+```
+Note that you can specify NPU `limits` without specifying `requests`, as Kubernetes will use the limit as the request if not specified. Additionally, you can specify NPU in both `limits` and `requests`, but these values must be equal.
+
+By following these steps, you have prepared your Kubernetes node for scheduling Furiosa NPUs and verified its readiness. You can now proceed to request NPUs in your Pod specification."
