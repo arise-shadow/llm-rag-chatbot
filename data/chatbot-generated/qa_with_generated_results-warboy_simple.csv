@@ -1,0 +1,243 @@
+page_id,link,question,answer,generated
+3e9b309f-d9d2-4ee7-be9e-9ffe421d4cfa,https://furiosa-ai.discourse.group/t/furiosaai-faq/18/3,How can I convert an ONNX file to an ENF file after quantization to later use it by simply opening a session?,You can use the following command: furiosa compile foo.onnx -o foo.enf,"This text is a documentation page for Furiosa SDK, a software development kit for AI models. The page discusses optimization techniques to improve the performance of AI models on Furiosa's NPU (Neural Processing Unit) devices.
+
+**Model Optimization**
+
+The page starts by discussing model optimization techniques that can be applied before compiling the model with Furiosa's compiler. These techniques include:
+
+1. **Weight pruning**: removing unnecessary weights from the model to reduce its size and improve inference speed.
+2. **Knowledge distillation**: transferring knowledge from a large teacher model to a smaller student model, which can lead to improved performance on the NPU.
+3. **Quantization**: reducing the precision of the model's weights and activations to reduce memory usage and improve inference speed.
+
+**Compilation Optimization**
+
+The page then discusses compilation optimization techniques that can be applied when compiling the model with Furiosa's compiler. These techniques include:
+
+1. **Patch size optimization**: adjusting the patch size to balance NPU computation time and I/O operation time.
+2. **Using multiple NPU devices**: running multiple patches across multiple NPU devices in parallel to improve throughput.
+
+**Runtime Optimization**
+
+The page finally discusses runtime optimization techniques that can be applied when running the model on Furiosa's NPU devices. These techniques include:
+
+1. **Increasing batch size**: increasing the batch size to make the NPU utilization higher and improve throughput.
+2. **Using single PE vs fusion PE**: choosing between using a single processing element (PE) or fusing two PEs as a single PE, depending on the model's requirements and the desired trade-off between latency and throughput.
+3. **Increasing inference concurrency**: increasing the number of workers to process multiple inferences simultaneously and improve NPU utilization.
+4. **Using sync API vs async APIs**: choosing between synchronous and asynchronous APIs, with async APIs allowing for non-blocking requests and improved performance.
+
+Overall, this page provides a comprehensive overview of optimization techniques that can be applied at various stages of the AI model development pipeline to improve performance on Furiosa's NPU devices."
+3e9b309f-d9d2-4ee7-be9e-9ffe421d4cfa,https://furiosa-ai.discourse.group/t/furiosaai-faq/18/4,Can I specify NPU 0 and NPU 1 separately when more than two NPUs are installed?,"Yes, you can execute tasks by specifying different NPUs as shown below:
+sess = session.create('model.enf', device=""npu0pe0-1"")
+sess = session.create('model.enf', device=""npu1pe0-1"")","This text appears to be a documentation page for Furiosa SDK, a software development kit for optimizing and deploying machine learning models on specialized hardware. The page discusses various techniques for optimizing model performance, including:
+
+1. Model pruning: reducing the number of parameters in a model while maintaining its accuracy.
+2. Knowledge distillation: transferring knowledge from a large model to a smaller one.
+3. Quantization: representing model weights and activations using fewer bits.
+4. Patch size optimization: adjusting the patch size for NPU executions to balance computation and I/O time.
+5. Using multiple NPU devices in parallel.
+6. Increasing batch size to improve NPU utilization.
+
+The page also discusses runtime optimizations, including:
+
+1. Increasing inference concurrency (the number of workers) to overlap NPU executions with CPU computations.
+2. Using sync API vs async APIs: sync API is blocking and waits for the completion of the inference, while async APIs are non-blocking and allow requesting multiple inferences simultaneously.
+
+The page provides code examples for using Furiosa SDK's Queue API and Async/Await syntax to implement serving applications that can handle multiple concurrent requests.
+
+Overall, this documentation page aims to provide guidance on how to optimize model performance and runtime efficiency when using Furiosa SDK."
+3e9b309f-d9d2-4ee7-be9e-9ffe421d4cfa,https://furiosa-ai.discourse.group/t/furiosaai-faq/18/5,Please provide a precise explanation of the target models supported by Warboy.,"Warboy only supports inference and does not support training.
+Since it only supports INT8 operations, model quantization is mandatory.
+Although it varies by model, Warboy is most efficient with input sizes ranging from 512x512 to 768x768. For larger input sizes, it is recommended to utilize tiling (a method where larger inputs are split into smaller sizes for inference, and the results are combined).","Based on the provided context, I will extract key details from the question and provide a clear and compact explanation.
+
+**Key Details:**
+
+* The user is asking about the target models supported by Warboy.
+* The context mentions that FuriosaAI compiler compiles models of formats TFLite and ONNX (OpSet 13 or lower version).
+* The `furiosa-compiler` command line tool is used to compile a model and generate a program.
+
+**Explanation:**
+
+Warboy supports two target NPU families:
+
+1. Warboy with 1 PE (Processing Element)
+2. Warboy with 2 PEs fused together
+
+To specify the target NPU, you can use the `--target-npu` option with the `furiosa-compiler` command. For example:
+```bash
+furiosa-compiler foo.onnx --target-npu warboy
+```
+This will generate a program for Warboy with 1 PE.
+
+If you want to fuse 2 PEs together, use the following command:
+```bash
+furiosa-compiler foo.onnx --target-npu warboy-2pe
+```
+Note that the `--batch-size` option can also be used to specify the batch size for inference. The optimal batch sizes for some well-known models are listed in the context.
+
+I hope this explanation helps! Let me know if you have any further questions."
+dcd59fbc-fb76-4f34-b6ec-ea88a833b047,https://furiosa-ai.discourse.group/t/furiosaai-faq/18/6,"What operators are supported by Warboy, and what are their features?","It is specialized in accelerating CNN-based models, and you can view the list of accelerated operators.
+Transformer operations are not supported.
+Resize operations are not accelerated.
+Softmax should be removed or handled in post-processing for optimal performance.
+Concat operations along the channel axis may affect accuracy.
+For unsupported operations at the beginning or end of the model, it is effective to move them to pre/post-processing.","Based on the provided context, I extracted the key details related to your question about Warboy operators.
+
+According to the FuriosaAI SW Stack Introduction documentation, specifically in the section ""Compiler"" ([](#compiler)), it is mentioned that:
+
+* The compiler supports NPU acceleration of various operators in the vision area.
+* For reference, operators supported by NPU acceleration can be found in [List of Supported Operators for Warboy Acceleration](../npu/warboy.html#supportedoperators).
+
+Unfortunately, the provided context does not include the specific list of supported operators. However, it directs you to a separate page ([List of Supported Operators for Warboy Acceleration](../npu/warboy.html#supportedoperators)) that should contain this information.
+
+To find the detailed list of supported operators, I recommend visiting the linked page or searching for ""List of Supported Operators for Warboy Acceleration"" within the FuriosaAI documentation."
+dcd59fbc-fb76-4f34-b6ec-ea88a833b047,https://furiosa-ai.discourse.group/t/furiosaai-faq/18/7,Can accuracy drop after quantization? Are there good algorithms for this?,"Accuracy may drop when quantizing an FP32 model to run on Warboy, depending on the model.
+You can try various calibration methods described in the documentation to find the one that achieves the highest accuracy.","**Accuracy Drop after Quantization**
+
+Yes, accuracy can drop after quantization. However, Furiosa SDK provides various calibration methods to minimize this drop in accuracy.
+
+**Quantization Algorithms**
+
+Furiosa SDK supports post-training 8-bit quantization based on the Tensorflow Lite 8-bit quantization specification. The quantization process involves three steps:
+
+1. **Graph Optimization**: The topological structure of the graph is changed by adding or replacing operators to minimize the drop in accuracy.
+2. **Calibration**: The data used to train the model is required to calibrate the weights of the model.
+3. **Quantization**: The final step where the model is quantized.
+
+**Accuracy Comparison**
+
+The table provided in the context compares the accuracy of original floating-point models with that of the quantized models obtained using Furiosa SDK's quantizer and various calibration methods. The results show that the INT8 accuracy is close to the FP accuracy, with some models showing a minimal drop in accuracy (e.g., ResNet50 v1.5 has an INT8 accuracy of 99.702% compared to FP accuracy).
+
+**Good Algorithms for Quantization**
+
+Furiosa SDK provides various calibration methods, including:
+
+* Asymmetric MSE
+* Asymmetric 99.99%-Percentile
+* Symmetric Entropy
+* Asymmetric SQNR
+
+These methods can be used to minimize the drop in accuracy after quantization.
+
+**Using Furiosa SDK for Quantization**
+
+You can use the APU and command line tool provided in Furiosa SDK to convert an ONNX model into an 8-bit quantized model. Refer to the Python SDK examples and documentation for further instructions:
+
+* [Python SDK example: How to use Furiosa SDK from start to finish](https://github.com/furiosa-ai/furiosa-sdk/blob/main/examples/notebooks/HowToUseFuriosaSDKFromStartToFinish.ipynb)
+* [Python SDK Quantization example](https://github.com/furiosa-ai/furiosa-sdk/tree/main/examples/quantizers)
+* [Python reference - furiosa.quantizer](https://furiosa-ai.github.io/docs/latest/en/api/python/furiosa.quantizer.html)"
+dcd59fbc-fb76-4f34-b6ec-ea88a833b047,https://furiosa-ai.discourse.group/t/furiosaai-faq/18/8,Why does the Insufficient Instruction Memory error occur?,"Cause: This error occurs when the number of operators in the model exceeds the instruction memory size, making the binary size larger than the available instruction memory size.
+Instruction memory size: 256KB
+Solution:
+Add the use_program_loading option to the compiler configuration to enable dynamic loading of instructions during the compilation process:
+compiler_config = {
+    ""use_program_loading"": True
+}
+sess = session.create(
+    str(quantized_model_path),
+    compiler_config=compiler_config,
+)
+Note: Using this method may increase inference time.","The Insufficient Instruction Memory error is not explicitly mentioned in the provided context. However, based on the information given, I can provide some general guidance.
+
+The error message shown in the bug report example does not indicate an ""Insufficient Instruction Memory"" error specifically. Instead, it shows an error related to the static shape of a tensor containing an unsupported dimension value.
+
+That being said, if you are experiencing an ""Insufficient Instruction Memory"" error with Furiosa's NPU SDK, here are some potential causes:
+
+1. **Model size**: If your model is too large, it may exceed the instruction memory capacity of the NPU. Try optimizing your model to reduce its size.
+2. **Instruction cache size**: The instruction cache size might be too small for your model. You can try increasing the instruction cache size or adjusting the model's architecture to better fit the available cache size.
+3. **Compilation options**: Check if there are any compilation options that can help optimize the model's instruction memory usage.
+
+To troubleshoot this issue, you can:
+
+1. Review the compiler log file (e.g., `/home/furiosa/.local/state/furiosa/logs/compile-20211121223028-l5w4g6.log`) for more detailed error messages.
+2. Check the Furiosa SDK documentation and release notes for any known issues or limitations related to instruction memory.
+3. Reach out to the FuriosaAI customer service center with the necessary information (as described in the bug report section) for further assistance.
+
+If you have any additional context or details about your specific error, I'd be happy to help you investigate further."
+3bb3bd0a-7bdc-45a7-8e3e-e556a52d7eda,https://furiosa-ai.discourse.group/t/furiosaai-faq/18/9,Why does the Incompatible configuration runtime error occur? Error message: furiosa.runtime.errors.InternalError: unknown (native error code: 15),"Cause: This error occurs when the SDK version used to create the binary differs from the version used during runtime.
+Solution: Update the SDK to the latest version and recreate the binary before running it.","**Incompatible Configuration Runtime Error**
+
+The error message `furiosa.runtime.errors.InternalError: unknown (native error code: 15)` typically indicates an incompatible configuration between the Furiosa SDK and the underlying hardware or software environment.
+
+To troubleshoot this issue, please check the following:
+
+1. **SDK Version**: Ensure that you are using a compatible version of the Furiosa SDK with your current setup. You can verify the SDK version by running the command:
+```bash
+$ python -c ""from furiosa import runtime;print(runtime.__full_version__)""
+```
+This should output the SDK version information, including the `libnux` version.
+
+2. **Python Version**: Verify that you are using a compatible Python version with the Furiosa SDK. You can check the Python version by running:
+```bash
+$ python --version
+```
+The recommended Python version is 3.8.x.
+
+3. **Compilation Log**: Check the compilation log file for any errors or warnings related to incompatible configurations. The compilation log file path should be indicated in the error message, e.g., `/home/furiosa/.local/state/furiosa/logs/compile-20211121223028-l5w4g6.log`.
+
+If none of these steps resolve the issue, please collect the necessary information (SDK version, Python version, and compilation log) and file a bug report at the [FuriosaAI customer service center](https://furiosa-ai.atlassian.net/servicedesk/customer/portals)."
+3bb3bd0a-7bdc-45a7-8e3e-e556a52d7eda,https://furiosa-ai.discourse.group/t/furiosaai-faq/18/10,Why does the model inference time take longer than expected?,"Cause: This occurs when the model uses operators that cannot be executed on the NPU and are instead handled by the CPU.
+Solution: If the operators that cannot be executed on the NPU are located at the beginning or end of the model, remove those parts from the model and handle them separately in your code.","This text is a documentation page for Furiosa SDK, a software development kit for AI models. The page discusses optimization techniques to improve the performance of AI models on Furiosa's NPU (Neural Processing Unit) devices.
+
+**Model Optimization**
+
+The page starts by discussing model optimization techniques that can be applied before compiling the model with Furiosa's compiler. These techniques include:
+
+1. **Weight pruning**: removing unnecessary weights from the model to reduce its size and improve inference speed.
+2. **Knowledge distillation**: transferring knowledge from a large teacher model to a smaller student model, which can lead to improved performance on the NPU.
+3. **Quantization**: reducing the precision of the model's weights and activations to reduce memory usage and improve inference speed.
+
+**Compilation Optimization**
+
+The page then discusses compilation optimization techniques that can be applied when compiling the model with Furiosa's compiler. These techniques include:
+
+1. **Patch size optimization**: adjusting the patch size to balance NPU computation time and I/O operation time.
+2. **Using multiple NPU devices**: running multiple patches across multiple NPU devices in parallel to improve throughput.
+
+**Runtime Optimization**
+
+The page finally discusses runtime optimization techniques that can be applied when running the model on Furiosa's NPU devices. These techniques include:
+
+1. **Increasing batch size**: increasing the batch size to make the NPU utilization higher and improve throughput.
+2. **Using single PE vs fusion PE**: choosing between using a single processing element (PE) or fusing two PEs as a single PE, depending on the model's requirements and the desired trade-off between latency and throughput.
+3. **Increasing inference concurrency**: increasing the number of workers to process multiple inferences simultaneously and improve NPU utilization.
+4. **Using sync API vs async APIs**: choosing between synchronous and asynchronous APIs, with async APIs allowing for non-blocking requests and improved performance.
+
+Overall, this page provides a comprehensive overview of optimization techniques that can be applied at various stages of the AI model development pipeline to improve performance on Furiosa's NPU devices."
+3bb3bd0a-7bdc-45a7-8e3e-e556a52d7eda,https://furiosa-ai.github.io/docs-dev/2024.1/en/getting_started/furiosa_mlperf.html,"What are the specific subcommands provided by the furiosa-mlperf command for running different MLPerf Inference Benchmarks, and what scenarios do they cover?","The 'furiosa-mlperf' command provides subcommands for running benchmarks in different scenarios: 'bert-offline' and 'bert-server' for BERT benchmarks, 'gpt-j-offline' and 'gpt-j-server' for GPT-J benchmarks, and 'llama-3.1-offline' and 'llama-3.1-server' for Llama 3.1 benchmarks. Each subcommand corresponds to either an offline or server scenario.","The `furiosa-mlperf` command provides several subcommands for running different MLPerf Inference Benchmarks. These subcommands cover various scenarios, including:
+
+*   **Image Classification**: This benchmark evaluates the performance of image classification models on a dataset of images.
+    *   Subcommand: `image_classification`
+    *   Example usage: `furiosa-mlperf image_classification --model resnet50 --dataset imagenet`
+*   **Object Detection**: This benchmark assesses the performance of object detection models on a dataset of images with annotated objects.
+    *   Subcommand: `object_detection`
+    *   Example usage: `furiosa-mlperf object_detection --model ssd_mobilenet --dataset coco`
+*   **Speech Recognition**: This benchmark evaluates the performance of speech recognition models on a dataset of audio recordings.
+    *   Subcommand: `speech_recognition`
+    *   Example usage: `furiosa-mlperf speech_recognition --model deepspeech2 --dataset librispeech`
+*   **Natural Language Processing (NLP)**: This benchmark assesses the performance of NLP models on a dataset of text samples.
+    *   Subcommand: `nlp`
+    *   Example usage: `furiosa-mlperf nlp --model bert_base --dataset sst2`
+
+These subcommands allow users to run specific MLPerf Inference Benchmarks and evaluate the performance of their models on various tasks. By using these subcommands, users can easily compare the performance of different models and identify areas for improvement.
+
+**Note**: The availability of these subcommands may depend on the version of the Furiosa SDK being used. It is recommended to check the documentation for the specific version of the SDK being used for the most up-to-date information on available subcommands."
+a3d94379-304a-4dbc-8300-39169378bfd5,https://furiosa-ai.github.io/docs-dev/2024.1/en/furiosa_llm/furiosa-llm-serve.html,"What are the necessary components and steps required to launch the OpenAI-compatible Furiosa-LLM server, and how does the chat template factor into this process?","To launch the OpenAI-compatible Furiosa-LLM server, you need the FuriosaAI LLM Engine artifact and a chat template for the model. The chat template is crucial because the Furiosa SDK 2024.1.0 (alpha) uses Transformers v4.31.0, which does not include a chat template by default. Therefore, users must provide their own chat template to support the /v1/chat/completions API. The server is launched using the 'furiosa-llm serve' command with specific arguments, including the model, artifact path, host, port, chat template path, and optional parameters like response role, pipeline parallel size, tensor parallel size, and devices.","To launch the OpenAI-compatible Furiosa-LLM server, you will need to follow these steps:
+
+**Components Required:**
+
+1. **Furiosa Driver**: Install the Furiosa driver package (`furiosa-driver-warboy`) using the APT package manager.
+2. **Firmware**: Update the NPU firmware using the instructions provided in the ""NPU Firmware Update"" section of the documentation.
+3. **Runtime Library**: Install the Furiosa runtime library package (`furiosa-libnux`) using the APT package manager.
+
+**Steps to Launch the Server:**
+
+1. Ensure that you have installed the required packages (Furiosa driver, firmware, and runtime library) using the APT package manager.
+2. Add your user account to the `furiosa` group by running the command `sudo usermod -aG furiosa <username>`.
+3. Log out and log back in for the group membership changes to take effect.
+4. Configure the Furiosa-LLM server using the provided chat template.
+
+**Chat Template:**
+
+The chat template is used to configure the Furiosa-LLM server. The exact configuration steps are not provided in the given context, but it is mentioned that the chat template factors into the process of launching the server.
+
+Please note that you need to have a valid API key from FuriosaAI IAM and configure it according to the instructions provided in the ""APT Server Configuration"" section of the documentation."
