@@ -37,3 +37,6 @@ llama-index-vector-stores-chroma
 konlpy
 janome
 janomecabdic
+
+datasets
+bert-score
