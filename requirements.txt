@@ -32,3 +32,8 @@ markdownify
 # llama index
 llama-index-retrievers-bm25
 llama-index-vector-stores-chroma
+
+# language tokenizer
+konlpy
+janome
+janomecabdic
