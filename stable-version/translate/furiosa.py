@@ -6,7 +6,7 @@ furiosa_llm = None
 sampling_params = None
 
 
-def initialize_furiosa_llm(model_path,
+def initialize_furiosa_llm(model_path: str = "/home/elicer/renegade/Llama-3.1-8B-Instruct",
                            devices: str = "npu:1:*", 
                            temperature: float = 0.2, 
                            max_tokens: int = 200):
@@ -28,24 +28,20 @@ def initialize_furiosa_llm(model_path,
     if sampling_params is None:
         sampling_params = SamplingParams(temperature=temperature, max_tokens=max_tokens)
 
-
 def apply_translation_template(source_lang: str, target_lang: str, source_text: str) -> str:
-    """
-    Creates a translation prompt using a predefined format.
+    prompt = f"""This is an {source_lang} to {target_lang} translation, please provide a single {target_lang} translation for this text in as polite a tone as possible. \
+Do not provide any explanations or text apart from the translation.
+The translation result must be written in {target_lang}.
 
-    Parameters:
-        source_lang (str): Source language.
-        target_lang (str): Target language.
-        source_text (str): The text to translate.
+{source_lang}: {source_text}
 
-    Returns:
-        str: The formatted translation prompt.
-    """
+{target_lang}:"""
     return f"""<|begin_of_text|><|start_header_id|>system<|end_header_id|>
 
-You are a helpful assistant<|eot_id|><|start_header_id|>user<|end_header_id|>
+You are a helpful assistant specialized in translation tasks.<|eot_id|><|start_header_id|>user<|end_header_id|>
 
-Translate from {source_lang} to {target_lang}: {source_text}<|eot_id|><|start_header_id|>assistant<|end_header_id|>"""
+{prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>"""
+
 
 
 def translate_with_furiosa(source_text: str, 
