@@ -1,7 +1,7 @@
 import subprocess
 
 
-def check_system_environment() -> str:
+def detect_environment() -> str:
     """
     Checks the current system environment to determine if it's GPU-based or Furiosa RNGD.
 

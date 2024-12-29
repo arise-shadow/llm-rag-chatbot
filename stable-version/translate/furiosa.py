@@ -1,11 +1,8 @@
-import pandas as pd
-import numpy as np
-import os, platform
 from llama_index.llms.ollama import Ollama
 from llama_index.core.prompts import PromptTemplate
 
 
-def translate_text(source_text: str, 
+def translate_with_furiosa(source_text: str, 
                    source_lang: str = "Korean", 
                    target_lang: str = "English", 
                    llm_model: str = "llama3.1", 
