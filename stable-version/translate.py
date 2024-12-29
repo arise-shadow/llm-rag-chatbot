@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import os
+import os, platform
 from llama_index.llms.ollama import Ollama
 from llama_index.core.prompts import PromptTemplate
 
