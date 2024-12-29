@@ -1,74 +1,91 @@
-from llama_index.llms.ollama import Ollama
-from llama_index.core.prompts import PromptTemplate
+import os
+from furiosa_llm import LLM, SamplingParams
+
+# Global instances for LLM and Sampling Parameters
+furiosa_llm = None
+sampling_params = None
+
+
+def initialize_furiosa_llm(model_path,
+                           devices: str = "npu:1:*", 
+                           temperature: float = 0.2, 
+                           max_tokens: int = 200):
+    """
+    Initializes the Furiosa LLM and sampling parameters globally.
+
+    Parameters:
+        model_path (str): Path to the LLM artifacts. 
+        devices (str): Device string for Furiosa NPU. Default: "npu:1:*".
+        temperature (float): Sampling temperature. Default: 0.
+        max_tokens (int): Maximum number of tokens for generation. Default: 200.
+    """
+    global furiosa_llm, sampling_params
+
+    if furiosa_llm is None:
+        os.environ["RUST_BACKTRACE"] = "full"
+        furiosa_llm = LLM.from_artifacts(model_path, devices=devices)
+
+    if sampling_params is None:
+        sampling_params = SamplingParams(temperature=temperature, max_tokens=max_tokens)
+
+
+def apply_translation_template(source_lang: str, target_lang: str, source_text: str) -> str:
+    """
+    Creates a translation prompt using a predefined format.
+
+    Parameters:
+        source_lang (str): Source language.
+        target_lang (str): Target language.
+        source_text (str): The text to translate.
+
+    Returns:
+        str: The formatted translation prompt.
+    """
+    return f"""<|begin_of_text|><|start_header_id|>system<|end_header_id|>
+
+You are a helpful assistant<|eot_id|><|start_header_id|>user<|end_header_id|>
+
+Translate from {source_lang} to {target_lang}: {source_text}<|eot_id|><|start_header_id|>assistant<|end_header_id|>"""
 
 
 def translate_with_furiosa(source_text: str, 
-                   source_lang: str = "Korean", 
-                   target_lang: str = "English", 
-                   llm_model: str = "llama3.1", 
-                   temperature: float = 0.2, 
-                   request_timeout: int = 600, 
-                   max_token_length: int = 200) -> str:
+                           source_lang: str = "Korean", 
+                           target_lang: str = "English") -> str:
     """
-    Translates text from one language to another using an LLM.
+    Translates text using the Furiosa-based LLM.
 
     Parameters:
         source_text (str): The text to translate.
-        source_lang (str): The language of the source text. 
-        target_lang (str): The target language for translation. 
-        llm_model (str): Name of the LLM model to use. Default: "llama3.1".
-        temperature (float): Sampling temperature for the LLM output. Default: 0.2.
-        request_timeout (int): Maximum time to wait for a response from the LLM. Default: 600 seconds.
-        max_token_length (int): Maximum token length for the LLM response. Default: 200.
+        source_lang (str): Source language. Default: "Korean".
+        target_lang (str): Target language. Default: "English".
 
     Returns:
-        str: Translated text in the target language.
+        str: Translated text.
     """
-    # Initialize the LLM with given parameters
-    llm = Ollama(
-        model=llm_model, 
-        temperature=temperature, 
-        request_timeout=request_timeout, 
-        max_tokens=max_token_length
-    )
-    
-    # Define a translation prompt template
-    prompt = PromptTemplate(
-        template="""This is an {source_lang} to {target_lang} translation. Please provide the {target_lang} translation for this text in as polite a tone as possible. \
-Do not provide any explanations or text apart from the translation. The translation result must be written in {target_lang}.
+    if furiosa_llm is None or sampling_params is None:
+        initialize_furiosa_llm()
 
-{source_lang}: {source_text}
+    # Create the translation prompt
+    prompt = apply_translation_template(source_lang, target_lang, source_text)
 
-{target_lang}:"""
-    )
-    
-    # Format the prompt with provided source and target languages and text
-    full_prompt = prompt.format(
-        source_lang=source_lang, 
-        target_lang=target_lang, 
-        source_text=source_text
-    )
-    
-    # Generate the translation using the LLM
-    result = llm.complete(full_prompt)
-    return result.text
+    # Generate and return the translation
+    output_txt = furiosa_llm.generate(prompt, sampling_params)
+    return output_txt.outputs[0].text[2:]
 
 
 def main():
     """
-    Main function to execute translation using translate_text function.
+    Main function to execute translation using translate_with_furiosa.
     """
-    # Define default test input
-    default_text = "안녕하세요, 번역 테스트를 위해 이 문장을 사용합니다."
-    print("Original Text:", default_text)
-    # Translate the default text
+    test_text = "안녕하세요, 우주는 얼마나 넓나요?"
+    print(f"Original Text: {test_text}")
+
     try:
-        translated_text = translate_text(
-            source_text=default_text
-        )
-        print("Translated Text:", translated_text)
+        # Perform translation
+        translated_text = translate_with_furiosa(test_text)
+        print(f"Translated Text: {translated_text}")
     except Exception as e:
-        print("An error occurred during translation:", str(e))
+        print(f"An error occurred during translation: {e}")
 
 
 if __name__ == "__main__":
