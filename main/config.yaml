@@ -1,0 +1,20 @@
+# config.yaml
+device:
+  type: GPU
+  model: A100
+  count: 1
+
+model:
+  name: llama3.1-8B-Instruct
+  quantization: W8A8
+
+data:
+  input_dataset: ./datasets/translation_test.json
+  calib_dataset: ./datasets/calibration_data.json
+
+evaluation:
+  task: translation
+  metrics: 
+    - BLEU
+    - BERTScore
+  output_dir: ./results
