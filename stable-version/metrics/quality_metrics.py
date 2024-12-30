@@ -24,7 +24,7 @@ def tokenize(text, lang):
         raise ValueError(f"Unsupported language: {lang}")
     
     
-def calculate_bleu_meteor(reference: str, candidate: str, tgt_lang: str = "English") -> float:
+def calculate_bleu_meteor_score(reference: str, candidate: str, tgt_lang: str = "English") -> float:
     """
     Calculates BLEU score between a reference and a candidate translation.
 
@@ -43,11 +43,7 @@ def calculate_bleu_meteor(reference: str, candidate: str, tgt_lang: str = "Engli
     # 지표 계산
     bleu = sentence_bleu([reference_tokens], candidate_tokens, smoothing_function=smoothing_function)
     meteor = meteor_score([reference_tokens], candidate_tokens)
-    return {
-        "BLEU": round(bleu, 4),
-        "METEOR": round(meteor, 4),
-    }
-
+    return round(bleu, 4), round(meteor, 4)
 
 
 def calculate_bert_score(reference: str, candidate: str, tgt_lang: str = "English", device: str = "cuda") -> float:
