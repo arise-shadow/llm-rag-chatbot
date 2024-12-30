@@ -1,15 +1,15 @@
 from metrics.quality_metrics import calculate_bleu_meteor_score, calculate_bert_score
 from time import time
 
-def evaluate_translation(result: str, ref_text: str, elapsed_time: float, metrics_config: dict):
+def evaluate_translation(result: str, ref_text: str, elapsed_time: float, active_metrics: list):
     """
-    Evaluates translation quality and performance based on the selected metrics.
+    Evaluates translation quality and performance based on the active metrics.
 
     Parameters:
         result (str): Translated text.
         ref_text (str): Reference text for evaluation.
         elapsed_time (float): Time taken for translation.
-        metrics_config (dict): Configuration for enabled metrics (e.g., {"BLEU": True, "METEOR": False}).
+        active_metrics (list): List of active metrics (e.g., ["BLEU", "METEOR", "TPS"]).
 
     Returns:
         dict: A dictionary containing only the enabled metrics and their values.
@@ -17,26 +17,26 @@ def evaluate_translation(result: str, ref_text: str, elapsed_time: float, metric
     metrics = {}
 
     # Calculate BLEU and METEOR if enabled
-    if metrics_config.get("BLEU", False) or metrics_config.get("METEOR", False):
+    if "BLEU" in active_metrics or "METEOR" in active_metrics:
         try:
             bleu, meteor, num_tokens = calculate_bleu_meteor_score(ref_text, result)
-            if metrics_config.get("BLEU", False):
+            if "BLEU" in active_metrics:
                 metrics["BLEU"] = bleu
-            if metrics_config.get("METEOR", False):
+            if "METEOR" in active_metrics:
                 metrics["METEOR"] = meteor
-            if metrics_config.get("TPS", False):
+            if "TPS" in active_metrics:
                 metrics["TPS"] = num_tokens / elapsed_time if elapsed_time > 0 else 0.0
         except Exception as e:
             print(f"Error calculating BLEU/METEOR: {e}")
-            if metrics_config.get("BLEU", False):
+            if "BLEU" in active_metrics:
                 metrics["BLEU"] = 0.0
-            if metrics_config.get("METEOR", False):
+            if "METEOR" in active_metrics:
                 metrics["METEOR"] = 0.0
-            if metrics_config.get("TPS", False):
+            if "TPS" in active_metrics:
                 metrics["TPS"] = 0.0
 
     # Calculate BERTScore if enabled
-    if metrics_config.get("BERTScore", False):
+    if "BERTScore" in active_metrics:
         try:
             bert_score = calculate_bert_score(ref_text, result, tgt_lang="English", device="cuda")
             metrics["BERTScore"] = bert_score
