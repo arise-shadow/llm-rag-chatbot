@@ -28,43 +28,43 @@ def calculate_tps(start_time: float, total_tokens: int) -> float:
 
 
 
-# def calculate_memory_usage(device: str = "cuda") -> float:
-#     """
-#     Calculates memory usage for CUDA or NPU devices.
+def calculate_memory_usage(device: str = "cuda") -> float:
+    """
+    Calculates memory usage for CUDA or NPU devices.
 
-#     Parameters:
-#         device (str): Device to check memory usage. Examples:
-#                       - "cuda" for GPU
-#                       - "npu:0:*" for NPU (Furiosa runtime format)
+    Parameters:
+        device (str): Device to check memory usage. Examples:
+                      - "cuda" for GPU
+                      - "npu:0:*" for NPU (Furiosa runtime format)
 
-#     Returns:
-#         float: Memory usage in MB.
-#     """
-#     if "cuda" in device:  # GPU (CUDA)
-#         if torch.cuda.is_available():
-#             return torch.cuda.memory_allocated() / (1024 * 1024)
-#         else:
-#             print("CUDA device not available.")
-#             return 0.0
-#     elif "npu" in device:  # NPU (Furiosa)
-#         import subprocess
-#         result = subprocess.run(
-#             ["furiosa-smi", "info", "--device", device],
-#             stdout=subprocess.PIPE,
-#             stderr=subprocess.PIPE
-#         )
-#         try:
-#             output = result.stdout.decode()
-#             # Parse Furiosa memory usage (example parsing logic)
-#             memory_line = [line for line in output.split("\n") if "Memory Usage" in line][0]
-#             memory_used = float(memory_line.split(":")[1].strip().split()[0])  # Assuming "Memory Usage: 512 MB"
-#             return memory_used
-#         except (IndexError, ValueError):
-#             print(f"Failed to parse memory usage for device {device}.")
-#             return 0.0
-#     else:
-#         print(f"Unsupported device type: {device}")
-#         return 0.0
+    Returns:
+        float: Memory usage in MB.
+    """
+    if "cuda" in device:  # GPU (CUDA)
+        if torch.cuda.is_available():
+            return torch.cuda.memory_allocated() / (1024 * 1024)
+        else:
+            print("CUDA device not available.")
+            return 0.0
+    elif "npu" in device:  # NPU (Furiosa)
+        import subprocess
+        result = subprocess.run(
+            ["furiosa-smi", "info", "--device", device],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
+        )
+        try:
+            output = result.stdout.decode()
+            # Parse Furiosa memory usage (example parsing logic)
+            memory_line = [line for line in output.split("\n") if "Memory Usage" in line][0]
+            memory_used = float(memory_line.split(":")[1].strip().split()[0])  # Assuming "Memory Usage: 512 MB"
+            return memory_used
+        except (IndexError, ValueError):
+            print(f"Failed to parse memory usage for device {device}.")
+            return 0.0
+    else:
+        print(f"Unsupported device type: {device}")
+        return 0.0
 
 
 
@@ -81,24 +81,28 @@ def calculate_power_consumption(device: str) -> float:
         float: Power consumption in watts.
     """
     if "cuda" in device:  # GPU (CUDA)
-        if torch.cuda.is_available():
-            try:
-                result = subprocess.run(
-                    ["nvidia-smi", "--query-gpu=power.draw", "--format=csv,noheader,nounits"],
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                    text=True
-                )
-                power_values = result.stdout.split("\n")
-                # For multi-GPU systems, choose the first available GPU (default behavior)
-                power = float(power_values[0]) if power_values[0] else 0.0
-                return power
-            except Exception as e:
-                print(f"Error calculating power consumption for CUDA: {e}")
-                return 0.0
-        else:
-            print("CUDA device not available.")
+        try:
+            # Extract GPU ID from the device string (e.g., "cuda:0" -> 0)
+            gpu_id = device.split(":")[1]
+            
+            # Run nvidia-smi command for power usage
+            result = subprocess.run(
+                ["nvidia-smi", "--id", gpu_id, "--query-gpu=power.draw", "--format=csv,noheader,nounits"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+            
+            # Parse the power consumption value
+            power_str = result.stdout.strip()  # Remove extra whitespace
+            if power_str:
+                return float(power_str)  # Convert string to float
+            else:
+                raise ValueError("Power consumption value not found.")
+        except Exception as e:
+            print(f"Error calculating power consumption for device {device}: {e}")
             return 0.0
+
     elif "npu" in device:  # NPU (Furiosa)
         try:
             result = subprocess.run(
