@@ -14,7 +14,11 @@ data:
 
 evaluation:
   task: translation
-  metrics: 
-    - BLEU
-    - BERTScore
-  output_dir: ./results
+  metrics:
+    BLEU: true
+    METEOR: true
+    BERTScore: true
+    power_consumption: false
+    memory_usage: false
+    tps: true
+  output_dir: ./results/translation
