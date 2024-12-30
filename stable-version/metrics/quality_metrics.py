@@ -24,26 +24,38 @@ def tokenize(text, lang):
         raise ValueError(f"Unsupported language: {lang}")
     
     
-def calculate_bleu_meteor_score(reference: str, candidate: str, tgt_lang: str = "English") -> float:
+def calculate_bleu_meteor_score(reference: str, candidate: str, tgt_lang: str = "English"):
     """
-    Calculates BLEU score between a reference and a candidate translation.
+    Calculates BLEU and METEOR scores between a reference and a candidate translation.
 
     Parameters:
         reference (str): The reference (ground truth) text.
         candidate (str): The candidate (generated) translation.
+        tgt_lang (str): Target language for tokenization (default: "English").
 
     Returns:
-        float: BLEU & Meteor score.
+        tuple: BLEU score, METEOR score, and number of tokens.
     """
-    # 텍스트를 토큰화
-    reference_tokens = tokenize(reference, tgt_lang)
-    candidate_tokens = tokenize(candidate, tgt_lang)
-    smoothing_function = SmoothingFunction().method1
-    
-    # 지표 계산
-    bleu = sentence_bleu([reference_tokens], candidate_tokens, smoothing_function=smoothing_function)
-    meteor = meteor_score([reference_tokens], candidate_tokens)
-    return round(bleu, 4), round(meteor, 4)
+    try:
+        # 텍스트를 토큰화
+        reference_tokens = tokenize(reference, tgt_lang)
+        candidate_tokens = tokenize(candidate, tgt_lang)
+        smoothing_function = SmoothingFunction().method1
+        num_tokens = len(candidate_tokens)
+
+        # BLEU 지표 계산
+        bleu = sentence_bleu([reference_tokens], candidate_tokens, smoothing_function=smoothing_function)
+
+        # METEOR 지표 계산
+        meteor = meteor_score([reference_tokens], candidate_tokens)
+
+        # 모든 값을 반환
+        return round(bleu, 4), round(meteor, 4), num_tokens
+
+    except Exception as e:
+        print(f"Error in calculate_bleu_meteor_score: {e}")
+        # 기본값 반환 (0, 0, 0) 에러 상황 처리
+        return 0.0, 0.0, 0
 
 
 def calculate_bert_score(reference: str, candidate: str, tgt_lang: str = "English", device: str = "cuda") -> float:

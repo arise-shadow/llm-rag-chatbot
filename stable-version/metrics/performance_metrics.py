@@ -3,18 +3,26 @@ import psutil
 import torch
 
 
-def calculate_fps(start_time: float, total_tokens: int) -> float:
+def calculate_tps(start_time: float, total_tokens: int) -> float:
     """
-    Calculates FPS (Frames Per Second) based on translation time and token count.
+    Calculates TPS (Tokens Per Second) based on translation time and token count.
 
     Parameters:
-        start_time (float): The start time of the translation.
+        start_time (float): The start time of the translation (in seconds since epoch).
         total_tokens (int): Total number of tokens processed.
 
     Returns:
-        float: FPS (frames/second).
+        float: TPS (tokens/second).
+
+    Raises:
+        ValueError: If total_tokens is negative or start_time is in the future.
     """
+    if total_tokens < 0:
+        raise ValueError("Total tokens cannot be negative.")
+    
     elapsed_time = time.time() - start_time
+    
+    
     return total_tokens / elapsed_time if elapsed_time > 0 else 0
 
 
