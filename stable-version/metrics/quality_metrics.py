@@ -24,7 +24,7 @@ def tokenize(text, lang):
         raise ValueError(f"Unsupported language: {lang}")
     
     
-def calculate_bleu(reference: str, candidate: str, tgt_lang: str = "English") -> float:
+def calculate_bleu_meteor(reference: str, candidate: str, tgt_lang: str = "English") -> float:
     """
     Calculates BLEU score between a reference and a candidate translation.
 
@@ -33,27 +33,55 @@ def calculate_bleu(reference: str, candidate: str, tgt_lang: str = "English") ->
         candidate (str): The candidate (generated) translation.
 
     Returns:
-        float: BLEU score.
+        float: BLEU & Meteor score.
     """
     # 텍스트를 토큰화
     reference_tokens = tokenize(reference, tgt_lang)
     candidate_tokens = tokenize(candidate, tgt_lang)
     smoothing_function = SmoothingFunction().method1
-    return sentence_bleu([reference_tokens], candidate_tokens, smoothing_function=smoothing_function)
+    
+    # 지표 계산
+    bleu = sentence_bleu([reference_tokens], candidate_tokens, smoothing_function=smoothing_function)
+    meteor = meteor_score([reference_tokens], candidate_tokens)
+    return {
+        "BLEU": round(bleu, 4),
+        "METEOR": round(meteor, 4),
+    }
 
 
-def calculate_bert_score(reference: str, candidate: str, lang: str = "en", device: str = "cuda") -> float:
+
+def calculate_bert_score(reference: str, candidate: str, tgt_lang: str = "English", device: str = "cuda") -> float:
     """
     Calculates BERTScore between a reference and a candidate translation.
 
     Parameters:
         reference (str): The reference (ground truth) text.
         candidate (str): The candidate (generated) translation.
-        lang (str): Language code (default is "en" for English).
+        tgt_lang (str): Target language name (e.g., "English", "Korean", "Japanese").
         device (str): Device for computation ("cuda" for GPU, "cpu" for CPU).
 
     Returns:
         float: BERTScore (F1 score).
+
+    Raises:
+        ValueError: If the provided language is not supported.
     """
-    P, R, F1 = score([candidate], [reference], lang=lang, device=device)
-    return float(F1.mean())
+    # Best bert model (@2024.12.30)
+    bert_model="microsoft/deberta-xlarge-mnli"
+    
+    # Map target language to ISO code
+    lang_map = {
+        "English": "en",
+        "Korean": "ko",
+        "Japanese": "ja",
+    }
+    
+    if tgt_lang not in lang_map:
+        raise ValueError(f"Unsupported language '{tgt_lang}'. Supported languages are: {list(lang_map.keys())}")
+    
+    # Get ISO code
+    lang = lang_map[tgt_lang]
+    
+    # Calculate BERTScore
+    P, R, F1 = score([candidate], [reference], lang=lang, model_type=bert_model, device=device)
+    return round(F1.item(), 4)
