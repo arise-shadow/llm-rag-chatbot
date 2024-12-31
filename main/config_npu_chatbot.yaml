@@ -1,0 +1,20 @@
+# config.yaml
+device:
+  type: npu:0:*
+  model: RNGD
+  count: 1
+
+model:
+  name: llama3.1-8B-Instruct
+  quantization: W8A8
+
+evaluation:
+  task: chatbot
+  metrics:
+    retrieval_precision: true
+    retrieval_recall: true
+    retrieval_f1: true
+    tps: true
+    power_consumption: true
+    memory_usage: false
+  output_dir: ./results/chatbot

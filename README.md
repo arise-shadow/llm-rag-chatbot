@@ -1,6 +1,12 @@
-# Test Performance of RNGD with Various LLM Tasks
+# Test Performance of FuriosaAI RNGD with Various LLM Tasks
 
-This repository contains a chatbot implementation that combines Large Language Models (LLMs) with Retrieval-Augmented Generation (RAG) techniques to provide accurate and contextually relevant responses. Additionally, it supports translation between English and Korean based on an LLM-based translator.
+This project benchmarks the performance of FuriosaAI RNGD for a range of LLM tasks, including:
+	•	RAG (Retrieval-Augmented Generation) Chatbot: Use databases and QA datasets to test retrieval accuracy and generative capabilities.
+	•	Translation: Evaluate multi-language translation accuracy and performance.
+	•	Summarization: Test the summarization of large-scale documents.
+	•	Multi-Modal Agent: Combine vision models (e.g., YOLO) and LLMs for multi-modal understanding and reasoning.
+
+The project enables easy comparisons between GPU and NPU environments using unified APIs and configurable pipelines.
 
 ## Project Structure
 
@@ -9,16 +15,24 @@ The project is organized as follows:
 ```
 ├── LICENSE              # Open-source license information
 ├── README.md            # Project overview and instructions
+├── configuration/       # Collection of available configurations for tasks
 ├── data/
-│   ├── db/              # Database for Warboy and RNGD SDK
-│   ├── translate/       # Translation database (Kor ↔ Eng)
-│   ├── chatbot/         # QA dataset for Warboy and RNGD SDK
-│   └── handmade-faq/    # QA data from Furiosa customer portal
+│   ├── db/              # (For RAG use) Database for Warboy and RNGD SDK
+│   ├── translate/       # Translation benchmarking dataset
+│   ├── chatbot/         # (For RAG use) QA dataset for Warboy and RNGD SDK
+│   ├── summary/         # Dataset for document summarization
+│   ├── multimodal/      # Example datasets for vision + LLM pairing
+│   └── handmade-faq/    # (For RAG use) QA data from Furiosa customer portal
 ├── docs/                # Documentation for the project
 ├── notebooks/           # Jupyter notebooks for exploration and analysis
-├── references/          # Data dictionaries, manuals, and other reference materials
+├── references/          # Data dictionaries, manuals, and reference materials
 ├── requirements.txt     # List of required Python packages
-└── src/                 # Source code for the chatbot
+└── src/                 # Source code for various tasks
+    ├── common/          # Environment detection, configuration loader
+    ├── metrics/         # Metric definitions for LLM tasks
+    ├── translation/     # GPU/NPU modules for LLM translation
+    ├── summarization/   # Summarization task modules (TBU)
+    └── multimodal/      # Vision + LLM service examples (TBU)
 ```
 
 ## Getting Started
