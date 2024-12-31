@@ -1,10 +1,10 @@
-# Test Performance of FuriosaAI RNGD with Various LLM Tasks
+# Benchmarking FuriosaAI RNGD Across Diverse LLM Tasks
 
 This project benchmarks the performance of FuriosaAI RNGD for a range of LLM tasks, including:
 	•	RAG (Retrieval-Augmented Generation) Chatbot: Use databases and QA datasets to test retrieval accuracy and generative capabilities.
 	•	Translation: Evaluate multi-language translation accuracy and performance.
 	•	Summarization: Test the summarization of large-scale documents.
-	•	Multi-Modal Agent: Combine vision models (e.g., YOLO) and LLMs for multi-modal understanding and reasoning.
+	•	Multi-Modal Agent: Combine vision models and LLMs for multi-modal understanding and reasoning.
 
 The project enables easy comparisons between GPU and NPU environments using unified APIs and configurable pipelines.
 
@@ -31,7 +31,7 @@ The project is organized as follows:
     ├── common/          # Environment detection, configuration loader
     ├── metrics/         # Metric definitions for LLM tasks
     ├── translation/     # GPU/NPU modules for LLM translation
-    ├── summarization/   # Summarization task modules (TBU)
+    ├── summarization/   # Summarization task modules
     └── multimodal/      # Vision + LLM service examples (TBU)
 ```
 
