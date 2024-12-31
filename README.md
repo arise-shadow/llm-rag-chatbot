@@ -1,4 +1,4 @@
-# Benchmarking FuriosaAI RNGD Across Diverse LLM Tasks
+# Benchmark FuriosaAI RNGD Across Multiple LLM Tasks
 
 This project benchmarks the performance of FuriosaAI RNGD for a range of LLM tasks, including:
 	•	RAG (Retrieval-Augmented Generation) Chatbot: Use databases and QA datasets to test retrieval accuracy and generative capabilities.
