@@ -2,7 +2,7 @@ import time
 import psutil
 import torch
 import subprocess
-
+import re
 
 def calculate_tps(start_time: float, total_tokens: int) -> float:
     """
@@ -74,17 +74,17 @@ def calculate_power_consumption(device: str) -> float:
 
     Parameters:
         device (str): Device to check power usage. Examples:
-                      - "cuda" for GPU
-                      - "npu:0:*" for NPU (Furiosa runtime format)
+                      - "cuda:0" for GPU
+                      - "npu0" for NPU (Furiosa runtime format)
 
     Returns:
         float: Power consumption in watts.
     """
     if "cuda" in device:  # GPU (CUDA)
         try:
-            # Extract GPU ID from the device string (e.g., "cuda:0" -> 0)
+            # Extract GPU ID from the device string
             gpu_id = device.split(":")[1]
-            
+
             # Run nvidia-smi command for power usage
             result = subprocess.run(
                 ["nvidia-smi", "--id", gpu_id, "--query-gpu=power.draw", "--format=csv,noheader,nounits"],
@@ -92,15 +92,15 @@ def calculate_power_consumption(device: str) -> float:
                 stderr=subprocess.PIPE,
                 text=True
             )
-            
+
             # Parse the power consumption value
-            power_str = result.stdout.strip()  # Remove extra whitespace
+            power_str = result.stdout.strip()
             if power_str:
                 return float(power_str)  # Convert string to float
             else:
                 raise ValueError("Power consumption value not found.")
         except Exception as e:
-            print(f"Error calculating power consumption for device {device}: {e}")
+            print(f"Error calculating power consumption for GPU {device}: {e}")
             return 0.0
 
     elif "npu" in device:  # NPU (Furiosa)
@@ -117,23 +117,19 @@ def calculate_power_consumption(device: str) -> float:
             # Remove ANSI escape codes from the output
             clean_output = re.sub(r'\x1b\[.*?m', '', output)
 
-            # Split the output into lines
-            lines = [line.strip() for line in clean_output.split("\n")]
-
             # Use regex to find the target line containing the device
-            target_line = next((line for line in lines if re.search(rf"\| {re.escape(device)}\s+\|", line)), None)
+            lines = [line.strip() for line in clean_output.split("\n")]
+            target_line = next((line for line in lines if re.search(rf"\| {device}\s+\|", line)), None)
             if not target_line:
                 raise ValueError(f"Device {device} not found in furiosa-smi info output.")
 
             # Extract the Power value from the matched line
             columns = [col.strip() for col in target_line.split("|")]
-            power_str = columns[5]  # Power is the 5th column (index 4 in 0-based indexing)
-            if "W" in power_str:  # Ensure the value contains "W" for watt
-                power_value = float(power_str.split()[0])  # Extract numeric value (e.g., "42.00")
-                return power_value
+            power_str = columns[5]  # Power is the 5th column
+            if "W" in power_str:
+                return float(power_str.split()[0])  # Extract numeric value (e.g., "42.00")
             else:
                 raise ValueError(f"Power value not found in the expected column: {power_str}")
-
         except Exception as e:
             print(f"Error calculating power consumption for NPU {device}: {e}")
             return 0.0

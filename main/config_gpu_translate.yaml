@@ -1,0 +1,20 @@
+# config.yaml
+device:
+  type: GPU
+  model: A100
+  count: 1
+
+model:
+  name: llama3.1-8B-Instruct
+  quantization: W8A8
+
+evaluation:
+  task: translation
+  metrics:
+    BLEU: true
+    METEOR: true
+    BERTScore: true
+    tps: true
+    power_consumption: true
+    memory_usage: false
+  output_dir: ./results/translation
