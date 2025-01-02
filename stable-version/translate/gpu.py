@@ -25,9 +25,13 @@ def initialize_gpu_llm(model: str = "llama3.1",
 
     if translation_prompt is None:
         translation_prompt = PromptTemplate(
-            template="""Translate this text from {source_lang} to {target_lang}. Provide only the translation in {target_lang}.
-            
-{source_text}"""
+            template="""This is an {source_lang} to {target_lang} translation, please provide a single {target_lang} translation for this text in as polite a tone as possible. Do not provide any explanations or text apart from the translation. 
+The translation result must be written in {target_lang}.{target_lang
+
+{source_lang}: {source_text}
+
+{target_lang}:
+"""
         )
 
 
