@@ -7,7 +7,7 @@ translation_prompt = None
 
 
 def initialize_gpu_llm(model: str = "llama3.1", 
-                       temperature: float = 0.2, 
+                       temperature: float = 0, 
                        request_timeout: int = 600, 
                        max_tokens: int = 200):
     """

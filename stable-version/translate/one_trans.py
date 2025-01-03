@@ -1,4 +1,5 @@
 import logging
+import os
 import time
 import threading
 from functools import wraps
@@ -42,8 +43,6 @@ def initialize_translation_environment():
         raise EnvironmentError(error_message)
 
 
-# Global monitoring flag
-_monitoring_enabled = True  # Set this to False to disable monitoring globally
 
 def monitor_power(func):
     """
@@ -57,6 +56,7 @@ def monitor_power(func):
     """
     @wraps(func)
     def wrapper(*args, **kwargs):
+        _monitoring_enabled = os.getenv("ENABLE_MONITORING", "false").lower() == "true"
         if not _monitoring_enabled:
             return func(*args, **kwargs)
 

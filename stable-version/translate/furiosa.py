@@ -8,7 +8,7 @@ sampling_params = None
 
 def initialize_furiosa_llm(model_path: str = "/home/elicer/renegade/Llama-3.1-8B-Instruct",
                            devices: str = "npu:1:*", 
-                           temperature: float = 0.2, 
+                           temperature: float = 0, 
                            max_tokens: int = 200):
     """
     Initializes the Furiosa LLM and sampling parameters globally.
