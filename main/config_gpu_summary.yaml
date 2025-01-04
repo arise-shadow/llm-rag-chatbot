@@ -1,0 +1,19 @@
+# config.yaml
+device:
+  type: GPU
+  model: A100
+  count: 1
+
+model:
+  name: llama3.3:70b
+  quantization: Q4_K_M
+  calibration: base
+
+evaluation:
+  task: summary
+  metrics:
+    ROUGE: true
+    tps: true
+    power_consumption: true
+    memory_usage: false
+  output_dir: ../result/summary
