@@ -1,11 +1,11 @@
 # config.yaml
 device:
   type: GPU
-  model: A100
+  model: A5000
   count: 1
 
 model:
-  name: llama3.3:70b
+  name: llama3.1
   quantization: Q4_K_M
   calibration: base
 
@@ -16,6 +16,6 @@ evaluation:
     METEOR: true
     BERTScore: true
     tps: true
-    power_consumption: true
+    power_consumption: false
     memory_usage: false
   output_dir: ../result/translate

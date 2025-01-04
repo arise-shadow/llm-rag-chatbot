@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #F5F5F5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #4A4A4A;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #FFFFFF;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+        th {
+            background-color: #4A90E2;
+            color: #FFFFFF;
+            padding: 10px;
+            text-align: center;
+            font-size: 1rem;
+        }
+        td {
+            padding: 10px;
+            text-align: center;
+            font-size: 0.95rem;
+            border-bottom: 1px solid #EEEEEE;
+        }
+        tr:hover {
+            background-color: #F9F9F9;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AI Model Leaderboard</h1>
+        <table id="leaderboard" class="display">
+            <thead>
+                <tr>
+                    <th>device-type</th><th>device-name</th><th>llm</th><th>quantization</th><th>calibration</th><th>BLEU</th><th>METEOR</th><th>BERTScore</th><th>tps</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>GPU</td><td>A5000</td><td>qwen2.5:72b</td><td>Q4_K_M</td><td>base</td><td>0.263964</td><td>0.625709</td><td>0.8785020000000001</td><td>7.927096183207266</td></tr><tr><td>NPU</td><td>RNGD</td><td>llama3.1</td><td>W8A8</td><td>base</td><td>0.206185</td><td>0.56682</td><td>0.8491070000000001</td><td>10.91088903072891</td></tr><tr><td>GPU</td><td>A5000</td><td>llama3.1:70b</td><td>Q4_K_M</td><td>base</td><td>0.259938</td><td>0.612607</td><td>0.8753730000000001</td><td>9.448367368249574</td></tr><tr><td>GPU</td><td>A5000</td><td>llama3.3:70b</td><td>Q4_K_M</td><td>base</td><td>0.256978</td><td>0.6218659999999999</td><td>0.8809400000000001</td><td>9.044290449233417</td></tr><tr><td>GPU</td><td>A5000</td><td>llama3.1</td><td>Q4_K_M</td><td>base</td><td>0.197981</td><td>0.5574610000000001</td><td>0.846114</td><td>36.13515169861958</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        Open NPU service leaderboard
+    </div>
+
+    <!-- DataTables Script -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#leaderboard').DataTable({
+                "order": [[7, "desc"]],  // Default sort by TPS column in descending order
+                "paging": true,         // Enable pagination
+                "pageLength": 10,       // Rows per page
+                "lengthChange": false,  // Disable rows per page dropdown
+                "info": false,          // Disable info text
+                "searching": false      // Disable search box
+            });
+        });
+    </script>
+</body>
+</html>

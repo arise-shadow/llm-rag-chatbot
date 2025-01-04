@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212;
+            margin: 0;
+            padding: 20px;
+            color: #E0E0E0;
+        }
+        h1 {
+            text-align: center;
+            color: #FFFFFF;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1E1E1E;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+        }
+        table {
+            width: 100%;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+        th {
+            background-color: #323232;
+            color: #FFFFFF;
+            padding: 10px;
+            text-align: center;
+            font-size: 1rem;
+        }
+        td {
+            padding: 10px;
+            text-align: center;
+            font-size: 0.95rem;
+            border-bottom: 1px solid #2C2C2C;
+            color: #E0E0E0;
+        }
+        tr:hover {
+            background-color: #424242;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #888888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>LLM Service Leaderboard</h1>
+        <table id="leaderboard" class="display">
+            <thead>
+                <tr>
+                    <th>device-type</th><th>device-name</th><th>llm</th><th>quantization</th><th>calibration</th><th>BLEU</th><th>METEOR</th><th>BERTScore</th><th>tps</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>GPU</td><td>A5000</td><td>qwen2.5:72b</td><td>Q4_K_M</td><td>base</td><td>0.264</td><td>0.626</td><td>0.879</td><td>7.927</td></tr><tr><td>NPU</td><td>RNGD</td><td>llama3.1</td><td>W8A8</td><td>base</td><td>0.206</td><td>0.567</td><td>0.849</td><td>10.911</td></tr><tr><td>GPU</td><td>A5000</td><td>llama3.1:70b</td><td>Q4_K_M</td><td>base</td><td>0.26</td><td>0.613</td><td>0.875</td><td>9.448</td></tr><tr><td>GPU</td><td>A5000</td><td>llama3.3:70b</td><td>Q4_K_M</td><td>base</td><td>0.257</td><td>0.622</td><td>0.881</td><td>9.044</td></tr><tr><td>GPU</td><td>A5000</td><td>llama3.1</td><td>Q4_K_M</td><td>base</td><td>0.198</td><td>0.557</td><td>0.846</td><td>36.135</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        JWL
+    </div>
+
+    <!-- DataTables Script -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#leaderboard').DataTable({
+                "order": [[7, "desc"]],  // Default sort by TPS column in descending order
+                "paging": true,         // Enable pagination
+                "pageLength": 10,       // Rows per page
+                "lengthChange": false,  // Disable rows per page dropdown
+                "info": false,          // Disable info text
+                "searching": false      // Disable search box
+            });
+        });
+    </script>
+</body>
+</html>

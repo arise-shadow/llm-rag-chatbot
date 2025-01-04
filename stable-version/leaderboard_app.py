@@ -1,74 +1,112 @@
 import pandas as pd
 
-# CSV 파일 로드
-file_path = "/home/dudaji/Jun/llm-rag-chatbot/result/translate/ko2en/leaderboard.csv"
-data = pd.read_csv(file_path)
+# CSV 파일 경로 설정
+file_paths = [
+    "/home/dudaji/Jun/llm-rag-chatbot/result_monitor/translate/ko2en/leaderboard.csv",
+    "/home/dudaji/Jun/llm-rag-chatbot/result_monitor/translate/en2ko/leaderboard.csv",
+    "/home/dudaji/Jun/llm-rag-chatbot/result_monitor/translate/ko2en/leaderboard.csv",
+    "/home/dudaji/Jun/llm-rag-chatbot/result_monitor/translate/en2ko/leaderboard.csv",
+]
 
-# HTML 테이블 생성
-html_content = """
+# 과제 이름 설정
+task_names = ["KO→EN Translation", "EN→KO Translation", "Classification Task 1", "Classification Task 2"]
+
+# 테이블들을 HTML로 연속 추가
+tables_content = ""
+for i, (file_path, task_name) in enumerate(zip(file_paths, task_names)):
+    # CSV 데이터 로드 및 소수점 세 자리 반올림
+    data = pd.read_csv(file_path).round(3)
+
+    # 테이블 헤더와 행 생성
+    headers = "".join(f"<th>{col}</th>" for col in data.columns)
+    rows = "".join(
+        "<tr>" + "".join(f"<td>{value}</td>" for value in row) + "</tr>"
+        for row in data.values
+    )
+
+    # 테이블 섹션 추가
+    tables_content += f"""
+    <section>
+        <h2>{task_name}</h2>
+        <table id="leaderboard-{i}" class="display">
+            <thead>
+                <tr>{headers}</tr>
+            </thead>
+            <tbody>{rows}</tbody>
+        </table>
+    </section>
+    """
+
+# HTML 파일 생성
+html_content = f"""
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sortable Leaderboard</title>
+    <title>Service Leaderboard</title>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
     <style>
         body {{
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: 'Arial', sans-serif;
+            background-color: #121212;
+            color: #E0E0E0;
+            margin: 0;
+            padding: 20px;
         }}
         h1 {{
             text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #FFFFFF;
         }}
-        .download-btn {{
-            margin: 20px 0;
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
+        section {{
+            margin-bottom: 40px;
         }}
-        .download-btn:hover {{
-            background-color: #0056b3;
+        h2 {{
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #E0E0E0;
+        }}
+        table {{
+            width: 100%;
+            border-collapse: collapse;
+        }}
+        th {{
+            background-color: #323232;
+            color: #FFFFFF;
+            padding: 10px;
+            text-align: center;
+        }}
+        td {{
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #2C2C2C;
+        }}
+        tr:hover {{
+            background-color: #424242;
         }}
     </style>
 </head>
 <body>
-    <h1>AI Model Leaderboard</h1>
-    <a href="leaderboard.csv" download class="download-btn">Download CSV</a>
-    <table id="leaderboard" class="display">
-        <thead>
-            <tr>
-                {headers}
-            </tr>
-        </thead>
-        <tbody>
-            {rows}
-        </tbody>
-    </table>
+    <h1>Service Leaderboard</h1>
+    {tables_content}
 
     <!-- DataTables Script -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function() {{
-            $('#leaderboard').DataTable({{
-                "order": [[7, "desc"]],  // Default sort by TPS column in descending order
-            }});
+            // Initialize DataTables for all tables
+            {''.join([f'$("#leaderboard-{i}").DataTable({{ "paging": true, "pageLength": 10, "info": false, "searching": false, "order": [[7, "desc"]] }});' for i in range(len(file_paths))])}
         }});
     </script>
 </body>
 </html>
 """
 
-# 테이블 헤더와 데이터 생성
-headers = "".join(f"<th>{col}</th>" for col in data.columns)
-rows = "".join(
-    "<tr>" + "".join(f"<td>{value}</td>" for value in row) + "</tr>"
-    for row in data.values
-)
-
 # HTML 파일 저장
-with open("sortable_leaderboard1.html", "w", encoding="utf-8") as file:
-    file.write(html_content.format(headers=headers, rows=rows))
+with open("continuous_leaderboard.html", "w", encoding="utf-8") as file:
+    file.write(html_content)
+    
