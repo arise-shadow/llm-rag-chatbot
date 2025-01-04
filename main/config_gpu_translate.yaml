@@ -7,6 +7,7 @@ device:
 model:
   name: llama3.1-8B-Instruct
   quantization: W8A8
+  calibration: base
 
 evaluation:
   task: translation
@@ -17,4 +18,4 @@ evaluation:
     tps: true
     power_consumption: true
     memory_usage: false
-  output_dir: ./results/translation
+  output_dir: ../result/translate
