@@ -5,8 +5,8 @@ device:
   count: 1
 
 model:
-  name: llama3.1-8B-Instruct
-  quantization: W8A8
+  name: llama3.3:70b
+  quantization: Q4_K_M
   calibration: base
 
 evaluation:

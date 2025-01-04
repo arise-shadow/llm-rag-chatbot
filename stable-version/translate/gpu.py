@@ -6,7 +6,7 @@ gpu_llm = None
 translation_prompt = None
 
 
-def initialize_gpu_llm(model: str = "llama3.1", 
+def initialize_gpu_llm(llm_model: str = "llama3.1", 
                        temperature: float = 0, 
                        request_timeout: int = 600, 
                        max_tokens: int = 200):
@@ -17,7 +17,7 @@ def initialize_gpu_llm(model: str = "llama3.1",
 
     if gpu_llm is None:
         gpu_llm = Ollama(
-            model=model, 
+            model=llm_model, 
             temperature=temperature, 
             request_timeout=request_timeout, 
             max_tokens=max_tokens
@@ -37,7 +37,7 @@ The translation result must be written in {target_lang}.{target_lang
 
 def translate_with_gpu(source_text: str, 
                        source_lang: str = "Korean", 
-                       target_lang: str = "English") -> str:
+                       target_lang: str = "English", llm_model: str = "llama3.1") -> str:
     """
     Translates text using the GPU-based LLM.
 
@@ -50,7 +50,7 @@ def translate_with_gpu(source_text: str,
         str: Translated text.
     """
     if gpu_llm is None or translation_prompt is None:
-        initialize_gpu_llm()
+        initialize_gpu_llm(llm_model=llm_model)
 
     # Format the prompt and generate the translation
     full_prompt = translation_prompt.format(

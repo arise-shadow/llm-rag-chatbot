@@ -1,6 +1,6 @@
 import logging
 import os
-from time import time
+from time import time, sleep
 import threading
 from functools import wraps
 from environment import detect_environment
@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 _environment = None
 _translation_function = None
 
-def initialize_translation_environment():
+def initialize_translation_environment(llm_model: str):
     """
     Detects the translation environment and sets the corresponding translation function.
 
@@ -28,7 +28,7 @@ def initialize_translation_environment():
     
     if _environment == "gpu":
         from translate.gpu import translate_with_gpu
-        _translation_function = monitor_power(translate_with_gpu)
+        _translation_function = monitor_power(lambda text, src, tgt: translate_with_gpu(text, src, tgt, llm_model=llm_model))
         logging.info("Translation environment detected: GPU. Using GPU for translations.")
     elif _environment == "furiosa":
         from translate.furiosa import translate_with_furiosa
@@ -67,13 +67,13 @@ def monitor_power(func):
         stop_event = threading.Event()
 
         def monitor():
-            start_time = time.time()
+            start_time = time()
             while not stop_event.is_set():
                 for device in devices:
                     power = calculate_power_consumption(device)
                     power_data[device].append(power)
-                    timing_data[device].append(round(time.time() - start_time, 2))
-                time.sleep(0.1)  # Sampling interval
+                    timing_data[device].append(round(time() - start_time, 2))
+                sleep(0.1)  # Sampling interval
 
         # Start monitoring in a separate thread
         monitor_thread = threading.Thread(target=monitor)
