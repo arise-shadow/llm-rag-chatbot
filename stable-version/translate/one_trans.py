@@ -1,6 +1,6 @@
 import logging
 import os
-import time
+from time import time
 import threading
 from functools import wraps
 from environment import detect_environment
@@ -152,8 +152,16 @@ def batch_translate_text(input_texts, source_language="Korean", target_language=
     """
     translations = []
     for text in input_texts:
+        start_time = time()
         result = translate_text(text, source_language=source_language, target_language=target_language)
-        translations.append(result)
+        elapsed_time = time() - start_time
+
+        # Add elapsed time to the result
+        result_with_time = {
+            "translation": result,
+            "elapsed_time": elapsed_time
+        }
+        translations.append(result_with_time)
 
     # Wrap results and monitoring data into a single dict
     return {
