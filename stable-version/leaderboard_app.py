@@ -54,11 +54,19 @@ html_content = f"""
             margin: 0;
             padding: 20px;
         }}
+        .header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }}
         h1 {{
-            text-align: center;
             font-size: 2.5rem;
             font-weight: 700;
-            color: #FFFFFF;
+            color: #B0B0B0;
+            margin: 0;
+        }}
+        .logo {{
+            height: 50px;
         }}
         section {{
             margin-bottom: 40px;
@@ -67,7 +75,7 @@ html_content = f"""
             font-size: 1.8rem;
             font-weight: bold;
             margin-bottom: 10px;
-            color: #E0E0E0;
+            color: #B0B0B0;
         }}
         table {{
             width: 100%;
@@ -90,7 +98,10 @@ html_content = f"""
     </style>
 </head>
 <body>
-    <h1>Service Leaderboard</h1>
+    <div class="header">
+        <h1>Service Leaderboard</h1>
+        <img src="ac6c6784959948e1aa377e8b01cfed51.webp" alt="Furiosa Logo" class="logo">
+    </div>
     {tables_content}
 
     <!-- DataTables Script -->
@@ -99,7 +110,7 @@ html_content = f"""
     <script>
         $(document).ready(function() {{
             // Initialize DataTables for all tables
-            {''.join([f'$("#leaderboard-{i}").DataTable({{ "paging": true, "pageLength": 10, "info": false, "searching": false, "order": [[7, "desc"]] }});' for i in range(len(file_paths))])}
+            {''.join([f'$("#leaderboard-{i}").DataTable({{ "paging": true, "pageLength": 10, "info": false, "lengthChange": false, "searching": false, "order": [[7, "desc"]] }});' for i in range(len(file_paths))])}
         }});
     </script>
 </body>
@@ -109,4 +120,3 @@ html_content = f"""
 # HTML 파일 저장
 with open("continuous_leaderboard.html", "w", encoding="utf-8") as file:
     file.write(html_content)
-    
