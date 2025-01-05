@@ -6,7 +6,7 @@ import os
 import json
 
 
-config_path = "/home/dudaji/joonwon/llm-rag-chatbot/main/config_gpu_translate.yaml"
+config_path = "/home/dudaji/joonwon/llm-rag-chatbot/config/config_gpu_translate.yaml"
 
 
 
