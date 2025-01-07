@@ -1,0 +1,1 @@
+FROM ./Ollama_VideoLLaMA2-7B/mmproj-model-f16.gguf
